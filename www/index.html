@@ -53,12 +53,16 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .top{position:sticky;top:0;z-index:5;padding:15px 16px;background:rgba(5,18,41,.97);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
 .top h2{font-size:14px;line-height:1.3;margin:0}
 .top .sub{font-size:10px;letter-spacing:.13em;color:var(--gold);margin:0 0 4px}
+.top-actions{display:flex;gap:8px}
 .top button{border:1px solid var(--line);background:transparent;color:var(--gold);border-radius:10px;padding:8px 12px;font-size:13px}
 .content{padding:18px 14px 40px;max-width:760px;margin:auto}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 14px 30px rgba(0,0,0,.25)}
 .panel h3{margin:0 0 9px;color:var(--gold);font-size:19px}
 .panel p{line-height:1.52}
 .panel-head{display:flex;gap:12px;align-items:center}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;background:#0a1c3d;padding:5px;border-radius:12px;border:1px solid var(--line)}
+.tab-btn{border:0;background:transparent;color:var(--muted);padding:10px;border-radius:9px;font-weight:700;font-size:13px}
+.tab-btn.active{background:var(--gold);color:#071833}
 .field{display:block;font-weight:650;color:#eed69b;font-size:13px;margin:12px 0 0}
 .field input,.field select{display:block;width:100%;background:#102548;color:#fff;border:1px solid #51617c;border-radius:11px;padding:12px;margin-top:6px;min-height:46px}
 .field input::placeholder{color:#b9c6dc}
@@ -74,10 +78,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .row{display:flex;align-items:center;justify-content:space-between;gap:9px}
 .person{border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:14px;background:#0e294e;margin-top:11px}
 .person h4{margin:0 0 4px}
-.person .detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
-.person .detail div{background:#102348;padding:10px;border-radius:10px;min-width:0}
-.person .detail small{color:#bed2e9;display:block;margin-bottom:5px}
-.person .detail strong{overflow-wrap:anywhere;font-size:13px}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.detail div{background:#102348;padding:10px;border-radius:10px;min-width:0}
+.detail small{color:#bed2e9;display:block;margin-bottom:5px}
+.detail strong{overflow-wrap:anywhere;font-size:13px}
 .button-row{display:flex;gap:8px;flex-wrap:wrap}
 .button-row button{flex:1 0 100px}
 .flex{display:grid;grid-template-columns:1fr;gap:10px}
@@ -102,18 +106,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <line x1="8" y1="10" x2="16" y2="10"></line>
       </svg>
     </div>
-    <span class="pill">VERSION 3.0 • MOBILE</span>
-    <p class="description muted"> Hard Line management system.</p>
+    <span class="pill">VERSION 3.0 • CLOUD CONNECTED</span>
+    <p class="description muted">Live Sailor camp stay tracking and Hard Line management system.</p>
     <button class="btn gold" id="begin" style="max-width:340px;margin-top:10px">Enter Application</button>
-    <p class="small muted" style="margin-top:14px">SLNS Ranarisi • Mobile Edition</p>
+    <p class="small muted" style="margin-top:14px">SLNS Ranarisi • Online Cloud Edition</p>
   </div>
 </section>
 
-<!-- SCREEN 2: USER LOGIN MENU -->
-<section id="login" class="screen app">
+<!-- SCREEN 2: LOGIN & CREATE PROFILE -->
+<section id="auth" class="screen app">
   <header class="top">
     <div>
-      <p class="sub">USER ACCESS PORTAL</p>
+      <p class="sub">CLOUD USER PORTAL</p>
       <h2>SLNS RANARISI HARD LINE V3</h2>
     </div>
     <button id="backWelcome">Back</button>
@@ -121,66 +125,175 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   <main class="content">
     <div class="panel">
-      <div class="panel-head">
-        <div class="mini-crest-box" aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="5" r="2.5"></circle>
-            <line x1="12" y1="7.5" x2="12" y2="21"></line>
-            <path d="M5 13H2a10 10 0 0 0 20 0h-3"></path>
-          </svg>
-        </div>
-        <div>
-          <h3 style="margin:0">User Login</h3>
-          <p class="muted small" style="margin:4px 0 0">Sign in to access the dashboard</p>
-        </div>
+      <div class="tabs">
+        <button type="button" class="tab-btn active" id="tabLogin">User Login</button>
+        <button type="button" class="tab-btn" id="tabRegister">Create Profile</button>
       </div>
 
-      <form id="loginForm" style="margin-top:14px">
-        <label class="field">Account Type
-          <select id="loginRole">
-            <option value="Admin">Admin / Officer</option>
-            <option value="User">Duty Sailor / User</option>
-          </select>
-        </label>
+      <!-- LOGIN FORM -->
+      <div id="loginBox">
+        <div class="panel-head" style="margin-bottom:10px">
+          <div class="mini-crest-box" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="5" r="2.5"></circle>
+              <line x1="12" y1="7.5" x2="12" y2="21"></line>
+              <path d="M5 13H2a10 10 0 0 0 20 0h-3"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 style="margin:0">Sign In</h3>
+            <p class="muted small" style="margin:3px 0 0">Login with your Official No / Username</p>
+          </div>
+        </div>
 
-        <label class="field">Username / Official Number
-          <input type="text" id="loginUser" required autocomplete="username" placeholder="e.g. admin">
-        </label>
+        <form id="loginForm">
+          <label class="field">Username / Official Number
+            <input type="text" id="loginUser" required autocomplete="username" placeholder="e.g. admin or SS12345">
+          </label>
 
-        <label class="field">Password
-          <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Enter password">
-        </label>
+          <label class="field">Password
+            <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Enter your password">
+          </label>
 
-        <div id="loginMessage" aria-live="polite"></div>
+          <div id="loginMessage" aria-live="polite"></div>
 
-        <button class="btn gold" type="submit" style="margin-top:16px">Login</button>
-      </form>
+          <button class="btn gold" id="loginSubmitBtn" type="submit" style="margin-top:16px">Login</button>
+        </form>
+      </div>
+
+      <!-- CREATE PROFILE (REGISTER) FORM -->
+      <div id="registerBox" class="hidden">
+        <h3 style="margin:0 0 4px">Create User Profile</h3>
+        <p class="muted small" style="margin:0 0 12px">Your profile will be saved to the online database.</p>
+
+        <form id="registerForm">
+          <div class="flex">
+            <label class="field">Initials
+              <input type="text" id="regInitials" required maxlength="20" placeholder="e.g. W.M.">
+            </label>
+
+            <label class="field">Surname
+              <input type="text" id="regSurname" required maxlength="50" placeholder="e.g. Fernando">
+            </label>
+
+            <label class="field">Date of Birth
+              <input type="date" id="regDob" required>
+            </label>
+
+            <label class="field">Navy Rate / Rank
+              <select id="regRate" required>
+                <option value="">-- Select Navy Rate --</option>
+                <option value="OD (Ordinary Seaman)">OD - Ordinary Seaman</option>
+                <option value="AB (Able Seaman)">AB - Able Seaman</option>
+                <option value="LS (Leading Seaman)">LS - Leading Seaman</option>
+                <option value="PO (Petty Officer)">PO - Petty Officer</option>
+                <option value="CPO (Chief Petty Officer)">CPO - Chief Petty Officer</option>
+                <option value="FCPO (Fleet Chief Petty Officer)">FCPO - Fleet Chief Petty Officer</option>
+                <option value="MCPO (Master Chief Petty Officer)">MCPO - Master Chief Petty Officer</option>
+                <option value="Mid (Midshipman)">Mid - Midshipman</option>
+                <option value="SLt (Sub Lieutenant)">SLt - Sub Lieutenant</option>
+                <option value="Lt (Lieutenant)">Lt - Lieutenant</option>
+                <option value="LCdr (Lieutenant Commander)">LCdr - Lieutenant Commander</option>
+                <option value="Cdr (Commander)">Cdr - Commander</option>
+              </select>
+            </label>
+
+            <label class="field">Phone Number
+              <input type="tel" id="regPhone" required maxlength="20" placeholder="e.g. 0771234567">
+            </label>
+
+            <label class="field">Username / Official Number
+              <input type="text" id="regUser" required maxlength="30" autocomplete="username" placeholder="Used for login">
+            </label>
+
+            <label class="field">Create Password
+              <input type="password" id="regPass" required minlength="4" autocomplete="new-password" placeholder="Min 4 characters">
+            </label>
+
+            <label class="field">Confirm Password
+              <input type="password" id="regPass2" required minlength="4" autocomplete="new-password" placeholder="Re-enter password">
+            </label>
+          </div>
+
+          <div id="regMessage" aria-live="polite"></div>
+
+          <button class="btn gold" id="regSubmitBtn" type="submit" style="margin-top:16px">Create Profile</button>
+        </form>
+      </div>
     </div>
 
     <div class="note">
-      <strong>Test Accounts:</strong><br>
-      • Admin: <code>admin</code> / Password: <code>1234</code><br>
-      • User: <code>sailor1</code> / Password: <code>1234</code>
+      <strong>Connected to Cloud Database:</strong><br>
+      Click <strong>Create Profile</strong> to register a new user, or login with default Admin (<code>admin</code> / <code>1234</code>).
     </div>
     <p class="footer">SLNS RANARISI HARD LINE • V3</p>
   </main>
 </section>
 
-<!-- SCREEN 3: DASHBOARD -->
+<!-- SCREEN 3: MY PROFILE -->
+<section id="profile" class="screen app">
+  <header class="top">
+    <div>
+      <p class="sub">USER ACCOUNT</p>
+      <h2>MY PROFILE</h2>
+    </div>
+    <button id="backToDash">Back</button>
+  </header>
+
+  <main class="content">
+    <div class="panel">
+      <div class="panel-head" style="margin-bottom:14px">
+        <div class="photo" id="profAvatar" style="display:grid;place-items:center;font-weight:800;font-size:20px;color:var(--gold);border:1.5px solid var(--gold)"></div>
+        <div>
+          <h3 id="profFullName" style="margin:0">User Name</h3>
+          <p class="muted small" id="profRateBadge" style="margin:4px 0 0">Rate</p>
+        </div>
+      </div>
+
+      <div class="detail">
+        <div><small>Initials</small><strong id="profInitials">-</strong></div>
+        <div><small>Surname</small><strong id="profSurname">-</strong></div>
+        <div><small>Navy Rate</small><strong id="profRate">-</strong></div>
+        <div><small>Date of Birth</small><strong id="profDob">-</strong></div>
+        <div><small>Phone Number</small><strong id="profPhone">-</strong></div>
+        <div><small>Username / Official No</small><strong id="profUser">-</strong></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Change Password</h3>
+      <form id="changePassForm">
+        <label class="field">New Password
+          <input type="password" id="newPass" required minlength="4" placeholder="Enter new password">
+        </label>
+        <label class="field">Confirm New Password
+          <input type="password" id="newPass2" required minlength="4" placeholder="Re-enter new password">
+        </label>
+        <div id="passMsg" aria-live="polite"></div>
+        <button class="btn gold" id="passSubmitBtn" type="submit" style="margin-top:14px">Update Password</button>
+      </form>
+    </div>
+  </main>
+</section>
+
+<!-- SCREEN 4: DASHBOARD -->
 <section id="dashboard" class="screen app">
   <header class="top">
     <div>
       <p class="sub" id="userBadge">LOGGED IN</p>
       <h2>SAILOR'S HARD LINE</h2>
     </div>
-    <button id="logoutBtn">Logout</button>
+    <div class="top-actions">
+      <button id="openProfileBtn">Profile</button>
+      <button id="logoutBtn">Logout</button>
+    </div>
   </header>
 
   <main class="content">
     <div class="panel">
       <div class="panel-head">
         <div class="mini-crest-box" aria-hidden="true">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="5" r="2.5"></circle>
             <line x1="12" y1="7.5" x2="12" y2="21"></line>
             <path d="M5 13H2a10 10 0 0 0 20 0h-3"></path>
@@ -188,7 +301,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         </div>
         <div>
           <h3 style="margin:0">Camp Stay Dashboard</h3>
-          <p class="muted small" style="margin:4px 0 0">Sailor Hard Line Records</p>
+          <p class="muted small" style="margin:4px 0 0">Live Cloud Records (Synced)</p>
         </div>
       </div>
 
@@ -205,9 +318,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         <button class="btn outline" style="width:auto;padding:9px 13px;min-height:unset" id="showForm">+ Add Sailor</button>
       </div>
       <label class="field">Search by Official Number / Name
-        <input id="search" type="search" placeholder="e.g. DEMO-001">
+        <input id="search" type="search" placeholder="Search by name or official no...">
       </label>
-      <div id="list"></div>
+      <div id="list"><p class="muted">Loading cloud records...</p></div>
     </div>
 
     <div id="formPanel" class="panel hidden">
@@ -215,8 +328,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <form id="sailorForm">
         <div class="flex">
           <label class="field">Full Name<input id="name" required maxlength="80" placeholder="Sailor Name" autocomplete="off"></label>
-          <label class="field">Official Number<input id="official" required maxlength="30" placeholder="e.g. DEMO-003" autocomplete="off"></label>
-          <label class="field">Rank<input id="rank" required maxlength="30" placeholder="AB"></label>
+          <label class="field">Official Number<input id="official" required maxlength="30" placeholder="e.g. SS12345" autocomplete="off"></label>
+          <label class="field">Rate / Rank<input id="rank" required maxlength="30" placeholder="AB"></label>
           <label class="field">Current Base<input id="base" required maxlength="80" placeholder="SLNS Ranarisi"></label>
           <label class="field">Branch<input id="branch" required maxlength="70" placeholder="Operations"></label>
           <label class="field">Duty / Appointment<input id="duty" required maxlength="80" placeholder="Duty"></label>
@@ -230,21 +343,37 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           </label>
           <label class="field">Last Report Date<input type="date" id="report" required></label>
         </div>
-        <label class="field">Photo (optional)<input type="file" id="photo" accept="image/*"></label>
+        <label class="field">Photo (optional, max 500 KB)<input type="file" id="photo" accept="image/*"></label>
         <div class="button-row" style="margin-top:16px">
-          <button class="btn gold" type="submit">Save Record</button>
+          <button class="btn gold" id="saveSailorBtn" type="submit">Save to Cloud</button>
           <button class="btn outline" type="button" id="cancelForm">Cancel</button>
         </div>
       </form>
     </div>
 
-    <p class="footer">SLNS RANARISI HARD LINE • V3</p>
+    <p class="footer">SLNS RANARISI HARD LINE • V3 • FIREBASE CLOUD</p>
   </main>
 </section>
 
-<script>
-(function(){
-  'use strict';
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // Your Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBskxCjh93LyX7G0g_U5KtdTkbnJ7pUYbc",
+    authDomain: "hard-line-v3.firebaseapp.com",
+    projectId: "hard-line-v3",
+    storageBucket: "hard-line-v3.firebasestorage.app",
+    messagingSenderId: "655285227110",
+    appId: "1:655285227110:web:2b9ba0bcb7389bd3da67a7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
   const $ = id => document.getElementById(id);
   const shows = id => {
     for (const s of document.querySelectorAll('.screen')) {
@@ -253,16 +382,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     window.scrollTo(0, 0);
   };
 
-  // Users List (මෙතනින් users ලා add/edit කරන්න පුළුවන්)
-  const USERS = [
-    { user: 'admin', pass: '1234', role: 'Admin' },
-    { user: 'sailor1', pass: '1234', role: 'User' }
-  ];
-
-  let currentUser = null;
-  let people = [];
-  let editing = null;
-
   const today = () => new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
   const days = date => {
     if (!date) return 0;
@@ -270,21 +389,209 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     return Math.max(0, Math.round(diff) + 1);
   };
   const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const initials = s => s.split(' ').map(x => x[0]).slice(0, 2).join('').toUpperCase();
+  const initialsOf = s => s.split(' ').filter(Boolean).map(x => x[0]).slice(0, 2).join('').toUpperCase();
 
-  const loadSample = () => {
-    if (people.length) return;
-    people = [
-      {id:'1', name:'Demo Sailor One', official:'DEMO-001', rank:'LS', base:'Sample Base', branch:'Operations', duty:'Watchkeeping', phone:'0000000000', police:'Sample Station', marital:'Unmarried', report:today(), status:'IN_CAMP', photo:''},
-      {id:'2', name:'Demo Sailor Two', official:'DEMO-002', rank:'AB', base:'Sample Base', branch:'Engineering', duty:'Maintenance', phone:'0000000000', police:'Sample Station', marital:'Married', report:new Date(Date.now() + 330*60000 - 5*86400000).toISOString().slice(0, 10), status:'IN_CAMP', photo:''}
-    ];
-  };
+  let currentUser = null;
+  let people = [];
+  let editing = null;
+  let unsubSailors = null;
 
   const F = ['name','official','rank','base','branch','duty','phone','police','marital','report'];
 
+  // Auth Tab Switching
+  const switchAuthTab = mode => {
+    const isLogin = mode === 'login';
+    $('tabLogin').classList.toggle('active', isLogin);
+    $('tabRegister').classList.toggle('active', !isLogin);
+    $('loginBox').classList.toggle('hidden', !isLogin);
+    $('registerBox').classList.toggle('hidden', isLogin);
+    $('loginMessage').textContent = '';
+    $('loginMessage').className = '';
+    $('regMessage').textContent = '';
+    $('regMessage').className = '';
+  };
+
+  $('tabLogin').addEventListener('click', () => switchAuthTab('login'));
+  $('tabRegister').addEventListener('click', () => switchAuthTab('register'));
+
+  // CREATE PROFILE (Save to Firebase)
+  $('registerForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const msg = $('regMessage');
+    const btn = $('regSubmitBtn');
+    const initials = $('regInitials').value.trim();
+    const surname = $('regSurname').value.trim();
+    const dob = $('regDob').value;
+    const rate = $('regRate').value;
+    const phone = $('regPhone').value.trim();
+    const user = $('regUser').value.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    const pass = $('regPass').value;
+    const pass2 = $('regPass2').value;
+
+    if (!user) {
+      msg.className = 'err';
+      msg.textContent = 'Use letters or numbers for Username / Official Number.';
+      return;
+    }
+    if (pass !== pass2) {
+      msg.className = 'err';
+      msg.textContent = 'Passwords do not match.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating Profile...';
+    msg.textContent = '';
+    msg.className = '';
+
+    try {
+      const userRef = doc(db, 'users', user);
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        msg.className = 'err';
+        msg.textContent = 'This Username / Official Number is already registered.';
+        btn.disabled = false;
+        btn.textContent = 'Create Profile';
+        return;
+      }
+
+      await setDoc(userRef, {
+        user, pass, initials, surname, dob, rate, phone,
+        createdAt: new Date().toISOString()
+      });
+
+      msg.className = 'ok';
+      msg.textContent = 'Profile saved to Cloud! Redirecting to login...';
+      $('registerForm').reset();
+
+      setTimeout(() => {
+        switchAuthTab('login');
+        $('loginUser').value = user;
+      }, 900);
+    } catch (err) {
+      msg.className = 'err';
+      msg.textContent = 'Error saving profile: ' + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Create Profile';
+    }
+  });
+
+  // LOGIN (Check Firebase)
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const msg = $('loginMessage');
+    const btn = $('loginSubmitBtn');
+    const u = $('loginUser').value.trim().toLowerCase();
+    const p = $('loginPass').value;
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+    msg.textContent = '';
+    msg.className = '';
+
+    try {
+      let found = null;
+      const snap = await getDoc(doc(db, 'users', u));
+      if (snap.exists() && snap.data().pass === p) {
+        found = snap.data();
+      } else if (u === 'admin' && p === '1234' && !snap.exists()) {
+        // Default Admin fallback
+        found = { user: 'admin', pass: '1234', initials: 'SLN', surname: 'Admin', dob: '1990-01-01', rate: 'Lt (Lieutenant)', phone: '0000000000' };
+      }
+
+      if (!found) {
+        msg.className = 'err';
+        msg.textContent = 'Invalid Username or Password.';
+        btn.disabled = false;
+        btn.textContent = 'Login';
+        return;
+      }
+
+      currentUser = found;
+      msg.className = 'ok';
+      msg.textContent = 'Login successful! Loading dashboard...';
+      $('loginForm').reset();
+
+      setTimeout(() => {
+        $('userBadge').textContent = `${currentUser.rate.split(' ')[0]} • ${currentUser.initials} ${currentUser.surname}`.toUpperCase();
+        startRealtimeSync();
+        shows('dashboard');
+        msg.textContent = '';
+        msg.className = '';
+      }, 350);
+    } catch (err) {
+      msg.className = 'err';
+      msg.textContent = 'Connection error: ' + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    }
+  });
+
+  // LIVE CLOUD SYNC FOR SAILORS
+  function startRealtimeSync() {
+    if (unsubSailors) unsubSailors();
+    $('list').innerHTML = '<p class="muted">Syncing with cloud database...</p>';
+    unsubSailors = onSnapshot(collection(db, 'sailors'), snapshot => {
+      people = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      render();
+    }, err => {
+      $('list').innerHTML = `<div class="err">Database Error: ${escape(err.message)}</div>`;
+    });
+  }
+
+  // PROFILE SCREEN
+  const openProfile = () => {
+    if (!currentUser) return;
+    $('profAvatar').textContent = (currentUser.initials[0] || '') + (currentUser.surname[0] || '');
+    $('profFullName').textContent = `${currentUser.initials} ${currentUser.surname}`;
+    $('profRateBadge').textContent = currentUser.rate;
+    $('profInitials').textContent = currentUser.initials;
+    $('profSurname').textContent = currentUser.surname;
+    $('profRate').textContent = currentUser.rate;
+    $('profDob').textContent = currentUser.dob;
+    $('profPhone').textContent = currentUser.phone;
+    $('profUser').textContent = currentUser.user;
+    $('passMsg').textContent = '';
+    $('passMsg').className = '';
+    $('changePassForm').reset();
+    shows('profile');
+  };
+
+  $('changePassForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const msg = $('passMsg');
+    const btn = $('passSubmitBtn');
+    const p1 = $('newPass').value;
+    const p2 = $('newPass2').value;
+    if (p1 !== p2) {
+      msg.className = 'err';
+      msg.textContent = 'New passwords do not match.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Updating...';
+    try {
+      currentUser.pass = p1;
+      await setDoc(doc(db, 'users', currentUser.user), currentUser, { merge: true });
+      msg.className = 'ok';
+      msg.textContent = 'Password updated in Cloud!';
+      $('changePassForm').reset();
+    } catch (err) {
+      msg.className = 'err';
+      msg.textContent = 'Error updating password: ' + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Update Password';
+    }
+  });
+
+  // DASHBOARD RENDERING
   const render = () => {
     const q = $('search').value.trim().toLowerCase();
-    const filtered = people.filter(p => [p.name, p.official].some(s => s.toLowerCase().includes(q)));
+    const filtered = people.filter(p => [p.name, p.official].some(s => String(s || '').toLowerCase().includes(q)));
 
     $('total').textContent = people.length;
     $('inCamp').textContent = people.filter(p => p.status === 'IN_CAMP').length;
@@ -294,7 +601,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     if (!filtered.length) {
       const el = document.createElement('p');
       el.className = 'muted';
-      el.textContent = 'No records found.';
+      el.textContent = people.length ? 'No matching records found.' : 'No sailor records yet. Click "+ Add Sailor" to add the first record.';
       $('list').append(el);
       return;
     }
@@ -304,7 +611,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       article.className = 'person';
       const photo = p.photo
         ? `<img class="photo" src="${p.photo}" alt="Photo">`
-        : `<div class="photo" style="display:grid;place-items:center;font-weight:bold;font-size:18px">${escape(initials(p.name))}</div>`;
+        : `<div class="photo" style="display:grid;place-items:center;font-weight:bold;font-size:18px">${escape(initialsOf(p.name || 'S'))}</div>`;
 
       article.innerHTML = `
         <div class="row">
@@ -340,30 +647,30 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     }
   };
 
-  function action(type, id) {
+  async function action(type, id) {
     const p = people.find(x => x.id === id);
     if (!p) return;
     if (type === 'edit') {
       editing = p.id;
-      F.forEach(k => $(k).value = p[k]);
+      F.forEach(k => $(k).value = p[k] || '');
       $('formTitle').textContent = 'Edit Sailor';
       $('formPanel').classList.remove('hidden');
       $('formPanel').scrollIntoView({behavior: 'smooth'});
       return;
     }
-    if (type === 'report' || type === 'leave') {
-      if (type === 'report' || p.status === 'ON_LEAVE') {
-        p.report = today();
-        p.status = 'IN_CAMP';
-      } else {
-        p.status = 'ON_LEAVE';
+    try {
+      if (type === 'report' || type === 'leave') {
+        const updateData = (type === 'report' || p.status === 'ON_LEAVE')
+          ? { report: today(), status: 'IN_CAMP' }
+          : { status: 'ON_LEAVE' };
+        await updateDoc(doc(db, 'sailors', id), updateData);
+        return;
       }
-      render();
-      return;
-    }
-    if (type === 'delete' && confirm('Delete this profile?')) {
-      people = people.filter(x => x.id !== id);
-      render();
+      if (type === 'delete' && confirm('Delete this sailor profile from the cloud database?')) {
+        await deleteDoc(doc(db, 'sailors', id));
+      }
+    } catch (err) {
+      alert('Action failed: ' + err.message);
     }
   }
 
@@ -374,42 +681,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   }
 
   // Navigation Events
-  $('begin').addEventListener('click', () => shows('login'));
+  $('begin').addEventListener('click', () => shows('auth'));
   $('backWelcome').addEventListener('click', () => shows('welcome'));
+  $('openProfileBtn').addEventListener('click', openProfile);
+  $('backToDash').addEventListener('click', () => shows('dashboard'));
   $('logoutBtn').addEventListener('click', () => {
+    if (unsubSailors) { unsubSailors(); unsubSailors = null; }
     currentUser = null;
     hideForm();
-    shows('login');
-  });
-
-  // Login Handler
-  $('loginForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const msg = $('loginMessage');
-    const role = $('loginRole').value;
-    const u = $('loginUser').value.trim().toLowerCase();
-    const p = $('loginPass').value;
-
-    const found = USERS.find(x => x.user === u && x.pass === p && x.role === role);
-    if (!found) {
-      msg.className = 'err';
-      msg.textContent = 'Invalid Username, Password or Account Type.';
-      return;
-    }
-
-    currentUser = found;
-    msg.className = 'ok';
-    msg.textContent = 'Login successful! Opening dashboard...';
-    $('loginForm').reset();
-
-    setTimeout(() => {
-      $('userBadge').textContent = `${currentUser.role.toUpperCase()} • ${currentUser.user.toUpperCase()}`;
-      loadSample();
-      render();
-      shows('dashboard');
-      msg.textContent = '';
-      msg.className = '';
-    }, 450);
+    shows('auth');
   });
 
   // Dashboard Events
@@ -426,22 +706,24 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   $('sailorForm').addEventListener('submit', async e => {
     e.preventDefault();
+    const btn = $('saveSailorBtn');
     const p = Object.fromEntries(F.map(k => [k, $(k).value.trim()]));
+
     if (!p.report || p.report > today()) {
       alert('Last Report Date cannot be in the future.');
       return;
     }
-    if (people.some(x => x.official.toUpperCase() === p.official.toUpperCase() && x.id !== editing)) {
+    if (people.some(x => String(x.official || '').toUpperCase() === p.official.toUpperCase() && x.id !== editing)) {
       alert('Official number already exists.');
       return;
     }
-    p.status = editing ? people.find(x => x.id === editing).status : 'IN_CAMP';
-    p.id = editing || Math.random().toString(36).slice(2);
+
+    p.status = editing ? (people.find(x => x.id === editing)?.status || 'IN_CAMP') : 'IN_CAMP';
 
     const file = $('photo').files[0];
     if (file) {
-      if (!file.type.startsWith('image/') || file.size > 2 * 1024 * 1024) {
-        alert('Use an image smaller than 2 MB.');
+      if (!file.type.startsWith('image/') || file.size > 500 * 1024) {
+        alert('Please use an image smaller than 500 KB for cloud storage.');
         return;
       }
       p.photo = await new Promise(res => {
@@ -451,17 +733,27 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         fr.readAsDataURL(file);
       });
     } else {
-      p.photo = editing ? people.find(x => x.id === editing).photo : '';
+      p.photo = editing ? (people.find(x => x.id === editing)?.photo || '') : '';
     }
 
-    if (editing) people = people.map(x => x.id === editing ? p : x);
-    else people.push(p);
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
 
-    hideForm();
-    render();
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    try {
+      if (editing) {
+        await updateDoc(doc(db, 'sailors', editing), p);
+      } else {
+        await addDoc(collection(db, 'sailors'), p);
+      }
+      hideForm();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    } catch (err) {
+      alert('Failed to save: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Save to Cloud';
+    }
   });
-})();
 </script>
 </body>
 </html>
