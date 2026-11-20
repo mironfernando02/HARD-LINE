@@ -42,11 +42,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 }
 .muted{color:var(--muted)}
 .description{max-width:440px;line-height:1.55;font-size:14px}
-.btn{border:0;border-radius:13px;padding:14px 17px;font-weight:750;width:100%;min-height:47px}
+.btn{border:0;border-radius:13px;padding:13px 15px;font-weight:750;width:100%;min-height:44px;font-size:13px}
 .gold{background:linear-gradient(135deg,#f0d593,#c89d45);color:#071833}
 .outline{background:rgba(255,255,255,.07);color:var(--txt);border:1px solid var(--line)}
 .danger{background:#633042;color:#fff}
 .navy{background:#163765;color:#fff}
+.green{background:#1d5c4c;color:#e6fff7;border:1px solid #48a88c}
 .btn+.btn{margin-top:10px}
 .small{font-size:12px}
 .app{min-height:100dvh;background:linear-gradient(180deg,#081c3d 0%,#040e22 100%)}
@@ -74,8 +75,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .stat{background:rgba(255,255,255,.08);text-align:center;padding:13px 6px;border-radius:12px}
 .stat b{font-size:22px;color:var(--gold);display:block}
 .stat small{color:var(--muted);font-size:11px}
-.pill{display:inline-block;border:1px solid #cbb071;color:#f4db9c;background:#55491d70;padding:5px 9px;border-radius:99px;font-size:11px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.pill{display:inline-block;border:1px solid #cbb071;color:#f4db9c;background:#55491d70;padding:4px 9px;border-radius:99px;font-size:11px}
+.pill.access{border-color:#5cc9a7;color:#a8ffdf;background:#164d3e}
+.row{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}
 .person{border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:14px;background:#0e294e;margin-top:11px}
 .person h4{margin:0 0 4px}
 .detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
@@ -83,7 +85,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .detail small{color:#bed2e9;display:block;margin-bottom:5px}
 .detail strong{overflow-wrap:anywhere;font-size:13px}
 .button-row{display:flex;gap:8px;flex-wrap:wrap}
-.button-row button{flex:1 0 100px}
+.button-row button{flex:1 0 110px}
 .flex{display:grid;grid-template-columns:1fr;gap:10px}
 .hidden{display:none!important}
 .footer{font-size:11px;color:#c3d1e4;text-align:center;margin-top:25px;line-height:1.5}
@@ -142,13 +144,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           </div>
           <div>
             <h3 style="margin:0">Sign In</h3>
-            <p class="muted small" style="margin:3px 0 0">Login with your Official No / Username</p>
+            <p class="muted small" style="margin:3px 0 0">Login with your Username and Password</p>
           </div>
         </div>
 
         <form id="loginForm">
-          <label class="field">Username / Official Number
-            <input type="text" id="loginUser" required autocomplete="username" placeholder="e.g. admin or SS12345">
+          <label class="field">Username
+            <input type="text" id="loginUser" required autocomplete="username" placeholder="Enter your username">
           </label>
 
           <label class="field">Password
@@ -164,7 +166,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <!-- CREATE PROFILE (REGISTER) FORM -->
       <div id="registerBox" class="hidden">
         <h3 style="margin:0 0 4px">Create User Profile</h3>
-        <p class="muted small" style="margin:0 0 12px">Your profile will be saved to the online database.</p>
+        <p class="muted small" style="margin:0 0 12px">Sailors who register here are automatically added to the Hard Line.</p>
 
         <form id="registerForm">
           <div class="flex">
@@ -176,6 +178,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
               <input type="text" id="regSurname" required maxlength="50" placeholder="e.g. Fernando">
             </label>
 
+            <label class="field">Official Number
+              <input type="text" id="regOfficial" required maxlength="30" placeholder="e.g. SS12345">
+            </label>
+
             <label class="field">Date of Birth
               <input type="date" id="regDob" required>
             </label>
@@ -183,18 +189,22 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
             <label class="field">Navy Rate / Rank
               <select id="regRate" required>
                 <option value="">-- Select Navy Rate --</option>
-                <option value="OD (Ordinary Seaman)">OD - Ordinary Seaman</option>
-                <option value="AB (Able Seaman)">AB - Able Seaman</option>
-                <option value="LS (Leading Seaman)">LS - Leading Seaman</option>
-                <option value="PO (Petty Officer)">PO - Petty Officer</option>
-                <option value="CPO (Chief Petty Officer)">CPO - Chief Petty Officer</option>
-                <option value="FCPO (Fleet Chief Petty Officer)">FCPO - Fleet Chief Petty Officer</option>
-                <option value="MCPO (Master Chief Petty Officer)">MCPO - Master Chief Petty Officer</option>
-                <option value="Mid (Midshipman)">Mid - Midshipman</option>
-                <option value="SLt (Sub Lieutenant)">SLt - Sub Lieutenant</option>
-                <option value="Lt (Lieutenant)">Lt - Lieutenant</option>
-                <option value="LCdr (Lieutenant Commander)">LCdr - Lieutenant Commander</option>
-                <option value="Cdr (Commander)">Cdr - Commander</option>
+                <optgroup label="Sailors">
+                  <option value="OD (Ordinary Seaman)">OD - Ordinary Seaman</option>
+                  <option value="AB (Able Seaman)">AB - Able Seaman</option>
+                  <option value="LS (Leading Seaman)">LS - Leading Seaman</option>
+                  <option value="PO (Petty Officer)">PO - Petty Officer</option>
+                  <option value="CPO (Chief Petty Officer)">CPO - Chief Petty Officer</option>
+                  <option value="FCPO (Fleet Chief Petty Officer)">FCPO - Fleet Chief Petty Officer</option>
+                  <option value="MCPO (Master Chief Petty Officer)">MCPO - Master Chief Petty Officer</option>
+                </optgroup>
+                <optgroup label="Officers">
+                  <option value="Mid (Midshipman)">Mid - Midshipman</option>
+                  <option value="SLt (Sub Lieutenant)">SLt - Sub Lieutenant</option>
+                  <option value="Lt (Lieutenant)">Lt - Lieutenant</option>
+                  <option value="LCdr (Lieutenant Commander)">LCdr - Lieutenant Commander</option>
+                  <option value="Cdr (Commander)">Cdr - Commander</option>
+                </optgroup>
               </select>
             </label>
 
@@ -202,8 +212,35 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
               <input type="tel" id="regPhone" required maxlength="20" placeholder="e.g. 0771234567">
             </label>
 
-            <label class="field">Username / Official Number
-              <input type="text" id="regUser" required maxlength="30" autocomplete="username" placeholder="Used for login">
+            <label class="field">Current Base
+              <input type="text" id="regBase" required maxlength="80" value="SLNS Ranarisi">
+            </label>
+
+            <label class="field">Branch
+              <input type="text" id="regBranch" required maxlength="70" placeholder="e.g. Operations">
+            </label>
+
+            <label class="field">Duty / Appointment
+              <input type="text" id="regDuty" required maxlength="80" placeholder="e.g. Watchkeeping">
+            </label>
+
+            <label class="field">Nearest Police Station
+              <input type="text" id="regPolice" required maxlength="90" placeholder="e.g. Welisara">
+            </label>
+
+            <label class="field">Marital Status
+              <select id="regMarital" required>
+                <option value="Unmarried">Unmarried</option>
+                <option value="Married">Married</option>
+              </select>
+            </label>
+
+            <label class="field">Last Report Date
+              <input type="date" id="regReport" required>
+            </label>
+
+            <label class="field">Username (For Login)
+              <input type="text" id="regUser" required maxlength="30" autocomplete="username" placeholder="e.g. fernando96">
             </label>
 
             <label class="field">Create Password
@@ -223,21 +260,66 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
 
     <div class="note">
-      <strong>Connected to Cloud Database:</strong><br>
-      Click <strong>Create Profile</strong> to register a new user, or login with default Admin (<code>admin</code> / <code>1234</code>).
+      <strong>Access Control:</strong><br>
+      • Officers automatically get the Management Dashboard.<br>
+      • Sailors see their own Hard Line status unless an Officer grants them management access.<br>
+      • Default Admin: <code>admin</code> / <code>1234</code>
     </div>
     <p class="footer">SLNS RANARISI HARD LINE • V3</p>
   </main>
 </section>
 
-<!-- SCREEN 3: MY PROFILE -->
+<!-- SCREEN 3: SAILOR PERSONAL VIEW (FOR REGULAR SAILORS) -->
+<section id="sailorHome" class="screen app">
+  <header class="top">
+    <div>
+      <p class="sub" id="sailorBadge">SAILOR PORTAL</p>
+      <h2>MY HARD LINE STATUS</h2>
+    </div>
+    <div class="top-actions">
+      <button id="sailorProfileBtn">Profile</button>
+      <button id="sailorLogoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="panel">
+      <div class="row" style="margin-bottom:14px">
+        <div class="panel-head">
+          <div class="photo" id="shAvatar" style="display:grid;place-items:center;font-weight:800;font-size:20px;color:var(--gold);border:1.5px solid var(--gold)"></div>
+          <div>
+            <h3 id="shName" style="margin:0">Sailor Name</h3>
+            <p class="muted small" id="shSub" style="margin:4px 0 0">Rate · Official No</p>
+          </div>
+        </div>
+        <span class="pill" id="shStatus">In Camp</span>
+      </div>
+
+      <div class="detail">
+        <div><small>Last Report Date</small><strong id="shReport">-</strong></div>
+        <div><small>Days in Camp</small><strong class="counter" id="shDays">0</strong></div>
+        <div><small>Current Base</small><strong id="shBase">-</strong></div>
+        <div><small>Branch / Duty</small><strong id="shBranchDuty">-</strong></div>
+        <div><small>Marital Status</small><strong id="shMarital">-</strong></div>
+        <div><small>Phone / Police</small><strong id="shPhonePolice">-</strong></div>
+      </div>
+    </div>
+
+    <div class="note">
+      You are logged in as a Sailor. Only Officers or authorized Sailors can view and manage all Hard Line records.
+    </div>
+    <p class="footer">SLNS RANARISI HARD LINE • V3</p>
+  </main>
+</section>
+
+<!-- SCREEN 4: MY PROFILE -->
 <section id="profile" class="screen app">
   <header class="top">
     <div>
       <p class="sub">USER ACCOUNT</p>
       <h2>MY PROFILE</h2>
     </div>
-    <button id="backToDash">Back</button>
+    <button id="backFromProfile">Back</button>
   </header>
 
   <main class="content">
@@ -253,10 +335,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <div class="detail">
         <div><small>Initials</small><strong id="profInitials">-</strong></div>
         <div><small>Surname</small><strong id="profSurname">-</strong></div>
+        <div><small>Official Number</small><strong id="profOfficial">-</strong></div>
         <div><small>Navy Rate</small><strong id="profRate">-</strong></div>
         <div><small>Date of Birth</small><strong id="profDob">-</strong></div>
         <div><small>Phone Number</small><strong id="profPhone">-</strong></div>
-        <div><small>Username / Official No</small><strong id="profUser">-</strong></div>
+        <div><small>Username</small><strong id="profUser">-</strong></div>
       </div>
     </div>
 
@@ -276,11 +359,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </main>
 </section>
 
-<!-- SCREEN 4: DASHBOARD -->
+<!-- SCREEN 5: MANAGEMENT DASHBOARD (OFFICERS & AUTHORIZED SAILORS ONLY) -->
 <section id="dashboard" class="screen app">
   <header class="top">
     <div>
-      <p class="sub" id="userBadge">LOGGED IN</p>
+      <p class="sub" id="userBadge">OFFICER DASHBOARD</p>
       <h2>SAILOR'S HARD LINE</h2>
     </div>
     <div class="top-actions">
@@ -301,7 +384,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         </div>
         <div>
           <h3 style="margin:0">Camp Stay Dashboard</h3>
-          <p class="muted small" style="margin:4px 0 0">Live Cloud Records (Synced)</p>
+          <p class="muted small" style="margin:4px 0 0">Registered Sailors (Live Cloud Sync)</p>
         </div>
       </div>
 
@@ -314,38 +397,39 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
     <div class="panel">
       <div class="row">
-        <h3 style="margin:0">Sailor Profiles</h3>
-        <button class="btn outline" style="width:auto;padding:9px 13px;min-height:unset" id="showForm">+ Add Sailor</button>
+        <h3 style="margin:0">Registered Sailors</h3>
+        <span class="pill" id="rolePill">Officer View</span>
       </div>
       <label class="field">Search by Official Number / Name
-        <input id="search" type="search" placeholder="Search by name or official no...">
+        <input id="search" type="search" placeholder="Search by surname or official no...">
       </label>
       <div id="list"><p class="muted">Loading cloud records...</p></div>
     </div>
 
+    <!-- EDIT SAILOR PANEL (ONLY FOR EDITING REGISTERED SAILORS) -->
     <div id="formPanel" class="panel hidden">
-      <h3 id="formTitle">Add Sailor</h3>
+      <h3 id="formTitle">Edit Sailor Details</h3>
       <form id="sailorForm">
         <div class="flex">
-          <label class="field">Full Name<input id="name" required maxlength="80" placeholder="Sailor Name" autocomplete="off"></label>
-          <label class="field">Official Number<input id="official" required maxlength="30" placeholder="e.g. SS12345" autocomplete="off"></label>
-          <label class="field">Rate / Rank<input id="rank" required maxlength="30" placeholder="AB"></label>
-          <label class="field">Current Base<input id="base" required maxlength="80" placeholder="SLNS Ranarisi"></label>
-          <label class="field">Branch<input id="branch" required maxlength="70" placeholder="Operations"></label>
-          <label class="field">Duty / Appointment<input id="duty" required maxlength="80" placeholder="Duty"></label>
-          <label class="field">Phone Number<input id="phone" required maxlength="32" placeholder="07XXXXXXXX"></label>
-          <label class="field">Nearest Police Station<input id="police" required maxlength="90" placeholder="Police Station"></label>
+          <label class="field">Initials<input id="editInitials" required maxlength="20"></label>
+          <label class="field">Surname<input id="editSurname" required maxlength="50"></label>
+          <label class="field">Official Number<input id="editOfficial" required maxlength="30"></label>
+          <label class="field">Rate<input id="editRate" required maxlength="40"></label>
+          <label class="field">Current Base<input id="editBase" required maxlength="80"></label>
+          <label class="field">Branch<input id="editBranch" required maxlength="70"></label>
+          <label class="field">Duty / Appointment<input id="editDuty" required maxlength="80"></label>
+          <label class="field">Phone Number<input id="editPhone" required maxlength="32"></label>
+          <label class="field">Nearest Police Station<input id="editPolice" required maxlength="90"></label>
           <label class="field">Marital Status
-            <select id="marital" required>
+            <select id="editMarital" required>
               <option value="Unmarried">Unmarried</option>
               <option value="Married">Married</option>
             </select>
           </label>
-          <label class="field">Last Report Date<input type="date" id="report" required></label>
+          <label class="field">Last Report Date<input type="date" id="editReport" required></label>
         </div>
-        <label class="field">Photo (optional, max 500 KB)<input type="file" id="photo" accept="image/*"></label>
         <div class="button-row" style="margin-top:16px">
-          <button class="btn gold" id="saveSailorBtn" type="submit">Save to Cloud</button>
+          <button class="btn gold" id="saveSailorBtn" type="submit">Update Record</button>
           <button class="btn outline" type="button" id="cancelForm">Cancel</button>
         </div>
       </form>
@@ -358,10 +442,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
-    getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, onSnapshot
+    getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // Your Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBskxCjh93LyX7G0g_U5KtdTkbnJ7pUYbc",
     authDomain: "hard-line-v3.firebaseapp.com",
@@ -389,14 +472,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     return Math.max(0, Math.round(diff) + 1);
   };
   const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const initialsOf = s => s.split(' ').filter(Boolean).map(x => x[0]).slice(0, 2).join('').toUpperCase();
+
+  // Check if selected rate is an Officer rank
+  const isOfficerRate = rate => /^(Mid|SLt|Lt|LCdr|Cdr)\b/i.test(String(rate || '').trim());
 
   let currentUser = null;
-  let people = [];
-  let editing = null;
-  let unsubSailors = null;
+  let sailors = [];
+  let editingId = null;
+  let unsubUsers = null;
 
-  const F = ['name','official','rank','base','branch','duty','phone','police','marital','report'];
+  // Set default report date on register form
+  $('regReport').value = today();
 
   // Auth Tab Switching
   const switchAuthTab = mode => {
@@ -414,28 +500,41 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   $('tabLogin').addEventListener('click', () => switchAuthTab('login'));
   $('tabRegister').addEventListener('click', () => switchAuthTab('register'));
 
-  // CREATE PROFILE (Save to Firebase)
+  // CREATE PROFILE (Save to Firebase 'users' collection)
   $('registerForm').addEventListener('submit', async e => {
     e.preventDefault();
     const msg = $('regMessage');
     const btn = $('regSubmitBtn');
+
     const initials = $('regInitials').value.trim();
     const surname = $('regSurname').value.trim();
+    const official = $('regOfficial').value.trim().toUpperCase();
     const dob = $('regDob').value;
     const rate = $('regRate').value;
     const phone = $('regPhone').value.trim();
+    const base = $('regBase').value.trim();
+    const branch = $('regBranch').value.trim();
+    const duty = $('regDuty').value.trim();
+    const police = $('regPolice').value.trim();
+    const marital = $('regMarital').value;
+    const report = $('regReport').value;
     const user = $('regUser').value.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
     const pass = $('regPass').value;
     const pass2 = $('regPass2').value;
 
     if (!user) {
       msg.className = 'err';
-      msg.textContent = 'Use letters or numbers for Username / Official Number.';
+      msg.textContent = 'Use letters or numbers for Username.';
       return;
     }
     if (pass !== pass2) {
       msg.className = 'err';
       msg.textContent = 'Passwords do not match.';
+      return;
+    }
+    if (report > today()) {
+      msg.className = 'err';
+      msg.textContent = 'Last Report Date cannot be in the future.';
       return;
     }
 
@@ -449,20 +548,28 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       const snap = await getDoc(userRef);
       if (snap.exists()) {
         msg.className = 'err';
-        msg.textContent = 'This Username / Official Number is already registered.';
+        msg.textContent = 'This Username is already taken. Please choose another.';
         btn.disabled = false;
         btn.textContent = 'Create Profile';
         return;
       }
 
+      const officer = isOfficerRate(rate);
+
       await setDoc(userRef, {
-        user, pass, initials, surname, dob, rate, phone,
+        user, pass, initials, surname, official, dob, rate, phone,
+        base, branch, duty, police, marital, report,
+        status: 'IN_CAMP',
+        isOfficer: officer,
+        canManage: officer, // Officers have access by default; Sailors need Officer approval
         createdAt: new Date().toISOString()
       });
 
       msg.className = 'ok';
-      msg.textContent = 'Profile saved to Cloud! Redirecting to login...';
+      msg.textContent = 'Profile created! Redirecting to login...';
       $('registerForm').reset();
+      $('regBase').value = 'SLNS Ranarisi';
+      $('regReport').value = today();
 
       setTimeout(() => {
         switchAuthTab('login');
@@ -477,7 +584,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     }
   });
 
-  // LOGIN (Check Firebase)
+  // LOGIN
   $('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
     const msg = $('loginMessage');
@@ -495,9 +602,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       const snap = await getDoc(doc(db, 'users', u));
       if (snap.exists() && snap.data().pass === p) {
         found = snap.data();
+        // Ensure backward compatibility for older accounts
+        if (typeof found.isOfficer !== 'boolean') found.isOfficer = isOfficerRate(found.rate);
+        if (typeof found.canManage !== 'boolean') found.canManage = found.isOfficer;
       } else if (u === 'admin' && p === '1234' && !snap.exists()) {
-        // Default Admin fallback
-        found = { user: 'admin', pass: '1234', initials: 'SLN', surname: 'Admin', dob: '1990-01-01', rate: 'Lt (Lieutenant)', phone: '0000000000' };
+        found = {
+          user: 'admin', pass: '1234', initials: 'SLN', surname: 'Admin',
+          official: 'ADMIN-01', dob: '1990-01-01', rate: 'Lt (Lieutenant)',
+          phone: '0000000000', isOfficer: true, canManage: true
+        };
       }
 
       if (!found) {
@@ -510,15 +623,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
       currentUser = found;
       msg.className = 'ok';
-      msg.textContent = 'Login successful! Loading dashboard...';
+      msg.textContent = 'Login successful!';
       $('loginForm').reset();
 
       setTimeout(() => {
-        $('userBadge').textContent = `${currentUser.rate.split(' ')[0]} • ${currentUser.initials} ${currentUser.surname}`.toUpperCase();
-        startRealtimeSync();
-        shows('dashboard');
         msg.textContent = '';
         msg.className = '';
+        openHomeForUser();
       }, 350);
     } catch (err) {
       msg.className = 'err';
@@ -529,30 +640,229 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     }
   });
 
-  // LIVE CLOUD SYNC FOR SAILORS
+  // ROUTE USER BASED ON ROLE & GRANTED ACCESS
+  function openHomeForUser() {
+    if (currentUser.isOfficer || currentUser.canManage) {
+      $('userBadge').textContent = `${currentUser.rate.split(' ')[0]} • ${currentUser.initials} ${currentUser.surname}`.toUpperCase();
+      $('rolePill').textContent = currentUser.isOfficer ? 'Officer View' : 'Authorized Sailor';
+      startRealtimeSync();
+      shows('dashboard');
+    } else {
+      renderSailorPersonalView();
+      shows('sailorHome');
+    }
+  }
+
+  // SAILOR PERSONAL VIEW
+  function renderSailorPersonalView() {
+    const u = currentUser;
+    $('sailorBadge').textContent = `${u.rate.split(' ')[0]} • ${u.initials} ${u.surname}`.toUpperCase();
+    $('shAvatar').textContent = ((u.initials || 'S')[0] + (u.surname || 'A')[0]).toUpperCase();
+    $('shName').textContent = `${u.initials || ''} ${u.surname || ''}`.trim();
+    $('shSub').textContent = `${u.rate || '-'} · ${u.official || '-'}`;
+    $('shStatus').textContent = u.status === 'ON_LEAVE' ? 'On Leave' : 'In Camp';
+    $('shReport').textContent = u.report || '-';
+    $('shDays').textContent = u.status === 'ON_LEAVE' ? '—' : days(u.report);
+    $('shBase').textContent = u.base || '-';
+    $('shBranchDuty').textContent = `${u.branch || '-'} · ${u.duty || '-'}`;
+    $('shMarital').textContent = u.marital || '-';
+    $('shPhonePolice').textContent = `${u.phone || '-'} / ${u.police || '-'}`;
+  }
+
+  // LIVE CLOUD SYNC FOR MANAGEMENT DASHBOARD
   function startRealtimeSync() {
-    if (unsubSailors) unsubSailors();
+    if (unsubUsers) unsubUsers();
     $('list').innerHTML = '<p class="muted">Syncing with cloud database...</p>';
-    unsubSailors = onSnapshot(collection(db, 'sailors'), snapshot => {
-      people = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-      render();
+    unsubUsers = onSnapshot(collection(db, 'users'), snapshot => {
+      // Show all registered Sailors (non-officers) on the Hard Line
+      sailors = snapshot.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(u => !isOfficerRate(u.rate) && !u.isOfficer);
+      renderDashboard();
     }, err => {
       $('list').innerHTML = `<div class="err">Database Error: ${escape(err.message)}</div>`;
     });
   }
 
+  // DASHBOARD RENDERING
+  const renderDashboard = () => {
+    const q = $('search').value.trim().toLowerCase();
+    const filtered = sailors.filter(p =>
+      [p.initials, p.surname, p.official].some(s => String(s || '').toLowerCase().includes(q))
+    );
+
+    $('total').textContent = sailors.length;
+    $('inCamp').textContent = sailors.filter(p => p.status !== 'ON_LEAVE').length;
+    $('longest').textContent = sailors.reduce((a, p) => Math.max(a, p.status !== 'ON_LEAVE' ? days(p.report) : 0), 0);
+    $('list').replaceChildren();
+
+    if (!filtered.length) {
+      const el = document.createElement('p');
+      el.className = 'muted';
+      el.textContent = sailors.length
+        ? 'No matching sailors found.'
+        : 'No sailors have registered yet. Sailors will appear here automatically when they create a profile.';
+      $('list').append(el);
+      return;
+    }
+
+    for (const p of filtered) {
+      const article = document.createElement('article');
+      article.className = 'person';
+      const fullName = `${p.initials || ''} ${p.surname || ''}`.trim() || p.user;
+      const av = ((p.initials || 'S')[0] + (p.surname || 'A')[0]).toUpperCase();
+      const hasAccess = Boolean(p.canManage);
+
+      // Only Officers can Grant / Revoke permanent management access to Sailors
+      const accessBtn = currentUser.isOfficer
+        ? `<button class="btn ${hasAccess ? 'danger' : 'green'}" data-act="toggleAccess">${hasAccess ? 'Revoke Access' : 'Grant Access'}</button>`
+        : '';
+
+      article.innerHTML = `
+        <div class="row">
+          <div class="panel-head">
+            <div class="photo" style="display:grid;place-items:center;font-weight:bold;font-size:18px;color:var(--gold)">${escape(av)}</div>
+            <div>
+              <h4>${escape(fullName)}</h4>
+              <div class="small muted">${escape(p.rate)} · ${escape(p.official)}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${hasAccess ? '<span class="pill access">Access Granted</span>' : ''}
+            <span class="pill">${p.status === 'ON_LEAVE' ? 'On Leave' : 'In Camp'}</span>
+          </div>
+        </div>
+        <div class="detail">
+          <div><small>Last Report Date</small><strong>${escape(p.report || '-')}</strong></div>
+          <div><small>Days in Camp</small><strong class="counter">${p.status === 'ON_LEAVE' ? '—' : days(p.report)}</strong></div>
+          <div><small>Current Base</small><strong>${escape(p.base || '-')}</strong></div>
+          <div><small>Branch / Duty</small><strong>${escape(p.branch || '-')} · ${escape(p.duty || '-')}</strong></div>
+          <div><small>Marital Status</small><strong>${escape(p.marital || '-')}</strong></div>
+          <div><small>Phone / Police</small><strong>${escape(p.phone || '-')} / ${escape(p.police || '-')}</strong></div>
+        </div>
+        <div class="button-row">
+          <button class="btn outline" data-act="edit">Edit</button>
+          <button class="btn navy" data-act="report">Report Today</button>
+          <button class="btn outline" data-act="leave">${p.status === 'ON_LEAVE' ? 'Return' : 'Start Leave'}</button>
+          ${accessBtn}
+          <button class="btn danger" data-act="delete">Delete</button>
+        </div>
+      `;
+
+      for (const b of article.querySelectorAll('[data-act]')) {
+        b.addEventListener('click', () => action(b.dataset.act, p.id));
+      }
+      $('list').append(article);
+    }
+  };
+
+  async function action(type, id) {
+    const p = sailors.find(x => x.id === id);
+    if (!p) return;
+
+    if (type === 'edit') {
+      editingId = p.id;
+      $('editInitials').value = p.initials || '';
+      $('editSurname').value = p.surname || '';
+      $('editOfficial').value = p.official || '';
+      $('editRate').value = p.rate || '';
+      $('editBase').value = p.base || '';
+      $('editBranch').value = p.branch || '';
+      $('editDuty').value = p.duty || '';
+      $('editPhone').value = p.phone || '';
+      $('editPolice').value = p.police || '';
+      $('editMarital').value = p.marital || 'Unmarried';
+      $('editReport').value = p.report || today();
+      $('formPanel').classList.remove('hidden');
+      $('formPanel').scrollIntoView({behavior: 'smooth'});
+      return;
+    }
+
+    try {
+      if (type === 'report' || type === 'leave') {
+        const updateData = (type === 'report' || p.status === 'ON_LEAVE')
+          ? { report: today(), status: 'IN_CAMP' }
+          : { status: 'ON_LEAVE' };
+        await updateDoc(doc(db, 'users', id), updateData);
+        return;
+      }
+
+      if (type === 'toggleAccess' && currentUser.isOfficer) {
+        const nextVal = !p.canManage;
+        const msg = nextVal
+          ? `Grant permanent Management Dashboard access to ${p.initials} ${p.surname}?`
+          : `Revoke Management Dashboard access from ${p.initials} ${p.surname}?`;
+        if (confirm(msg)) {
+          await updateDoc(doc(db, 'users', id), { canManage: nextVal });
+        }
+        return;
+      }
+
+      if (type === 'delete' && confirm(`Delete ${p.initials} ${p.surname} from the database?`)) {
+        await deleteDoc(doc(db, 'users', id));
+      }
+    } catch (err) {
+      alert('Action failed: ' + err.message);
+    }
+  }
+
+  function hideForm() {
+    editingId = null;
+    $('sailorForm').reset();
+    $('formPanel').classList.add('hidden');
+  }
+
+  $('sailorForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!editingId) return;
+    const btn = $('saveSailorBtn');
+    const report = $('editReport').value;
+
+    if (!report || report > today()) {
+      alert('Last Report Date cannot be in the future.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Updating...';
+
+    try {
+      await updateDoc(doc(db, 'users', editingId), {
+        initials: $('editInitials').value.trim(),
+        surname: $('editSurname').value.trim(),
+        official: $('editOfficial').value.trim().toUpperCase(),
+        rate: $('editRate').value.trim(),
+        base: $('editBase').value.trim(),
+        branch: $('editBranch').value.trim(),
+        duty: $('editDuty').value.trim(),
+        phone: $('editPhone').value.trim(),
+        police: $('editPolice').value.trim(),
+        marital: $('editMarital').value,
+        report
+      });
+      hideForm();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    } catch (err) {
+      alert('Update failed: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Update Record';
+    }
+  });
+
   // PROFILE SCREEN
   const openProfile = () => {
     if (!currentUser) return;
-    $('profAvatar').textContent = (currentUser.initials[0] || '') + (currentUser.surname[0] || '');
-    $('profFullName').textContent = `${currentUser.initials} ${currentUser.surname}`;
-    $('profRateBadge').textContent = currentUser.rate;
-    $('profInitials').textContent = currentUser.initials;
-    $('profSurname').textContent = currentUser.surname;
-    $('profRate').textContent = currentUser.rate;
-    $('profDob').textContent = currentUser.dob;
-    $('profPhone').textContent = currentUser.phone;
-    $('profUser').textContent = currentUser.user;
+    $('profAvatar').textContent = ((currentUser.initials || 'U')[0] + (currentUser.surname || 'S')[0]).toUpperCase();
+    $('profFullName').textContent = `${currentUser.initials || ''} ${currentUser.surname || ''}`.trim();
+    $('profRateBadge').textContent = currentUser.rate || '-';
+    $('profInitials').textContent = currentUser.initials || '-';
+    $('profSurname').textContent = currentUser.surname || '-';
+    $('profOfficial').textContent = currentUser.official || '-';
+    $('profRate').textContent = currentUser.rate || '-';
+    $('profDob').textContent = currentUser.dob || '-';
+    $('profPhone').textContent = currentUser.phone || '-';
+    $('profUser').textContent = currentUser.user || '-';
     $('passMsg').textContent = '';
     $('passMsg').className = '';
     $('changePassForm').reset();
@@ -588,172 +898,24 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     }
   });
 
-  // DASHBOARD RENDERING
-  const render = () => {
-    const q = $('search').value.trim().toLowerCase();
-    const filtered = people.filter(p => [p.name, p.official].some(s => String(s || '').toLowerCase().includes(q)));
-
-    $('total').textContent = people.length;
-    $('inCamp').textContent = people.filter(p => p.status === 'IN_CAMP').length;
-    $('longest').textContent = people.reduce((a, p) => Math.max(a, p.status === 'IN_CAMP' ? days(p.report) : 0), 0);
-    $('list').replaceChildren();
-
-    if (!filtered.length) {
-      const el = document.createElement('p');
-      el.className = 'muted';
-      el.textContent = people.length ? 'No matching records found.' : 'No sailor records yet. Click "+ Add Sailor" to add the first record.';
-      $('list').append(el);
-      return;
-    }
-
-    for (const p of filtered) {
-      const article = document.createElement('article');
-      article.className = 'person';
-      const photo = p.photo
-        ? `<img class="photo" src="${p.photo}" alt="Photo">`
-        : `<div class="photo" style="display:grid;place-items:center;font-weight:bold;font-size:18px">${escape(initialsOf(p.name || 'S'))}</div>`;
-
-      article.innerHTML = `
-        <div class="row">
-          <div class="panel-head">
-            ${photo}
-            <div>
-              <h4>${escape(p.name)}</h4>
-              <div class="small muted">${escape(p.rank)} · ${escape(p.official)}</div>
-            </div>
-          </div>
-          <span class="pill">${p.status === 'ON_LEAVE' ? 'On Leave' : 'In Camp'}</span>
-        </div>
-        <div class="detail">
-          <div><small>Last Report Date</small><strong>${escape(p.report)}</strong></div>
-          <div><small>Days in Camp</small><strong class="counter">${p.status === 'ON_LEAVE' ? '—' : days(p.report)}</strong></div>
-          <div><small>Current Base</small><strong>${escape(p.base)}</strong></div>
-          <div><small>Branch / Duty</small><strong>${escape(p.branch)} · ${escape(p.duty)}</strong></div>
-          <div><small>Marital Status</small><strong>${escape(p.marital)}</strong></div>
-          <div><small>Phone / Police</small><strong>${escape(p.phone)} / ${escape(p.police)}</strong></div>
-        </div>
-        <div class="button-row">
-          <button class="btn outline" data-act="edit">Edit</button>
-          <button class="btn navy" data-act="report">Report Today</button>
-          <button class="btn outline" data-act="leave">${p.status === 'ON_LEAVE' ? 'Return' : 'Start Leave'}</button>
-          <button class="btn danger" data-act="delete">Delete</button>
-        </div>
-      `;
-
-      for (const b of article.querySelectorAll('[data-act]')) {
-        b.addEventListener('click', () => action(b.dataset.act, p.id));
-      }
-      $('list').append(article);
-    }
-  };
-
-  async function action(type, id) {
-    const p = people.find(x => x.id === id);
-    if (!p) return;
-    if (type === 'edit') {
-      editing = p.id;
-      F.forEach(k => $(k).value = p[k] || '');
-      $('formTitle').textContent = 'Edit Sailor';
-      $('formPanel').classList.remove('hidden');
-      $('formPanel').scrollIntoView({behavior: 'smooth'});
-      return;
-    }
-    try {
-      if (type === 'report' || type === 'leave') {
-        const updateData = (type === 'report' || p.status === 'ON_LEAVE')
-          ? { report: today(), status: 'IN_CAMP' }
-          : { status: 'ON_LEAVE' };
-        await updateDoc(doc(db, 'sailors', id), updateData);
-        return;
-      }
-      if (type === 'delete' && confirm('Delete this sailor profile from the cloud database?')) {
-        await deleteDoc(doc(db, 'sailors', id));
-      }
-    } catch (err) {
-      alert('Action failed: ' + err.message);
-    }
-  }
-
-  function hideForm() {
-    editing = null;
-    $('sailorForm').reset();
-    $('formPanel').classList.add('hidden');
-  }
-
-  // Navigation Events
-  $('begin').addEventListener('click', () => shows('auth'));
-  $('backWelcome').addEventListener('click', () => shows('welcome'));
-  $('openProfileBtn').addEventListener('click', openProfile);
-  $('backToDash').addEventListener('click', () => shows('dashboard'));
-  $('logoutBtn').addEventListener('click', () => {
-    if (unsubSailors) { unsubSailors(); unsubSailors = null; }
+  // NAVIGATION EVENTS
+  const doLogout = () => {
+    if (unsubUsers) { unsubUsers(); unsubUsers = null; }
     currentUser = null;
     hideForm();
     shows('auth');
-  });
+  };
 
-  // Dashboard Events
-  $('search').addEventListener('input', render);
+  $('begin').addEventListener('click', () => shows('auth'));
+  $('backWelcome').addEventListener('click', () => shows('welcome'));
+  $('openProfileBtn').addEventListener('click', openProfile);
+  $('sailorProfileBtn').addEventListener('click', openProfile);
+  $('backFromProfile').addEventListener('click', () => openHomeForUser());
+  $('logoutBtn').addEventListener('click', doLogout);
+  $('sailorLogoutBtn').addEventListener('click', doLogout);
+  $('search').addEventListener('input', renderDashboard);
   $('cancelForm').addEventListener('click', hideForm);
-  $('showForm').addEventListener('click', () => {
-    editing = null;
-    $('sailorForm').reset();
-    $('report').value = today();
-    $('formTitle').textContent = 'Add Sailor';
-    $('formPanel').classList.remove('hidden');
-    $('formPanel').scrollIntoView({behavior: 'smooth'});
-  });
-
-  $('sailorForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = $('saveSailorBtn');
-    const p = Object.fromEntries(F.map(k => [k, $(k).value.trim()]));
-
-    if (!p.report || p.report > today()) {
-      alert('Last Report Date cannot be in the future.');
-      return;
-    }
-    if (people.some(x => String(x.official || '').toUpperCase() === p.official.toUpperCase() && x.id !== editing)) {
-      alert('Official number already exists.');
-      return;
-    }
-
-    p.status = editing ? (people.find(x => x.id === editing)?.status || 'IN_CAMP') : 'IN_CAMP';
-
-    const file = $('photo').files[0];
-    if (file) {
-      if (!file.type.startsWith('image/') || file.size > 500 * 1024) {
-        alert('Please use an image smaller than 500 KB for cloud storage.');
-        return;
-      }
-      p.photo = await new Promise(res => {
-        const fr = new FileReader();
-        fr.onload = () => res(fr.result);
-        fr.onerror = () => res('');
-        fr.readAsDataURL(file);
-      });
-    } else {
-      p.photo = editing ? (people.find(x => x.id === editing)?.photo || '') : '';
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Saving...';
-
-    try {
-      if (editing) {
-        await updateDoc(doc(db, 'sailors', editing), p);
-      } else {
-        await addDoc(collection(db, 'sailors'), p);
-      }
-      hideForm();
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    } catch (err) {
-      alert('Failed to save: ' + err.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Save to Cloud';
-    }
-  });
+})();
 </script>
 </body>
 </html>
