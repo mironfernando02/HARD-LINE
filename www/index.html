@@ -342,14 +342,13 @@
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        // TODO: ඔයාගේ Firebase Project Config එක මෙතැනට Paste කරන්න
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyBskxCjh93LyX7G0g_U5KtdTkbnJ7pUYbc",
+            authDomain: "hard-line-v3.firebaseapp.com",
+            projectId: "hard-line-v3",
+            storageBucket: "hard-line-v3.firebasestorage.app",
+            messagingSenderId: "655285227110",
+            appId: "1:655285227110:web:2b9ba0bcb7389bd3da67a7"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -403,7 +402,7 @@
                 renderDashboard();
             }, (error) => {
                 console.error("Firestore Error:", error);
-                document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Database error. Check Firebase Config & Firestore Rules.</td></tr>`;
+                document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Database error. Check Firestore Rules in Firebase Console.</td></tr>`;
             });
         }
 
