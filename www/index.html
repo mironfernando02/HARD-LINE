@@ -185,7 +185,7 @@
                             <option value="On Leave">On Leave</option>
                             <option value="Temp Attached">Temp Attached</option>
                         </select>
-                        <input type="text" id="searchInput" onkeyup="renderDashboard()" placeholder="Search Name / Official No..." class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white w-48 sm:w-64">
+                        <input type="text" id="searchInput" onkeyup="renderDashboard()" placeholder="Search Name / Official No..." class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white w-48 sm:w-64 uppercase">
                     </div>
                 </div>
 
@@ -194,7 +194,7 @@
                         <thead>
                             <tr class="bg-slate-900/80 text-slate-400 text-xs uppercase border-b border-slate-700">
                                 <th class="p-3">Official No</th>
-                                <th class="p-3">Rank & Name</th>
+                                <th class="p-3">Rank / Rate & Name</th>
                                 <th class="p-3">Status</th>
                                 <th class="p-3">Travel to Home</th>
                                 <th class="p-3">Leave Period</th>
@@ -222,7 +222,7 @@
             <form id="leaveForm" class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Select Personnel *</label>
-                    <select id="leavePersonSelect" required class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm"></select>
+                    <select id="leavePersonSelect" required class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm uppercase"></select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -270,43 +270,43 @@
                 <input type="hidden" id="docId">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-    <label class="block text-xs text-slate-400 mb-1">Rank / Rate *</label>
-    <select id="rank" required class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
-        <option value="" disabled selected>Select Rank / Rate</option>
-        <optgroup label="Officers (Ranks)">
-            <option value="Adm">Admiral (Adm)</option>
-            <option value="VAdm">Vice Admiral (VAdm)</option>
-            <option value="RAdm">Rear Admiral (RAdm)</option>
-            <option value="Cmde">Commodore (Cmde)</option>
-            <option value="Capt">Captain (Capt)</option>
-            <option value="Cdr">Commander (Cdr)</option>
-            <option value="LCdr">Lieutenant Commander (LCdr)</option>
-            <option value="Lt">Lieutenant (Lt)</option>
-            <option value="SLt">Sub Lieutenant (SLt)</option>
-            <option value="ASLt">Acting Sub Lieutenant (ASLt)</option>
-            <option value="Mid">Midshipman (Mid)</option>
-            <option value="OC">Officer Cadet (OC)</option>
-        </optgroup>
-        <optgroup label="Sailors (Rates)">
-            <option value="MCPO">Master Chief Petty Officer (MCPO)</option>
-            <option value="FCPO">Fleet Chief Petty Officer (FCPO)</option>
-            <option value="CPO">Chief Petty Officer (CPO)</option>
-            <option value="PO">Petty Officer (PO)</option>
-            <option value="LS">Leading Seaman (LS)</option>
-            <option value="AB">Able Seaman (AB)</option>
-            <option value="OS">Ordinary Seaman (OS)</option>
-            <option value="Rct">Recruit (Rct)</option>
-        </optgroup>
-    </select>
-</div>
+                        <label class="block text-xs text-slate-400 mb-1">Official Number *</label>
+                        <input type="text" id="officialNo" required placeholder="E.G. NRX 4499" oninput="this.value = this.value.toUpperCase()" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm uppercase">
+                    </div>
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Rank *</label>
-                        <input type="text" id="rank" required placeholder="e.g. Lt / PO / AB" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                        <label class="block text-xs text-slate-400 mb-1">Rank / Rate *</label>
+                        <select id="rank" required class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm uppercase">
+                            <option value="" disabled selected>SELECT RANK / RATE</option>
+                            <optgroup label="OFFICERS (RANKS)">
+                                <option value="ADM">ADMIRAL (ADM)</option>
+                                <option value="VADM">VICE ADMIRAL (VADM)</option>
+                                <option value="RADM">REAR ADMIRAL (RADM)</option>
+                                <option value="CMDE">COMMODORE (CMDE)</option>
+                                <option value="CAPT">CAPTAIN (CAPT)</option>
+                                <option value="CDR">COMMANDER (CDR)</option>
+                                <option value="LCDR">LIEUTENANT COMMANDER (LCDR)</option>
+                                <option value="LT">LIEUTENANT (LT)</option>
+                                <option value="SLT">SUB LIEUTENANT (SLT)</option>
+                                <option value="ASLT">ACTING SUB LIEUTENANT (ASLT)</option>
+                                <option value="MID">MIDSHIPMAN (MID)</option>
+                                <option value="OC">OFFICER CADET (OC)</option>
+                            </optgroup>
+                            <optgroup label="SAILORS (RATES)">
+                                <option value="MCPO">MASTER CHIEF PETTY OFFICER (MCPO)</option>
+                                <option value="FCPO">FLEET CHIEF PETTY OFFICER (FCPO)</option>
+                                <option value="CPO">CHIEF PETTY OFFICER (CPO)</option>
+                                <option value="PO">PETTY OFFICER (PO)</option>
+                                <option value="LS">LEADING SEAMAN (LS)</option>
+                                <option value="AB">ABLE SEAMAN (AB)</option>
+                                <option value="OS">ORDINARY SEAMAN (OS)</option>
+                                <option value="RCT">RECRUIT (RCT)</option>
+                            </optgroup>
+                        </select>
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Name with Initials *</label>
-                    <input type="text" id="fullName" required placeholder="e.g. ABC Perera" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    <input type="text" id="fullName" required placeholder="E.G. ABC PERERA" oninput="this.value = this.value.toUpperCase()" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm uppercase">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Current Status *</label>
@@ -341,7 +341,7 @@
                 <div id="attachFields" class="hidden space-y-3 bg-slate-900/60 p-3 rounded border border-slate-700">
                     <div>
                         <label class="block text-xs text-purple-400 mb-1">Attached Base / Ship Name</label>
-                        <input type="text" id="attachedBase" placeholder="e.g. SLNS Gemunu / NHQ" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                        <input type="text" id="attachedBase" placeholder="E.G. SLNS GEMUNU / NHQ" oninput="this.value = this.value.toUpperCase()" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm uppercase">
                     </div>
                     <div>
                         <label class="block text-xs text-purple-400 mb-1">Attachment Start Date</label>
@@ -456,7 +456,7 @@
         // Add Leave Modal & Auto-Calculation
         window.openAddLeaveModal = function() {
             const select = document.getElementById('leavePersonSelect');
-            select.innerHTML = personnelData.map(p => `<option value="${p.id}">${p.officialNo} - ${p.rank} ${p.fullName} (${p.status})</option>`).join('');
+            select.innerHTML = personnelData.map(p => `<option value="${p.id}">${(p.officialNo || '').toUpperCase()} - ${(p.rank || '').toUpperCase()} ${(p.fullName || '').toUpperCase()} (${p.status})</option>`).join('');
             document.getElementById('leaveForm').reset();
             document.getElementById('previewTravelHome').innerText = '-';
             document.getElementById('previewLastLeaveDay').innerText = '-';
@@ -504,7 +504,7 @@
         // Render Dashboard
         window.renderDashboard = function() {
             const refDate = refDateInput.value;
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const searchQuery = document.getElementById('searchInput').value.toUpperCase();
             const statusFilter = document.getElementById('statusFilter').value;
 
             let total = personnelData.length;
@@ -518,13 +518,18 @@
             tbody.innerHTML = '';
 
             personnelData.forEach(p => {
+                const offNo = (p.officialNo || '').toUpperCase();
+                const rank = (p.rank || '').toUpperCase();
+                const fullName = (p.fullName || '').toUpperCase();
+                const attachedBase = (p.attachedBase || '').toUpperCase();
+
                 if (p.status === 'On Board') onBoardCount++;
                 if (p.status === 'On Leave') onLeaveCount++;
                 if (p.status === 'Temp Attached') tempAttachCount++;
 
-                // Traveling to Ship Today (when leave finishes and return travel date == referenceDate)
+                // Traveling to Ship Today
                 if (p.status === 'On Leave' && p.travelingDate === refDate) {
-                    travelingTodayList.push(p);
+                    travelingTodayList.push({ ...p, officialNo: offNo, rank, fullName });
                 }
 
                 // Days Since Last Leave (On Board)
@@ -541,7 +546,7 @@
 
                 if (statusFilter !== 'ALL' && p.status !== statusFilter) return;
                 if (currentDayCategoryFilter !== 'ALL' && dayCategory !== currentDayCategoryFilter) return;
-                if (searchQuery && !p.fullName.toLowerCase().includes(searchQuery) && !p.officialNo.toLowerCase().includes(searchQuery)) return;
+                if (searchQuery && !fullName.includes(searchQuery) && !offNo.includes(searchQuery)) return;
 
                 let badgeClass = 'bg-emerald-900/60 text-emerald-300 border border-emerald-700';
                 if (p.status === 'On Leave') badgeClass = 'bg-rose-900/60 text-rose-300 border border-rose-700';
@@ -549,21 +554,21 @@
 
                 let leavePeriodStr = '-';
                 if (p.status === 'On Leave') {
-                    leavePeriodStr = `${p.leaveStartDate || '-'} (${p.leaveDays || '?'}d)`;
+                    leavePeriodStr = `${p.leaveStartDate || '-'} (${p.leaveDays || '?'}D)`;
                 } else if (p.status === 'Temp Attached') {
-                    leavePeriodStr = `${p.attachedBase || 'Attached'} (${p.attachDate || '-'})`;
+                    leavePeriodStr = `${attachedBase || 'ATTACHED'} (${p.attachDate || '-'})`;
                 }
 
                 const row = `
                     <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-mono text-xs text-slate-300">${p.officialNo}</td>
-                        <td class="p-3 font-semibold text-white">${p.rank} ${p.fullName}</td>
+                        <td class="p-3 font-mono text-xs text-slate-300">${offNo}</td>
+                        <td class="p-3 font-semibold text-white">${rank} ${fullName}</td>
                         <td class="p-3"><span class="px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">${p.status}</span></td>
                         <td class="p-3 text-sky-400 text-xs">${p.status === 'On Leave' ? (p.travelHomeDate || '-') : '-'}</td>
                         <td class="p-3 text-slate-300 text-xs">${leavePeriodStr}</td>
                         <td class="p-3 text-amber-400 text-xs font-medium">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
                         <td class="p-3 font-bold ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
-                            ${daysSinceLeave !== null && daysSinceLeave >= 0 ? daysSinceLeave + ' Days' : '-'}
+                            ${daysSinceLeave !== null && daysSinceLeave >= 0 ? daysSinceLeave + ' DAYS' : '-'}
                         </td>
                         <td class="p-3 text-right space-x-2 no-print">
                             <button onclick="editPerson('${p.id}')" class="text-blue-400 hover:text-blue-300" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -612,13 +617,20 @@
             }
         }
 
-        // Export to CSV (Excel Compatible)
+        // Export to CSV (Excel Compatible - All Uppercase)
         window.exportToCSV = function() {
-            const headers = ["Official No", "Rank", "Name", "Status", "Travel to Home", "Leave Start", "Leave Days", "Travel to Ship", "Last Returned", "Attached Base"];
+            const headers = ["OFFICIAL NO", "RANK / RATE", "NAME", "STATUS", "TRAVEL TO HOME", "LEAVE START", "LEAVE DAYS", "TRAVEL TO SHIP", "LAST RETURNED", "ATTACHED BASE"];
             const rows = personnelData.map(p => [
-                p.officialNo, p.rank, p.fullName, p.status,
-                p.travelHomeDate || '', p.leaveStartDate || '', p.leaveDays || '',
-                p.travelingDate || '', p.lastReturnedDate || '', p.attachedBase || ''
+                (p.officialNo || '').toUpperCase(),
+                (p.rank || '').toUpperCase(),
+                (p.fullName || '').toUpperCase(),
+                (p.status || '').toUpperCase(),
+                p.travelHomeDate || '',
+                p.leaveStartDate || '',
+                p.leaveDays || '',
+                p.travelingDate || '',
+                p.lastReturnedDate || '',
+                (p.attachedBase || '').toUpperCase()
             ]);
             const csvContent = "data:text/csv;charset=utf-8,"
                 + [headers, ...rows].map(e => e.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
@@ -633,7 +645,7 @@
 
         window.filterByCategory = function(cat) {
             currentDayCategoryFilter = cat;
-            document.getElementById('activeFilterBadge').innerText = cat === 'ALL' ? 'ALL' : `Days: ${cat}`;
+            document.getElementById('activeFilterBadge').innerText = cat === 'ALL' ? 'ALL' : `DAYS: ${cat}`;
             if (cat !== 'ALL') document.getElementById('statusFilter').value = 'On Board';
             renderDashboard();
         }
@@ -673,15 +685,15 @@
             e.preventDefault();
             const docId = document.getElementById('docId').value;
             const data = {
-                officialNo: document.getElementById('officialNo').value.trim(),
-                rank: document.getElementById('rank').value.trim(),
-                fullName: document.getElementById('fullName').value.trim(),
+                officialNo: document.getElementById('officialNo').value.trim().toUpperCase(),
+                rank: document.getElementById('rank').value.trim().toUpperCase(),
+                fullName: document.getElementById('fullName').value.trim().toUpperCase(),
                 status: document.getElementById('status').value,
                 travelHomeDate: document.getElementById('travelHomeDate').value,
                 leaveStartDate: document.getElementById('leaveStartDate').value,
                 leaveDays: document.getElementById('leaveDaysInput').value,
                 travelingDate: document.getElementById('travelingDate').value,
-                attachedBase: document.getElementById('attachedBase').value.trim(),
+                attachedBase: document.getElementById('attachedBase').value.trim().toUpperCase(),
                 attachDate: document.getElementById('attachDate').value,
                 lastReturnedDate: document.getElementById('lastReturnedDate').value
             };
@@ -698,15 +710,15 @@
             const p = personnelData.find(item => item.id === id);
             if (!p) return;
             document.getElementById('docId').value = p.id;
-            document.getElementById('officialNo').value = p.officialNo;
-            document.getElementById('rank').value = p.rank;
-            document.getElementById('fullName').value = p.fullName;
+            document.getElementById('officialNo').value = (p.officialNo || '').toUpperCase();
+            document.getElementById('rank').value = (p.rank || '').toUpperCase();
+            document.getElementById('fullName').value = (p.fullName || '').toUpperCase();
             document.getElementById('status').value = p.status;
             document.getElementById('travelHomeDate').value = p.travelHomeDate || '';
             document.getElementById('leaveStartDate').value = p.leaveStartDate || '';
             document.getElementById('leaveDaysInput').value = p.leaveDays || '';
             document.getElementById('travelingDate').value = p.travelingDate || '';
-            document.getElementById('attachedBase').value = p.attachedBase || '';
+            document.getElementById('attachedBase').value = (p.attachedBase || '').toUpperCase();
             document.getElementById('attachDate').value = p.attachDate || '';
             document.getElementById('lastReturnedDate').value = p.lastReturnedDate || '';
             document.getElementById('modalTitle').innerText = 'Edit Personnel Record';
