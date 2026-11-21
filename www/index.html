@@ -1,921 +1,495 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#06142c">
-<title>SLNS RANARISI SAILOR'S HARD LINE V3</title>
-<style>
-:root{
-  --bg:#06152d;
-  --card:rgba(10,28,61,.92);
-  --line:rgba(235,200,118,.28);
-  --gold:#e8c574;
-  --txt:#f8fbff;
-  --muted:#c2d2e6;
-  --blue:#183b71;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Roboto,"Segoe UI",sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.6;cursor:default}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.screen{display:none;min-height:100dvh}
-.screen.active{display:block}
-.splash{
-  background:radial-gradient(circle at top,#123266 0%,#06152d 65%,#030b1a 100%);
-  position:relative;
-}
-.center{min-height:100dvh;padding:34px 23px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.title{font-size:clamp(25px,8vw,37px);letter-spacing:.06em;line-height:1.13;margin:0 0 9px;font-weight:850;text-shadow:0 4px 18px #020918}
-.title span{display:block;color:var(--gold);font-size:.78em;margin-top:9px}
-.crest-box{
-  height:115px;width:115px;margin:20px auto;border-radius:22px;
-  background:rgba(232,197,116,.1);border:2px solid var(--gold);
-  display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.35);
-}
-.mini-crest-box{
-  height:54px;width:54px;border-radius:14px;flex-shrink:0;
-  background:rgba(232,197,116,.1);border:1.5px solid var(--gold);
-  display:grid;place-items:center;
-}
-.muted{color:var(--muted)}
-.description{max-width:440px;line-height:1.55;font-size:14px}
-.btn{border:0;border-radius:13px;padding:13px 15px;font-weight:750;width:100%;min-height:44px;font-size:13px}
-.gold{background:linear-gradient(135deg,#f0d593,#c89d45);color:#071833}
-.outline{background:rgba(255,255,255,.07);color:var(--txt);border:1px solid var(--line)}
-.danger{background:#633042;color:#fff}
-.navy{background:#163765;color:#fff}
-.green{background:#1d5c4c;color:#e6fff7;border:1px solid #48a88c}
-.btn+.btn{margin-top:10px}
-.small{font-size:12px}
-.app{min-height:100dvh;background:linear-gradient(180deg,#081c3d 0%,#040e22 100%)}
-.top{position:sticky;top:0;z-index:5;padding:15px 16px;background:rgba(5,18,41,.97);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
-.top h2{font-size:14px;line-height:1.3;margin:0}
-.top .sub{font-size:10px;letter-spacing:.13em;color:var(--gold);margin:0 0 4px}
-.top-actions{display:flex;gap:8px}
-.top button{border:1px solid var(--line);background:transparent;color:var(--gold);border-radius:10px;padding:8px 12px;font-size:13px}
-.content{padding:18px 14px 40px;max-width:760px;margin:auto}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 14px 30px rgba(0,0,0,.25)}
-.panel h3{margin:0 0 9px;color:var(--gold);font-size:19px}
-.panel p{line-height:1.52}
-.panel-head{display:flex;gap:12px;align-items:center}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;background:#0a1c3d;padding:5px;border-radius:12px;border:1px solid var(--line)}
-.tab-btn{border:0;background:transparent;color:var(--muted);padding:10px;border-radius:9px;font-weight:700;font-size:13px}
-.tab-btn.active{background:var(--gold);color:#071833}
-.field{display:block;font-weight:650;color:#eed69b;font-size:13px;margin:12px 0 0}
-.field input,.field select{display:block;width:100%;background:#102548;color:#fff;border:1px solid #51617c;border-radius:11px;padding:12px;margin-top:6px;min-height:46px}
-.field input::placeholder{color:#b9c6dc}
-.field select option{background:#102548;color:#fff}
-.err{background:#713044;border:1px solid #df7d91;border-radius:10px;padding:11px;margin-top:12px;font-size:13px}
-.ok{background:#1d4a46;border:1px solid #74bca4;border-radius:10px;padding:11px;margin-top:12px;font-size:13px}
-.note{padding:13px;background:rgba(231,191,99,.1);border:1px solid rgba(231,191,99,.32);border-radius:12px;color:#f3dfad;font-size:13px;line-height:1.5}
-.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.stat{background:rgba(255,255,255,.08);text-align:center;padding:13px 6px;border-radius:12px}
-.stat b{font-size:22px;color:var(--gold);display:block}
-.stat small{color:var(--muted);font-size:11px}
-.pill{display:inline-block;border:1px solid #cbb071;color:#f4db9c;background:#55491d70;padding:4px 9px;border-radius:99px;font-size:11px}
-.pill.access{border-color:#5cc9a7;color:#a8ffdf;background:#164d3e}
-.row{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}
-.person{border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:14px;background:#0e294e;margin-top:11px}
-.person h4{margin:0 0 4px}
-.detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
-.detail div{background:#102348;padding:10px;border-radius:10px;min-width:0}
-.detail small{color:#bed2e9;display:block;margin-bottom:5px}
-.detail strong{overflow-wrap:anywhere;font-size:13px}
-.button-row{display:flex;gap:8px;flex-wrap:wrap}
-.button-row button{flex:1 0 110px}
-.flex{display:grid;grid-template-columns:1fr;gap:10px}
-.hidden{display:none!important}
-.footer{font-size:11px;color:#c3d1e4;text-align:center;margin-top:25px;line-height:1.5}
-.counter{font-size:29px;font-weight:850;color:var(--gold)}
-.photo{width:57px;height:57px;object-fit:cover;border-radius:12px;background:#1e3b61;flex-shrink:0}
-@media(min-width:600px){.flex{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:30px 18px}.center{padding:50px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARD-LINE | Naval Personnel & Leave Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navy-card { background-color: #1e293b; border: 1px solid #334155; }
+        .navy-header { background: linear-gradient(90deg, #020617 0%, #1e3a8a 100%); }
+    </style>
 </head>
-<body>
-
-<!-- SCREEN 1: WELCOME -->
-<section id="welcome" class="screen splash active">
-  <div class="center">
-    <h1 class="title">SLNS RANARISI<span>SAILOR'S HARD LINE</span></h1>
-    <div class="crest-box" aria-hidden="true">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="5" r="2.5"></circle>
-        <line x1="12" y1="7.5" x2="12" y2="21"></line>
-        <path d="M5 13H2a10 10 0 0 0 20 0h-3"></path>
-        <line x1="8" y1="10" x2="16" y2="10"></line>
-      </svg>
-    </div>
-    <span class="pill">VERSION 3.0 • CLOUD CONNECTED</span>
-    <p class="description muted">Live Sailor camp stay tracking and Hard Line management system.</p>
-    <button class="btn gold" id="begin" style="max-width:340px;margin-top:10px">Enter Application</button>
-    <p class="small muted" style="margin-top:14px">SLNS Ranarisi • Online Cloud Edition</p>
-  </div>
-</section>
-
-<!-- SCREEN 2: LOGIN & CREATE PROFILE -->
-<section id="auth" class="screen app">
-  <header class="top">
-    <div>
-      <p class="sub">CLOUD USER PORTAL</p>
-      <h2>SLNS RANARISI HARD LINE V3</h2>
-    </div>
-    <button id="backWelcome">Back</button>
-  </header>
-
-  <main class="content">
-    <div class="panel">
-      <div class="tabs">
-        <button type="button" class="tab-btn active" id="tabLogin">User Login</button>
-        <button type="button" class="tab-btn" id="tabRegister">Create Profile</button>
-      </div>
-
-      <!-- LOGIN FORM -->
-      <div id="loginBox">
-        <div class="panel-head" style="margin-bottom:10px">
-          <div class="mini-crest-box" aria-hidden="true">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="5" r="2.5"></circle>
-              <line x1="12" y1="7.5" x2="12" y2="21"></line>
-              <path d="M5 13H2a10 10 0 0 0 20 0h-3"></path>
-            </svg>
-          </div>
-          <div>
-            <h3 style="margin:0">Sign In</h3>
-            <p class="muted small" style="margin:3px 0 0">Login with your Username and Password</p>
-          </div>
-        </div>
-
-        <form id="loginForm">
-          <label class="field">Username
-            <input type="text" id="loginUser" required autocomplete="username" placeholder="Enter your username">
-          </label>
-
-          <label class="field">Password
-            <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Enter your password">
-          </label>
-
-          <div id="loginMessage" aria-live="polite"></div>
-
-          <button class="btn gold" id="loginSubmitBtn" type="submit" style="margin-top:16px">Login</button>
-        </form>
-      </div>
-
-      <!-- CREATE PROFILE (REGISTER) FORM -->
-      <div id="registerBox" class="hidden">
-        <h3 style="margin:0 0 4px">Create User Profile</h3>
-        <p class="muted small" style="margin:0 0 12px">Sailors who register here are automatically added to the Hard Line.</p>
-
-        <form id="registerForm">
-          <div class="flex">
-            <label class="field">Initials
-              <input type="text" id="regInitials" required maxlength="20" placeholder="e.g. W.M.">
-            </label>
-
-            <label class="field">Surname
-              <input type="text" id="regSurname" required maxlength="50" placeholder="e.g. Fernando">
-            </label>
-
-            <label class="field">Official Number
-              <input type="text" id="regOfficial" required maxlength="30" placeholder="e.g. SS12345">
-            </label>
-
-            <label class="field">Date of Birth
-              <input type="date" id="regDob" required>
-            </label>
-
-            <label class="field">Navy Rate / Rank
-              <select id="regRate" required>
-                <option value="">-- Select Navy Rate --</option>
-                <optgroup label="Sailors">
-                  <option value="OD (Ordinary Seaman)">OD - Ordinary Seaman</option>
-                  <option value="AB (Able Seaman)">AB - Able Seaman</option>
-                  <option value="LS (Leading Seaman)">LS - Leading Seaman</option>
-                  <option value="PO (Petty Officer)">PO - Petty Officer</option>
-                  <option value="CPO (Chief Petty Officer)">CPO - Chief Petty Officer</option>
-                  <option value="FCPO (Fleet Chief Petty Officer)">FCPO - Fleet Chief Petty Officer</option>
-                  <option value="MCPO (Master Chief Petty Officer)">MCPO - Master Chief Petty Officer</option>
-                </optgroup>
-                <optgroup label="Officers">
-                  <option value="Mid (Midshipman)">Mid - Midshipman</option>
-                  <option value="SLt (Sub Lieutenant)">SLt - Sub Lieutenant</option>
-                  <option value="Lt (Lieutenant)">Lt - Lieutenant</option>
-                  <option value="LCdr (Lieutenant Commander)">LCdr - Lieutenant Commander</option>
-                  <option value="Cdr (Commander)">Cdr - Commander</option>
-                </optgroup>
-              </select>
-            </label>
-
-            <label class="field">Phone Number
-              <input type="tel" id="regPhone" required maxlength="20" placeholder="e.g. 0771234567">
-            </label>
-
-            <label class="field">Current Base
-              <input type="text" id="regBase" required maxlength="80" value="SLNS Ranarisi">
-            </label>
-
-            <label class="field">Branch
-              <input type="text" id="regBranch" required maxlength="70" placeholder="e.g. Operations">
-            </label>
-
-            <label class="field">Duty / Appointment
-              <input type="text" id="regDuty" required maxlength="80" placeholder="e.g. Watchkeeping">
-            </label>
-
-            <label class="field">Nearest Police Station
-              <input type="text" id="regPolice" required maxlength="90" placeholder="e.g. Welisara">
-            </label>
-
-            <label class="field">Marital Status
-              <select id="regMarital" required>
-                <option value="Unmarried">Unmarried</option>
-                <option value="Married">Married</option>
-              </select>
-            </label>
-
-            <label class="field">Last Report Date
-              <input type="date" id="regReport" required>
-            </label>
-
-            <label class="field">Username (For Login)
-              <input type="text" id="regUser" required maxlength="30" autocomplete="username" placeholder="e.g. fernando96">
-            </label>
-
-            <label class="field">Create Password
-              <input type="password" id="regPass" required minlength="4" autocomplete="new-password" placeholder="Min 4 characters">
-            </label>
-
-            <label class="field">Confirm Password
-              <input type="password" id="regPass2" required minlength="4" autocomplete="new-password" placeholder="Re-enter password">
-            </label>
-          </div>
-
-          <div id="regMessage" aria-live="polite"></div>
-
-          <button class="btn gold" id="regSubmitBtn" type="submit" style="margin-top:16px">Create Profile</button>
-        </form>
-      </div>
-    </div>
-
-    <div class="note">
-      <strong>Access Control:</strong><br>
-      • Officers automatically get the Management Dashboard.<br>
-      • Sailors see their own Hard Line status unless an Officer grants them management access.<br>
-      • Default Admin: <code>admin</code> / <code>1234</code>
-    </div>
-    <p class="footer">SLNS RANARISI HARD LINE • V3</p>
-  </main>
-</section>
-
-<!-- SCREEN 3: SAILOR PERSONAL VIEW (FOR REGULAR SAILORS) -->
-<section id="sailorHome" class="screen app">
-  <header class="top">
-    <div>
-      <p class="sub" id="sailorBadge">SAILOR PORTAL</p>
-      <h2>MY HARD LINE STATUS</h2>
-    </div>
-    <div class="top-actions">
-      <button id="sailorProfileBtn">Profile</button>
-      <button id="sailorLogoutBtn">Logout</button>
-    </div>
-  </header>
-
-  <main class="content">
-    <div class="panel">
-      <div class="row" style="margin-bottom:14px">
-        <div class="panel-head">
-          <div class="photo" id="shAvatar" style="display:grid;place-items:center;font-weight:800;font-size:20px;color:var(--gold);border:1.5px solid var(--gold)"></div>
-          <div>
-            <h3 id="shName" style="margin:0">Sailor Name</h3>
-            <p class="muted small" id="shSub" style="margin:4px 0 0">Rate · Official No</p>
-          </div>
-        </div>
-        <span class="pill" id="shStatus">In Camp</span>
-      </div>
-
-      <div class="detail">
-        <div><small>Last Report Date</small><strong id="shReport">-</strong></div>
-        <div><small>Days in Camp</small><strong class="counter" id="shDays">0</strong></div>
-        <div><small>Current Base</small><strong id="shBase">-</strong></div>
-        <div><small>Branch / Duty</small><strong id="shBranchDuty">-</strong></div>
-        <div><small>Marital Status</small><strong id="shMarital">-</strong></div>
-        <div><small>Phone / Police</small><strong id="shPhonePolice">-</strong></div>
-      </div>
-    </div>
-
-    <div class="note">
-      You are logged in as a Sailor. Only Officers or authorized Sailors can view and manage all Hard Line records.
-    </div>
-    <p class="footer">SLNS RANARISI HARD LINE • V3</p>
-  </main>
-</section>
-
-<!-- SCREEN 4: MY PROFILE -->
-<section id="profile" class="screen app">
-  <header class="top">
-    <div>
-      <p class="sub">USER ACCOUNT</p>
-      <h2>MY PROFILE</h2>
-    </div>
-    <button id="backFromProfile">Back</button>
-  </header>
-
-  <main class="content">
-    <div class="panel">
-      <div class="panel-head" style="margin-bottom:14px">
-        <div class="photo" id="profAvatar" style="display:grid;place-items:center;font-weight:800;font-size:20px;color:var(--gold);border:1.5px solid var(--gold)"></div>
-        <div>
-          <h3 id="profFullName" style="margin:0">User Name</h3>
-          <p class="muted small" id="profRateBadge" style="margin:4px 0 0">Rate</p>
-        </div>
-      </div>
-
-      <div class="detail">
-        <div><small>Initials</small><strong id="profInitials">-</strong></div>
-        <div><small>Surname</small><strong id="profSurname">-</strong></div>
-        <div><small>Official Number</small><strong id="profOfficial">-</strong></div>
-        <div><small>Navy Rate</small><strong id="profRate">-</strong></div>
-        <div><small>Date of Birth</small><strong id="profDob">-</strong></div>
-        <div><small>Phone Number</small><strong id="profPhone">-</strong></div>
-        <div><small>Username</small><strong id="profUser">-</strong></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h3>Change Password</h3>
-      <form id="changePassForm">
-        <label class="field">New Password
-          <input type="password" id="newPass" required minlength="4" placeholder="Enter new password">
-        </label>
-        <label class="field">Confirm New Password
-          <input type="password" id="newPass2" required minlength="4" placeholder="Re-enter new password">
-        </label>
-        <div id="passMsg" aria-live="polite"></div>
-        <button class="btn gold" id="passSubmitBtn" type="submit" style="margin-top:14px">Update Password</button>
-      </form>
-    </div>
-  </main>
-</section>
-
-<!-- SCREEN 5: MANAGEMENT DASHBOARD (OFFICERS & AUTHORIZED SAILORS ONLY) -->
-<section id="dashboard" class="screen app">
-  <header class="top">
-    <div>
-      <p class="sub" id="userBadge">OFFICER DASHBOARD</p>
-      <h2>SAILOR'S HARD LINE</h2>
-    </div>
-    <div class="top-actions">
-      <button id="openProfileBtn">Profile</button>
-      <button id="logoutBtn">Logout</button>
-    </div>
-  </header>
-
-  <main class="content">
-    <div class="panel">
-      <div class="panel-head">
-        <div class="mini-crest-box" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e8c574" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="5" r="2.5"></circle>
-            <line x1="12" y1="7.5" x2="12" y2="21"></line>
-            <path d="M5 13H2a10 10 0 0 0 20 0h-3"></path>
-          </svg>
-        </div>
-        <div>
-          <h3 style="margin:0">Camp Stay Dashboard</h3>
-          <p class="muted small" style="margin:4px 0 0">Registered Sailors (Live Cloud Sync)</p>
-        </div>
-      </div>
-
-      <div class="stat-grid" style="margin-top:15px">
-        <div class="stat"><b id="total">0</b><small>Total Sailors</small></div>
-        <div class="stat"><b id="inCamp">0</b><small>In Camp</small></div>
-        <div class="stat"><b id="longest">0</b><small>Longest Stay</small></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="row">
-        <h3 style="margin:0">Registered Sailors</h3>
-        <span class="pill" id="rolePill">Officer View</span>
-      </div>
-      <label class="field">Search by Official Number / Name
-        <input id="search" type="search" placeholder="Search by surname or official no...">
-      </label>
-      <div id="list"><p class="muted">Loading cloud records...</p></div>
-    </div>
-
-    <!-- EDIT SAILOR PANEL (ONLY FOR EDITING REGISTERED SAILORS) -->
-    <div id="formPanel" class="panel hidden">
-      <h3 id="formTitle">Edit Sailor Details</h3>
-      <form id="sailorForm">
-        <div class="flex">
-          <label class="field">Initials<input id="editInitials" required maxlength="20"></label>
-          <label class="field">Surname<input id="editSurname" required maxlength="50"></label>
-          <label class="field">Official Number<input id="editOfficial" required maxlength="30"></label>
-          <label class="field">Rate<input id="editRate" required maxlength="40"></label>
-          <label class="field">Current Base<input id="editBase" required maxlength="80"></label>
-          <label class="field">Branch<input id="editBranch" required maxlength="70"></label>
-          <label class="field">Duty / Appointment<input id="editDuty" required maxlength="80"></label>
-          <label class="field">Phone Number<input id="editPhone" required maxlength="32"></label>
-          <label class="field">Nearest Police Station<input id="editPolice" required maxlength="90"></label>
-          <label class="field">Marital Status
-            <select id="editMarital" required>
-              <option value="Unmarried">Unmarried</option>
-              <option value="Married">Married</option>
-            </select>
-          </label>
-          <label class="field">Last Report Date<input type="date" id="editReport" required></label>
-        </div>
-        <div class="button-row" style="margin-top:16px">
-          <button class="btn gold" id="saveSailorBtn" type="submit">Update Record</button>
-          <button class="btn outline" type="button" id="cancelForm">Cancel</button>
-        </div>
-      </form>
-    </div>
-
-    <p class="footer">SLNS RANARISI HARD LINE • V3 • FIREBASE CLOUD</p>
-  </main>
-</section>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBskxCjh93LyX7G0g_U5KtdTkbnJ7pUYbc",
-    authDomain: "hard-line-v3.firebaseapp.com",
-    projectId: "hard-line-v3",
-    storageBucket: "hard-line-v3.firebasestorage.app",
-    messagingSenderId: "655285227110",
-    appId: "1:655285227110:web:2b9ba0bcb7389bd3da67a7"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const $ = id => document.getElementById(id);
-  const shows = id => {
-    for (const s of document.querySelectorAll('.screen')) {
-      s.classList.toggle('active', s.id === id);
-    }
-    window.scrollTo(0, 0);
-  };
-
-  const today = () => new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
-  const days = date => {
-    if (!date) return 0;
-    const diff = (Date.parse(today() + 'T00:00:00Z') - Date.parse(date + 'T00:00:00Z')) / 86400000;
-    return Math.max(0, Math.round(diff) + 1);
-  };
-  const escape = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-  // Check if selected rate is an Officer rank
-  const isOfficerRate = rate => /^(Mid|SLt|Lt|LCdr|Cdr)\b/i.test(String(rate || '').trim());
-
-  let currentUser = null;
-  let sailors = [];
-  let editingId = null;
-  let unsubUsers = null;
-
-  // Set default report date on register form
-  $('regReport').value = today();
-
-  // Auth Tab Switching
-  const switchAuthTab = mode => {
-    const isLogin = mode === 'login';
-    $('tabLogin').classList.toggle('active', isLogin);
-    $('tabRegister').classList.toggle('active', !isLogin);
-    $('loginBox').classList.toggle('hidden', !isLogin);
-    $('registerBox').classList.toggle('hidden', isLogin);
-    $('loginMessage').textContent = '';
-    $('loginMessage').className = '';
-    $('regMessage').textContent = '';
-    $('regMessage').className = '';
-  };
-
-  $('tabLogin').addEventListener('click', () => switchAuthTab('login'));
-  $('tabRegister').addEventListener('click', () => switchAuthTab('register'));
-
-  // CREATE PROFILE (Save to Firebase 'users' collection)
-  $('registerForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const msg = $('regMessage');
-    const btn = $('regSubmitBtn');
-
-    const initials = $('regInitials').value.trim();
-    const surname = $('regSurname').value.trim();
-    const official = $('regOfficial').value.trim().toUpperCase();
-    const dob = $('regDob').value;
-    const rate = $('regRate').value;
-    const phone = $('regPhone').value.trim();
-    const base = $('regBase').value.trim();
-    const branch = $('regBranch').value.trim();
-    const duty = $('regDuty').value.trim();
-    const police = $('regPolice').value.trim();
-    const marital = $('regMarital').value;
-    const report = $('regReport').value;
-    const user = $('regUser').value.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
-    const pass = $('regPass').value;
-    const pass2 = $('regPass2').value;
-
-    if (!user) {
-      msg.className = 'err';
-      msg.textContent = 'Use letters or numbers for Username.';
-      return;
-    }
-    if (pass !== pass2) {
-      msg.className = 'err';
-      msg.textContent = 'Passwords do not match.';
-      return;
-    }
-    if (report > today()) {
-      msg.className = 'err';
-      msg.textContent = 'Last Report Date cannot be in the future.';
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Creating Profile...';
-    msg.textContent = '';
-    msg.className = '';
-
-    try {
-      const userRef = doc(db, 'users', user);
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        msg.className = 'err';
-        msg.textContent = 'This Username is already taken. Please choose another.';
-        btn.disabled = false;
-        btn.textContent = 'Create Profile';
-        return;
-      }
-
-      const officer = isOfficerRate(rate);
-
-      await setDoc(userRef, {
-        user, pass, initials, surname, official, dob, rate, phone,
-        base, branch, duty, police, marital, report,
-        status: 'IN_CAMP',
-        isOfficer: officer,
-        canManage: officer, // Officers have access by default; Sailors need Officer approval
-        createdAt: new Date().toISOString()
-      });
-
-      msg.className = 'ok';
-      msg.textContent = 'Profile created! Redirecting to login...';
-      $('registerForm').reset();
-      $('regBase').value = 'SLNS Ranarisi';
-      $('regReport').value = today();
-
-      setTimeout(() => {
-        switchAuthTab('login');
-        $('loginUser').value = user;
-      }, 900);
-    } catch (err) {
-      msg.className = 'err';
-      msg.textContent = 'Error saving profile: ' + err.message;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Create Profile';
-    }
-  });
-
-  // LOGIN
-  $('loginForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const msg = $('loginMessage');
-    const btn = $('loginSubmitBtn');
-    const u = $('loginUser').value.trim().toLowerCase();
-    const p = $('loginPass').value;
-
-    btn.disabled = true;
-    btn.textContent = 'Signing in...';
-    msg.textContent = '';
-    msg.className = '';
-
-    try {
-      let found = null;
-      const snap = await getDoc(doc(db, 'users', u));
-      if (snap.exists() && snap.data().pass === p) {
-        found = snap.data();
-        // Ensure backward compatibility for older accounts
-        if (typeof found.isOfficer !== 'boolean') found.isOfficer = isOfficerRate(found.rate);
-        if (typeof found.canManage !== 'boolean') found.canManage = found.isOfficer;
-      } else if (u === 'admin' && p === '1234' && !snap.exists()) {
-        found = {
-          user: 'admin', pass: '1234', initials: 'SLN', surname: 'Admin',
-          official: 'ADMIN-01', dob: '1990-01-01', rate: 'Lt (Lieutenant)',
-          phone: '0000000000', isOfficer: true, canManage: true
-        };
-      }
-
-      if (!found) {
-        msg.className = 'err';
-        msg.textContent = 'Invalid Username or Password.';
-        btn.disabled = false;
-        btn.textContent = 'Login';
-        return;
-      }
-
-      currentUser = found;
-      msg.className = 'ok';
-      msg.textContent = 'Login successful!';
-      $('loginForm').reset();
-
-      setTimeout(() => {
-        msg.textContent = '';
-        msg.className = '';
-        openHomeForUser();
-      }, 350);
-    } catch (err) {
-      msg.className = 'err';
-      msg.textContent = 'Connection error: ' + err.message;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Login';
-    }
-  });
-
-  // ROUTE USER BASED ON ROLE & GRANTED ACCESS
-  function openHomeForUser() {
-    if (currentUser.isOfficer || currentUser.canManage) {
-      $('userBadge').textContent = `${currentUser.rate.split(' ')[0]} • ${currentUser.initials} ${currentUser.surname}`.toUpperCase();
-      $('rolePill').textContent = currentUser.isOfficer ? 'Officer View' : 'Authorized Sailor';
-      startRealtimeSync();
-      shows('dashboard');
-    } else {
-      renderSailorPersonalView();
-      shows('sailorHome');
-    }
-  }
-
-  // SAILOR PERSONAL VIEW
-  function renderSailorPersonalView() {
-    const u = currentUser;
-    $('sailorBadge').textContent = `${u.rate.split(' ')[0]} • ${u.initials} ${u.surname}`.toUpperCase();
-    $('shAvatar').textContent = ((u.initials || 'S')[0] + (u.surname || 'A')[0]).toUpperCase();
-    $('shName').textContent = `${u.initials || ''} ${u.surname || ''}`.trim();
-    $('shSub').textContent = `${u.rate || '-'} · ${u.official || '-'}`;
-    $('shStatus').textContent = u.status === 'ON_LEAVE' ? 'On Leave' : 'In Camp';
-    $('shReport').textContent = u.report || '-';
-    $('shDays').textContent = u.status === 'ON_LEAVE' ? '—' : days(u.report);
-    $('shBase').textContent = u.base || '-';
-    $('shBranchDuty').textContent = `${u.branch || '-'} · ${u.duty || '-'}`;
-    $('shMarital').textContent = u.marital || '-';
-    $('shPhonePolice').textContent = `${u.phone || '-'} / ${u.police || '-'}`;
-  }
-
-  // LIVE CLOUD SYNC FOR MANAGEMENT DASHBOARD
-  function startRealtimeSync() {
-    if (unsubUsers) unsubUsers();
-    $('list').innerHTML = '<p class="muted">Syncing with cloud database...</p>';
-    unsubUsers = onSnapshot(collection(db, 'users'), snapshot => {
-      // Show all registered Sailors (non-officers) on the Hard Line
-      sailors = snapshot.docs
-        .map(d => ({ id: d.id, ...d.data() }))
-        .filter(u => !isOfficerRate(u.rate) && !u.isOfficer);
-      renderDashboard();
-    }, err => {
-      $('list').innerHTML = `<div class="err">Database Error: ${escape(err.message)}</div>`;
-    });
-  }
-
-  // DASHBOARD RENDERING
-  const renderDashboard = () => {
-    const q = $('search').value.trim().toLowerCase();
-    const filtered = sailors.filter(p =>
-      [p.initials, p.surname, p.official].some(s => String(s || '').toLowerCase().includes(q))
-    );
-
-    $('total').textContent = sailors.length;
-    $('inCamp').textContent = sailors.filter(p => p.status !== 'ON_LEAVE').length;
-    $('longest').textContent = sailors.reduce((a, p) => Math.max(a, p.status !== 'ON_LEAVE' ? days(p.report) : 0), 0);
-    $('list').replaceChildren();
-
-    if (!filtered.length) {
-      const el = document.createElement('p');
-      el.className = 'muted';
-      el.textContent = sailors.length
-        ? 'No matching sailors found.'
-        : 'No sailors have registered yet. Sailors will appear here automatically when they create a profile.';
-      $('list').append(el);
-      return;
-    }
-
-    for (const p of filtered) {
-      const article = document.createElement('article');
-      article.className = 'person';
-      const fullName = `${p.initials || ''} ${p.surname || ''}`.trim() || p.user;
-      const av = ((p.initials || 'S')[0] + (p.surname || 'A')[0]).toUpperCase();
-      const hasAccess = Boolean(p.canManage);
-
-      // Only Officers can Grant / Revoke permanent management access to Sailors
-      const accessBtn = currentUser.isOfficer
-        ? `<button class="btn ${hasAccess ? 'danger' : 'green'}" data-act="toggleAccess">${hasAccess ? 'Revoke Access' : 'Grant Access'}</button>`
-        : '';
-
-      article.innerHTML = `
-        <div class="row">
-          <div class="panel-head">
-            <div class="photo" style="display:grid;place-items:center;font-weight:bold;font-size:18px;color:var(--gold)">${escape(av)}</div>
-            <div>
-              <h4>${escape(fullName)}</h4>
-              <div class="small muted">${escape(p.rate)} · ${escape(p.official)}</div>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="navy-header border-b border-blue-800 p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-anchor text-3xl text-amber-400"></i>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-wider text-white">HARD-LINE</h1>
+                    <p class="text-xs text-blue-300">Ship's Complement, Leave & Movement Management</p>
+                </div>
             </div>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            ${hasAccess ? '<span class="pill access">Access Granted</span>' : ''}
-            <span class="pill">${p.status === 'ON_LEAVE' ? 'On Leave' : 'In Camp'}</span>
-          </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-xs text-slate-400">Reference Date (Today)</p>
+                    <input type="date" id="referenceDate" class="bg-slate-800 border border-slate-600 text-white text-sm rounded px-2 py-1 focus:outline-none focus:border-amber-400">
+                </div>
+                <button onclick="openModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2 px-4 rounded-lg shadow flex items-center gap-2 transition">
+                    <i class="fa-solid fa-user-plus"></i> Add Personnel
+                </button>
+            </div>
         </div>
-        <div class="detail">
-          <div><small>Last Report Date</small><strong>${escape(p.report || '-')}</strong></div>
-          <div><small>Days in Camp</small><strong class="counter">${p.status === 'ON_LEAVE' ? '—' : days(p.report)}</strong></div>
-          <div><small>Current Base</small><strong>${escape(p.base || '-')}</strong></div>
-          <div><small>Branch / Duty</small><strong>${escape(p.branch || '-')} · ${escape(p.duty || '-')}</strong></div>
-          <div><small>Marital Status</small><strong>${escape(p.marital || '-')}</strong></div>
-          <div><small>Phone / Police</small><strong>${escape(p.phone || '-')} / ${escape(p.police || '-')}</strong></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 space-y-6">
+
+        <!-- Alert Banner: Today's Traveling In -->
+        <div id="travelAlertSection" class="hidden bg-amber-950/60 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-md">
+            <div class="flex items-center gap-3 mb-2">
+                <i class="fa-solid fa-plane-arrival text-amber-400 text-xl animate-bounce"></i>
+                <h2 class="text-lg font-bold text-amber-300">Today's Traveling In (Returning from Leave)</h2>
+            </div>
+            <div id="travelingList" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
+                <!-- Dynamic Traveling Cards -->
+            </div>
         </div>
-        <div class="button-row">
-          <button class="btn outline" data-act="edit">Edit</button>
-          <button class="btn navy" data-act="report">Report Today</button>
-          <button class="btn outline" data-act="leave">${p.status === 'ON_LEAVE' ? 'Return' : 'Start Leave'}</button>
-          ${accessBtn}
-          <button class="btn danger" data-act="delete">Delete</button>
+
+        <!-- Top KPI Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="navy-card p-5 rounded-xl shadow">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-slate-400">Total Complement</p>
+                        <h3 id="statTotal" class="text-3xl font-bold text-white mt-1">0</h3>
+                    </div>
+                    <div class="p-3 bg-blue-900/50 rounded-lg text-blue-400"><i class="fa-solid fa-users text-xl"></i></div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3">On Board: <span id="statOnBoard" class="text-emerald-400 font-bold">0</span></p>
+            </div>
+
+            <div class="navy-card p-5 rounded-xl shadow">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-slate-400">Currently On Leave</p>
+                        <h3 id="statOnLeave" class="text-3xl font-bold text-rose-400 mt-1">0</h3>
+                    </div>
+                    <div class="p-3 bg-rose-900/50 rounded-lg text-rose-400"><i class="fa-solid fa-house-user text-xl"></i></div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3">Leave Percentage: <span id="statLeavePct" class="text-rose-400 font-bold text-sm">0%</span></p>
+            </div>
+
+            <div class="navy-card p-5 rounded-xl shadow">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-slate-400">Temp Attached (Out)</p>
+                        <h3 id="statTempAttach" class="text-3xl font-bold text-purple-400 mt-1">0</h3>
+                    </div>
+                    <div class="p-3 bg-purple-900/50 rounded-lg text-purple-400"><i class="fa-solid fa-building-shield text-xl"></i></div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3">Attached to other bases/ships</p>
+            </div>
+
+            <div class="navy-card p-5 rounded-xl shadow">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-slate-400">Traveling Today</p>
+                        <h3 id="statTravelingToday" class="text-3xl font-bold text-amber-400 mt-1">0</h3>
+                    </div>
+                    <div class="p-3 bg-amber-900/50 rounded-lg text-amber-400"><i class="fa-solid fa-route text-xl"></i></div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3">Reporting back on selected date</p>
+            </div>
         </div>
-      `;
 
-      for (const b of article.querySelectorAll('[data-act]')) {
-        b.addEventListener('click', () => action(b.dataset.act, p.id));
-      }
-      $('list').append(article);
-    }
-  };
+        <!-- Days Since Last Leave Breakdown (On Board Personnel) -->
+        <div class="navy-card p-5 rounded-xl shadow">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i>Days Since Last Leave (On Board Personnel)</h2>
+                    <p class="text-xs text-slate-400">Click any category card below to filter the personnel table</p>
+                </div>
+                <button onclick="filterByCategory('ALL')" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-slate-200">Show All</button>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                <div onclick="filterByCategory('0-10')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-emerald-500/40 p-4 rounded-lg text-center transition">
+                    <span class="text-xs font-semibold text-emerald-400 uppercase">0 - 10 Days</span>
+                    <h4 id="cat-0-10" class="text-2xl font-bold text-white mt-1">0</h4>
+                </div>
+                <div onclick="filterByCategory('11-20')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-teal-500/40 p-4 rounded-lg text-center transition">
+                    <span class="text-xs font-semibold text-teal-400 uppercase">11 - 20 Days</span>
+                    <h4 id="cat-11-20" class="text-2xl font-bold text-white mt-1">0</h4>
+                </div>
+                <div onclick="filterByCategory('21-30')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 p-4 rounded-lg text-center transition">
+                    <span class="text-xs font-semibold text-amber-400 uppercase">21 - 30 Days</span>
+                    <h4 id="cat-21-30" class="text-2xl font-bold text-white mt-1">0</h4>
+                </div>
+                <div onclick="filterByCategory('31-40')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-orange-500/40 p-4 rounded-lg text-center transition">
+                    <span class="text-xs font-semibold text-orange-400 uppercase">30+ (31-40 Days)</span>
+                    <h4 id="cat-31-40" class="text-2xl font-bold text-white mt-1">0</h4>
+                </div>
+                <div onclick="filterByCategory('40+')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-rose-500/40 p-4 rounded-lg text-center transition">
+                    <span class="text-xs font-semibold text-rose-400 uppercase">40+ Days</span>
+                    <h4 id="cat-40+" class="text-2xl font-bold text-white mt-1">0</h4>
+                </div>
+            </div>
+        </div>
 
-  async function action(type, id) {
-    const p = sailors.find(x => x.id === id);
-    if (!p) return;
+        <!-- Personnel Master Table -->
+        <div class="navy-card rounded-xl shadow overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-3">
+                <h2 class="text-lg font-bold text-white">Personnel Nominal Roll <span id="activeFilterBadge" class="ml-2 text-xs bg-blue-600 px-2 py-0.5 rounded-full">ALL</span></h2>
+                <div class="flex gap-2">
+                    <select id="statusFilter" onchange="renderDashboard()" class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white">
+                        <option value="ALL">All Statuses</option>
+                        <option value="On Board">On Board</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Temp Attached">Temp Attached</option>
+                    </select>
+                    <input type="text" id="searchInput" onkeyup="renderDashboard()" placeholder="Search Name / Official No..." class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white w-48 sm:w-64">
+                </div>
+            </div>
 
-    if (type === 'edit') {
-      editingId = p.id;
-      $('editInitials').value = p.initials || '';
-      $('editSurname').value = p.surname || '';
-      $('editOfficial').value = p.official || '';
-      $('editRate').value = p.rate || '';
-      $('editBase').value = p.base || '';
-      $('editBranch').value = p.branch || '';
-      $('editDuty').value = p.duty || '';
-      $('editPhone').value = p.phone || '';
-      $('editPolice').value = p.police || '';
-      $('editMarital').value = p.marital || 'Unmarried';
-      $('editReport').value = p.report || today();
-      $('formPanel').classList.remove('hidden');
-      $('formPanel').scrollIntoView({behavior: 'smooth'});
-      return;
-    }
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/80 text-slate-400 text-xs uppercase border-b border-slate-700">
+                            <th class="p-3">Official No</th>
+                            <th class="p-3">Rank & Name</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Leave / Attach Dates</th>
+                            <th class="p-3">Traveling In Date</th>
+                            <th class="p-3">Last Returned Date</th>
+                            <th class="p-3">Days Since Leave</th>
+                            <th class="p-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="personnelTableBody" class="divide-y divide-slate-800 text-sm">
+                        <tr><td colspan="8" class="p-6 text-center text-slate-400">Connecting to Firebase Database...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 
-    try {
-      if (type === 'report' || type === 'leave') {
-        const updateData = (type === 'report' || p.status === 'ON_LEAVE')
-          ? { report: today(), status: 'IN_CAMP' }
-          : { status: 'ON_LEAVE' };
-        await updateDoc(doc(db, 'users', id), updateData);
-        return;
-      }
+    <!-- Add / Edit Modal -->
+    <div id="personModal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50">
+        <div class="navy-card w-full max-w-lg rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-lg font-bold text-white">Add Personnel Record</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="personForm" class="p-6 space-y-4">
+                <input type="hidden" id="docId">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Official Number *</label>
+                        <input type="text" id="officialNo" required placeholder="e.g. NRX 4499" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Rank *</label>
+                        <input type="text" id="rank" required placeholder="e.g. Lt / PO / AB" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Name with Initials *</label>
+                    <input type="text" id="fullName" required placeholder="e.g. ABC Perera" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Current Status *</label>
+                    <select id="status" onchange="toggleFormFields()" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                        <option value="On Board">On Board</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Temp Attached">Temp Attached (Other Base)</option>
+                    </select>
+                </div>
 
-      if (type === 'toggleAccess' && currentUser.isOfficer) {
-        const nextVal = !p.canManage;
-        const msg = nextVal
-          ? `Grant permanent Management Dashboard access to ${p.initials} ${p.surname}?`
-          : `Revoke Management Dashboard access from ${p.initials} ${p.surname}?`;
-        if (confirm(msg)) {
-          await updateDoc(doc(db, 'users', id), { canManage: nextVal });
+                <!-- Dynamic Fields based on Status -->
+                <div id="leaveFields" class="hidden grid grid-cols-2 gap-4 bg-slate-900/60 p-3 rounded border border-slate-700">
+                    <div>
+                        <label class="block text-xs text-amber-400 mb-1">Leave Start Date</label>
+                        <input type="date" id="leaveStartDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-amber-400 mb-1">Traveling In Date (Return)</label>
+                        <input type="date" id="travelingDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                </div>
+
+                <div id="attachFields" class="hidden space-y-3 bg-slate-900/60 p-3 rounded border border-slate-700">
+                    <div>
+                        <label class="block text-xs text-purple-400 mb-1">Attached Base / Ship Name</label>
+                        <input type="text" id="attachedBase" placeholder="e.g. SLNS Gemunu / NHQ" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-purple-400 mb-1">Attachment Start Date</label>
+                        <input type="date" id="attachDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                </div>
+
+                <div id="onBoardFields" class="bg-slate-900/60 p-3 rounded border border-slate-700">
+                    <label class="block text-xs text-emerald-400 mb-1">Last Returned from Leave Date (Reported On Board)</label>
+                    <input type="date" id="lastReturnedDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    <p class="text-[11px] text-slate-400 mt-1">Used to calculate 0-10, 11-20, 21-30, 30+, 40+ days on board.</p>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-slate-700">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded text-sm">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded text-sm">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Application Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // TODO: ඔයාගේ Firebase Project Config එක පහත ස්ථානයට Paste කරන්න
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const personnelCol = collection(db, "hardline_personnel");
+
+        let personnelData = [];
+        let currentDayCategoryFilter = 'ALL';
+
+        // Set default reference date to Today
+        const refDateInput = document.getElementById('referenceDate');
+        refDateInput.valueAsDate = new Date();
+        refDateInput.addEventListener('change', () => renderDashboard());
+
+        // Real-time listener from Firestore
+        onSnapshot(personnelCol, (snapshot) => {
+            personnelData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderDashboard();
+        }, (error) => {
+            console.error("Firebase Error:", error);
+            document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Firebase Config සම්බන්ධ කර නොමැත. කරුණාකර index.html හි firebaseConfig ඇතුළත් කරන්න.</td></tr>`;
+        });
+
+        // Calculate Days Difference
+        function getDaysDifference(startDateStr, endDateStr) {
+            if (!startDateStr || !endDateStr) return null;
+            const start = new Date(startDateStr);
+            const end = new Date(endDateStr);
+            start.setHours(0,0,0,0);
+            end.setHours(0,0,0,0);
+            const diffTime = end - start;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
         }
-        return;
-      }
 
-      if (type === 'delete' && confirm(`Delete ${p.initials} ${p.surname} from the database?`)) {
-        await deleteDoc(doc(db, 'users', id));
-      }
-    } catch (err) {
-      alert('Action failed: ' + err.message);
-    }
-  }
+        // Render Dashboard & Table
+        window.renderDashboard = function() {
+            const refDate = refDateInput.value;
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
 
-  function hideForm() {
-    editingId = null;
-    $('sailorForm').reset();
-    $('formPanel').classList.add('hidden');
-  }
+            let total = personnelData.length;
+            let onBoardCount = 0;
+            let onLeaveCount = 0;
+            let tempAttachCount = 0;
+            let travelingTodayList = [];
 
-  $('sailorForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    if (!editingId) return;
-    const btn = $('saveSailorBtn');
-    const report = $('editReport').value;
+            let cats = { '0-10': 0, '11-20': 0, '21-30': 0, '31-40': 0, '40+': 0 };
 
-    if (!report || report > today()) {
-      alert('Last Report Date cannot be in the future.');
-      return;
-    }
+            const tbody = document.getElementById('personnelTableBody');
+            tbody.innerHTML = '';
 
-    btn.disabled = true;
-    btn.textContent = 'Updating...';
+            personnelData.forEach(p => {
+                // Count Statuses
+                if (p.status === 'On Board') onBoardCount++;
+                if (p.status === 'On Leave') onLeaveCount++;
+                if (p.status === 'Temp Attached') tempAttachCount++;
 
-    try {
-      await updateDoc(doc(db, 'users', editingId), {
-        initials: $('editInitials').value.trim(),
-        surname: $('editSurname').value.trim(),
-        official: $('editOfficial').value.trim().toUpperCase(),
-        rate: $('editRate').value.trim(),
-        base: $('editBase').value.trim(),
-        branch: $('editBranch').value.trim(),
-        duty: $('editDuty').value.trim(),
-        phone: $('editPhone').value.trim(),
-        police: $('editPolice').value.trim(),
-        marital: $('editMarital').value,
-        report
-      });
-      hideForm();
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    } catch (err) {
-      alert('Update failed: ' + err.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Update Record';
-    }
-  });
+                // Check Traveling Today (Leave end traveling date == Reference Date)
+                if (p.status === 'On Leave' && p.travelingDate === refDate) {
+                    travelingTodayList.push(p);
+                }
 
-  // PROFILE SCREEN
-  const openProfile = () => {
-    if (!currentUser) return;
-    $('profAvatar').textContent = ((currentUser.initials || 'U')[0] + (currentUser.surname || 'S')[0]).toUpperCase();
-    $('profFullName').textContent = `${currentUser.initials || ''} ${currentUser.surname || ''}`.trim();
-    $('profRateBadge').textContent = currentUser.rate || '-';
-    $('profInitials').textContent = currentUser.initials || '-';
-    $('profSurname').textContent = currentUser.surname || '-';
-    $('profOfficial').textContent = currentUser.official || '-';
-    $('profRate').textContent = currentUser.rate || '-';
-    $('profDob').textContent = currentUser.dob || '-';
-    $('profPhone').textContent = currentUser.phone || '-';
-    $('profUser').textContent = currentUser.user || '-';
-    $('passMsg').textContent = '';
-    $('passMsg').className = '';
-    $('changePassForm').reset();
-    shows('profile');
-  };
+                // Calculate Days Since Last Leave (For On Board personnel)
+                let daysSinceLeave = null;
+                let dayCategory = null;
+                if (p.status === 'On Board' && p.lastReturnedDate) {
+                    daysSinceLeave = getDaysDifference(p.lastReturnedDate, refDate);
+                    if (daysSinceLeave >= 0 && daysSinceLeave <= 10) { cats['0-10']++; dayCategory = '0-10'; }
+                    else if (daysSinceLeave >= 11 && daysSinceLeave <= 20) { cats['11-20']++; dayCategory = '11-20'; }
+                    else if (daysSinceLeave >= 21 && daysSinceLeave <= 30) { cats['21-30']++; dayCategory = '21-30'; }
+                    else if (daysSinceLeave >= 31 && daysSinceLeave <= 40) { cats['31-40']++; dayCategory = '31-40'; }
+                    else if (daysSinceLeave > 40) { cats['40+']++; dayCategory = '40+'; }
+                }
 
-  $('changePassForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const msg = $('passMsg');
-    const btn = $('passSubmitBtn');
-    const p1 = $('newPass').value;
-    const p2 = $('newPass2').value;
-    if (p1 !== p2) {
-      msg.className = 'err';
-      msg.textContent = 'New passwords do not match.';
-      return;
-    }
+                // Apply Filters for Table
+                if (statusFilter !== 'ALL' && p.status !== statusFilter) return;
+                if (currentDayCategoryFilter !== 'ALL' && dayCategory !== currentDayCategoryFilter) return;
+                if (searchQuery && !p.fullName.toLowerCase().includes(searchQuery) && !p.officialNo.toLowerCase().includes(searchQuery)) return;
 
-    btn.disabled = true;
-    btn.textContent = 'Updating...';
-    try {
-      currentUser.pass = p1;
-      await setDoc(doc(db, 'users', currentUser.user), currentUser, { merge: true });
-      msg.className = 'ok';
-      msg.textContent = 'Password updated in Cloud!';
-      $('changePassForm').reset();
-    } catch (err) {
-      msg.className = 'err';
-      msg.textContent = 'Error updating password: ' + err.message;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Update Password';
-    }
-  });
+                // Status Badge Styling
+                let badgeClass = 'bg-emerald-900/60 text-emerald-300 border border-emerald-700';
+                if (p.status === 'On Leave') badgeClass = 'bg-rose-900/60 text-rose-300 border border-rose-700';
+                if (p.status === 'Temp Attached') badgeClass = 'bg-purple-900/60 text-purple-300 border border-purple-700';
 
-  // NAVIGATION EVENTS
-  const doLogout = () => {
-    if (unsubUsers) { unsubUsers(); unsubUsers = null; }
-    currentUser = null;
-    hideForm();
-    shows('auth');
-  };
+                // Date Info Column
+                let periodInfo = '-';
+                if (p.status === 'On Leave') periodInfo = `Out: ${p.leaveStartDate || '-'}`;
+                if (p.status === 'Temp Attached') periodInfo = `${p.attachedBase || 'Attached'} (${p.attachDate || '-'})`;
 
-  $('begin').addEventListener('click', () => shows('auth'));
-  $('backWelcome').addEventListener('click', () => shows('welcome'));
-  $('openProfileBtn').addEventListener('click', openProfile);
-  $('sailorProfileBtn').addEventListener('click', openProfile);
-  $('backFromProfile').addEventListener('click', () => openHomeForUser());
-  $('logoutBtn').addEventListener('click', doLogout);
-  $('sailorLogoutBtn').addEventListener('click', doLogout);
-  $('search').addEventListener('input', renderDashboard);
-  $('cancelForm').addEventListener('click', hideForm);
+                const row = `
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="p-3 font-mono text-xs text-slate-300">${p.officialNo}</td>
+                        <td class="p-3 font-semibold text-white">${p.rank} ${p.fullName}</td>
+                        <td class="p-3"><span class="px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">${p.status}</span></td>
+                        <td class="p-3 text-slate-300 text-xs">${periodInfo}</td>
+                        <td class="p-3 text-amber-400 text-xs font-medium">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
+                        <td class="p-3 text-slate-300 text-xs">${p.lastReturnedDate || '-'}</td>
+                        <td class="p-3 font-bold ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
+                            ${daysSinceLeave !== null && daysSinceLeave >= 0 ? daysSinceLeave + ' Days' : '-'}
+                        </td>
+                        <td class="p-3 text-right space-x-2">
+                            <button onclick="editPerson('${p.id}')" class="text-blue-400 hover:text-blue-300" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deletePerson('${p.id}')" class="text-rose-400 hover:text-rose-300" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
 
-</script>
+            if (tbody.innerHTML === '') {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">No matching records found.</td></tr>`;
+            }
+
+            // Update KPI Cards
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statOnBoard').innerText = onBoardCount;
+            document.getElementById('statOnLeave').innerText = onLeaveCount;
+            const leavePct = total > 0 ? ((onLeaveCount / total) * 100).toFixed(1) : 0;
+            document.getElementById('statLeavePct').innerText = `${leavePct}%`;
+            document.getElementById('statTempAttach').innerText = tempAttachCount;
+            document.getElementById('statTravelingToday').innerText = travelingTodayList.length;
+
+            // Update Category Counts
+            document.getElementById('cat-0-10').innerText = cats['0-10'];
+            document.getElementById('cat-11-20').innerText = cats['11-20'];
+            document.getElementById('cat-21-30').innerText = cats['21-30'];
+            document.getElementById('cat-31-40').innerText = cats['31-40'];
+            document.getElementById('cat-40+').innerText = cats['40+'];
+
+            // Render Today's Traveling Banner
+            const alertSection = document.getElementById('travelAlertSection');
+            const travelContainer = document.getElementById('travelingList');
+            if (travelingTodayList.length > 0) {
+                alertSection.classList.remove('hidden');
+                travelContainer.innerHTML = travelingTodayList.map(p => `
+                    <div class="bg-slate-900 border border-amber-500/40 p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-white text-sm">${p.rank} ${p.fullName}</p>
+                            <p class="text-xs text-slate-400">${p.officialNo}</p>
+                        </div>
+                        <button onclick="markReturned('${p.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold">
+                            Mark On Board
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                alertSection.classList.add('hidden');
+            }
+        }
+
+        // Category Filter Click
+        window.filterByCategory = function(cat) {
+            currentDayCategoryFilter = cat;
+            document.getElementById('activeFilterBadge').innerText = cat === 'ALL' ? 'ALL' : `Days: ${cat}`;
+            if (cat !== 'ALL') document.getElementById('statusFilter').value = 'On Board';
+            renderDashboard();
+        }
+
+        // Quick Action: Mark Traveling Sailor as Returned On Board
+        window.markReturned = async function(id) {
+            const refDate = refDateInput.value;
+            await updateDoc(doc(db, "hardline_personnel", id), {
+                status: "On Board",
+                lastReturnedDate: refDate,
+                leaveStartDate: "",
+                travelingDate: ""
+            });
+        }
+
+        // Modal Controls
+        window.openModal = function() {
+            document.getElementById('personForm').reset();
+            document.getElementById('docId').value = '';
+            document.getElementById('modalTitle').innerText = 'Add Personnel Record';
+            toggleFormFields();
+            document.getElementById('personModal').classList.remove('hidden');
+        }
+
+        window.closeModal = function() {
+            document.getElementById('personModal').classList.add('hidden');
+        }
+
+        window.toggleFormFields = function() {
+            const status = document.getElementById('status').value;
+            document.getElementById('leaveFields').classList.toggle('hidden', status !== 'On Leave');
+            document.getElementById('attachFields').classList.toggle('hidden', status !== 'Temp Attached');
+            document.getElementById('onBoardFields').classList.toggle('hidden', status !== 'On Board');
+        }
+
+        // Save / Update Record
+        document.getElementById('personForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const docId = document.getElementById('docId').value;
+            const data = {
+                officialNo: document.getElementById('officialNo').value.trim(),
+                rank: document.getElementById('rank').value.trim(),
+                fullName: document.getElementById('fullName').value.trim(),
+                status: document.getElementById('status').value,
+                leaveStartDate: document.getElementById('leaveStartDate').value,
+                travelingDate: document.getElementById('travelingDate').value,
+                attachedBase: document.getElementById('attachedBase').value.trim(),
+                attachDate: document.getElementById('attachDate').value,
+                lastReturnedDate: document.getElementById('lastReturnedDate').value
+            };
+
+            if (docId) {
+                await updateDoc(doc(db, "hardline_personnel", docId), data);
+            } else {
+                await addDoc(personnelCol, data);
+            }
+            closeModal();
+        });
+
+        // Edit Person
+        window.editPerson = function(id) {
+            const p = personnelData.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById('docId').value = p.id;
+            document.getElementById('officialNo').value = p.officialNo;
+            document.getElementById('rank').value = p.rank;
+            document.getElementById('fullName').value = p.fullName;
+            document.getElementById('status').value = p.status;
+            document.getElementById('leaveStartDate').value = p.leaveStartDate || '';
+            document.getElementById('travelingDate').value = p.travelingDate || '';
+            document.getElementById('attachedBase').value = p.attachedBase || '';
+            document.getElementById('attachDate').value = p.attachDate || '';
+            document.getElementById('lastReturnedDate').value = p.lastReturnedDate || '';
+            
+            document.getElementById('modalTitle').innerText = 'Edit Personnel Record';
+            toggleFormFields();
+            document.getElementById('personModal').classList.remove('hidden');
+        }
+
+        // Delete Person
+        window.deletePerson = async function(id) {
+            if (confirm("Are you sure you want to delete this record?")) {
+                await deleteDoc(doc(db, "hardline_personnel", id));
+            }
+        }
+    </script>
 </body>
 </html>
