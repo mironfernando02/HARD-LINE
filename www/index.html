@@ -10,166 +10,257 @@
         body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .navy-card { background-color: #1e293b; border: 1px solid #334155; }
         .navy-header { background: linear-gradient(90deg, #020617 0%, #1e3a8a 100%); }
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: #ffffff; color: #000000; }
+            .navy-card { background-color: #ffffff; border: 1px solid #cbd5e1; color: #000000; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar -->
-    <header class="navy-header border-b border-blue-800 p-4 shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center space-x-3">
-                <i class="fa-solid fa-anchor text-3xl text-amber-400"></i>
-                <div>
-                    <h1 class="text-2xl font-bold tracking-wider text-white">HARD-LINE</h1>
-                    <p class="text-xs text-blue-300">Ship's Complement, Leave & Movement Management</p>
-                </div>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4 bg-slate-950">
+        <div class="navy-card w-full max-w-md p-8 rounded-2xl shadow-2xl border border-blue-900">
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-anchor text-4xl text-amber-400 mb-2"></i>
+                <h1 class="text-2xl font-bold tracking-wider text-white">HARD-LINE</h1>
+                <p class="text-xs text-blue-300 mt-1">Authorized Personnel Login</p>
             </div>
-            <div class="flex items-center space-x-4">
-                <div class="text-right">
-                    <p class="text-xs text-slate-400">Reference Date (Today)</p>
-                    <input type="date" id="referenceDate" class="bg-slate-800 border border-slate-600 text-white text-sm rounded px-2 py-1 focus:outline-none focus:border-amber-400">
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Email Address</label>
+                    <input type="email" id="loginEmail" required placeholder="officer@navy.lk" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white text-sm">
                 </div>
-                <button onclick="openModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2 px-4 rounded-lg shadow flex items-center gap-2 transition">
-                    <i class="fa-solid fa-user-plus"></i> Add Personnel
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white text-sm">
+                </div>
+                <p id="loginError" class="text-xs text-rose-400 hidden"></p>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-lg transition">
+                    Sign In
                 </button>
-            </div>
+            </form>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl w-full mx-auto p-4 space-y-6">
+    <!-- Main App Container -->
+    <div id="appContainer" class="hidden min-h-screen flex flex-col">
 
-        <!-- Alert Banner: Today's Traveling In -->
-        <div id="travelAlertSection" class="hidden bg-amber-950/60 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-md">
-            <div class="flex items-center gap-3 mb-2">
-                <i class="fa-solid fa-plane-arrival text-amber-400 text-xl animate-bounce"></i>
-                <h2 class="text-lg font-bold text-amber-300">Today's Traveling In (Returning from Leave)</h2>
-            </div>
-            <div id="travelingList" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
-                <!-- Dynamic Traveling Cards -->
-            </div>
-        </div>
-
-        <!-- Top KPI Summary Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="navy-card p-5 rounded-xl shadow">
-                <div class="flex justify-between items-start">
+        <!-- Top Navigation Bar -->
+        <header class="navy-header border-b border-blue-800 p-4 shadow-lg sticky top-0 z-40 no-print">
+            <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-anchor text-3xl text-amber-400"></i>
                     <div>
-                        <p class="text-sm text-slate-400">Total Complement</p>
-                        <h3 id="statTotal" class="text-3xl font-bold text-white mt-1">0</h3>
+                        <h1 class="text-2xl font-bold tracking-wider text-white">HARD-LINE</h1>
+                        <p class="text-xs text-blue-300">Ship's Complement, Leave & Movement Management</p>
                     </div>
-                    <div class="p-3 bg-blue-900/50 rounded-lg text-blue-400"><i class="fa-solid fa-users text-xl"></i></div>
                 </div>
-                <p class="text-xs text-slate-400 mt-3">On Board: <span id="statOnBoard" class="text-emerald-400 font-bold">0</span></p>
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <div class="text-right">
+                        <p class="text-[11px] text-slate-400">Reference Date</p>
+                        <input type="date" id="referenceDate" class="bg-slate-800 border border-slate-600 text-white text-xs sm:text-sm rounded px-2 py-1">
+                    </div>
+                    <button onclick="openAddLeaveModal()" class="bg-rose-600 hover:bg-rose-500 text-white font-semibold py-2 px-3 rounded-lg shadow text-xs sm:text-sm flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-suitcase-rolling"></i> Add Leave
+                    </button>
+                    <button onclick="openModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2 px-3 rounded-lg shadow text-xs sm:text-sm flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-user-plus"></i> Add Personnel
+                    </button>
+                    <button onclick="exportToCSV()" class="bg-emerald-700 hover:bg-emerald-600 text-white font-semibold py-2 px-3 rounded-lg shadow text-xs sm:text-sm flex items-center gap-1.5 transition" title="Export Excel/CSV">
+                        <i class="fa-solid fa-file-excel"></i> CSV
+                    </button>
+                    <button onclick="window.print()" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold py-2 px-3 rounded-lg shadow text-xs sm:text-sm flex items-center gap-1.5 transition" title="Print / Save PDF">
+                        <i class="fa-solid fa-print"></i> PDF
+                    </button>
+                    <button onclick="logoutUser()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 py-2 px-3 rounded-lg text-xs sm:text-sm" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow max-w-7xl w-full mx-auto p-4 space-y-6">
+
+            <!-- Alert Banner: Today's Traveling In (Returning to Ship after Leave) -->
+            <div id="travelAlertSection" class="hidden bg-amber-950/60 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-md">
+                <div class="flex items-center gap-3 mb-2">
+                    <i class="fa-solid fa-ship text-amber-400 text-xl animate-pulse"></i>
+                    <h2 class="text-lg font-bold text-amber-300">Traveling to Ship Today (Leave Completed)</h2>
+                </div>
+                <div id="travelingList" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2"></div>
             </div>
 
+            <!-- Top KPI Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="navy-card p-5 rounded-xl shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-slate-400">Total Complement</p>
+                            <h3 id="statTotal" class="text-3xl font-bold text-white mt-1">0</h3>
+                        </div>
+                        <div class="p-3 bg-blue-900/50 rounded-lg text-blue-400"><i class="fa-solid fa-users text-xl"></i></div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">On Board: <span id="statOnBoard" class="text-emerald-400 font-bold">0</span></p>
+                </div>
+
+                <div class="navy-card p-5 rounded-xl shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-slate-400">Currently On Leave</p>
+                            <h3 id="statOnLeave" class="text-3xl font-bold text-rose-400 mt-1">0</h3>
+                        </div>
+                        <div class="p-3 bg-rose-900/50 rounded-lg text-rose-400"><i class="fa-solid fa-house-user text-xl"></i></div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">Leave Percentage: <span id="statLeavePct" class="text-rose-400 font-bold text-sm">0%</span></p>
+                </div>
+
+                <div class="navy-card p-5 rounded-xl shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-slate-400">Temp Attached (Out)</p>
+                            <h3 id="statTempAttach" class="text-3xl font-bold text-purple-400 mt-1">0</h3>
+                        </div>
+                        <div class="p-3 bg-purple-900/50 rounded-lg text-purple-400"><i class="fa-solid fa-building-shield text-xl"></i></div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">Attached to other bases/ships</p>
+                </div>
+
+                <div class="navy-card p-5 rounded-xl shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-slate-400">Traveling to Ship Today</p>
+                            <h3 id="statTravelingToday" class="text-3xl font-bold text-amber-400 mt-1">0</h3>
+                        </div>
+                        <div class="p-3 bg-amber-900/50 rounded-lg text-amber-400"><i class="fa-solid fa-route text-xl"></i></div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">Returning on selected date</p>
+                </div>
+            </div>
+
+            <!-- Days Since Last Leave Breakdown (On Board Personnel) -->
             <div class="navy-card p-5 rounded-xl shadow">
-                <div class="flex justify-between items-start">
+                <div class="flex justify-between items-center mb-4">
                     <div>
-                        <p class="text-sm text-slate-400">Currently On Leave</p>
-                        <h3 id="statOnLeave" class="text-3xl font-bold text-rose-400 mt-1">0</h3>
+                        <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i>Days Since Last Leave (On Board Personnel)</h2>
+                        <p class="text-xs text-slate-400">Click any category card below to filter the personnel table</p>
                     </div>
-                    <div class="p-3 bg-rose-900/50 rounded-lg text-rose-400"><i class="fa-solid fa-house-user text-xl"></i></div>
+                    <button onclick="filterByCategory('ALL')" class="no-print text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-slate-200">Show All</button>
                 </div>
-                <p class="text-xs text-slate-400 mt-3">Leave Percentage: <span id="statLeavePct" class="text-rose-400 font-bold text-sm">0%</span></p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    <div onclick="filterByCategory('0-10')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-emerald-500/40 p-4 rounded-lg text-center transition">
+                        <span class="text-xs font-semibold text-emerald-400 uppercase">0 - 10 Days</span>
+                        <h4 id="cat-0-10" class="text-2xl font-bold text-white mt-1">0</h4>
+                    </div>
+                    <div onclick="filterByCategory('11-20')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-teal-500/40 p-4 rounded-lg text-center transition">
+                        <span class="text-xs font-semibold text-teal-400 uppercase">11 - 20 Days</span>
+                        <h4 id="cat-11-20" class="text-2xl font-bold text-white mt-1">0</h4>
+                    </div>
+                    <div onclick="filterByCategory('21-30')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 p-4 rounded-lg text-center transition">
+                        <span class="text-xs font-semibold text-amber-400 uppercase">21 - 30 Days</span>
+                        <h4 id="cat-21-30" class="text-2xl font-bold text-white mt-1">0</h4>
+                    </div>
+                    <div onclick="filterByCategory('31-40')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-orange-500/40 p-4 rounded-lg text-center transition">
+                        <span class="text-xs font-semibold text-orange-400 uppercase">30+ (31-40 Days)</span>
+                        <h4 id="cat-31-40" class="text-2xl font-bold text-white mt-1">0</h4>
+                    </div>
+                    <div onclick="filterByCategory('40+')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-rose-500/40 p-4 rounded-lg text-center transition">
+                        <span class="text-xs font-semibold text-rose-400 uppercase">40+ Days</span>
+                        <h4 id="cat-40+" class="text-2xl font-bold text-white mt-1">0</h4>
+                    </div>
+                </div>
             </div>
 
-            <div class="navy-card p-5 rounded-xl shadow">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm text-slate-400">Temp Attached (Out)</p>
-                        <h3 id="statTempAttach" class="text-3xl font-bold text-purple-400 mt-1">0</h3>
+            <!-- Personnel Master Table -->
+            <div class="navy-card rounded-xl shadow overflow-hidden">
+                <div class="p-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-3 no-print">
+                    <h2 class="text-lg font-bold text-white">Personnel Nominal Roll <span id="activeFilterBadge" class="ml-2 text-xs bg-blue-600 px-2 py-0.5 rounded-full">ALL</span></h2>
+                    <div class="flex gap-2">
+                        <select id="statusFilter" onchange="renderDashboard()" class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white">
+                            <option value="ALL">All Statuses</option>
+                            <option value="On Board">On Board</option>
+                            <option value="On Leave">On Leave</option>
+                            <option value="Temp Attached">Temp Attached</option>
+                        </select>
+                        <input type="text" id="searchInput" onkeyup="renderDashboard()" placeholder="Search Name / Official No..." class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white w-48 sm:w-64">
                     </div>
-                    <div class="p-3 bg-purple-900/50 rounded-lg text-purple-400"><i class="fa-solid fa-building-shield text-xl"></i></div>
                 </div>
-                <p class="text-xs text-slate-400 mt-3">Attached to other bases/ships</p>
-            </div>
 
-            <div class="navy-card p-5 rounded-xl shadow">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm text-slate-400">Traveling Today</p>
-                        <h3 id="statTravelingToday" class="text-3xl font-bold text-amber-400 mt-1">0</h3>
-                    </div>
-                    <div class="p-3 bg-amber-900/50 rounded-lg text-amber-400"><i class="fa-solid fa-route text-xl"></i></div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/80 text-slate-400 text-xs uppercase border-b border-slate-700">
+                                <th class="p-3">Official No</th>
+                                <th class="p-3">Rank & Name</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3">Travel to Home</th>
+                                <th class="p-3">Leave Period</th>
+                                <th class="p-3">Travel to Ship</th>
+                                <th class="p-3">Days Since Leave</th>
+                                <th class="p-3 text-right no-print">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="personnelTableBody" class="divide-y divide-slate-800 text-sm">
+                            <tr><td colspan="8" class="p-6 text-center text-slate-400">Loading personnel data...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <p class="text-xs text-slate-400 mt-3">Reporting back on selected date</p>
             </div>
-        </div>
+        </main>
+    </div>
 
-        <!-- Days Since Last Leave Breakdown (On Board Personnel) -->
-        <div class="navy-card p-5 rounded-xl shadow">
-            <div class="flex justify-between items-center mb-4">
+    <!-- Add Leave Modal -->
+    <div id="leaveModal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50 no-print">
+        <div class="navy-card w-full max-w-lg rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-suitcase-rolling text-rose-400 mr-2"></i>Add Leave & Calculate Traveling Dates</h3>
+                <button onclick="closeAddLeaveModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="leaveForm" class="p-6 space-y-4">
                 <div>
-                    <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i>Days Since Last Leave (On Board Personnel)</h2>
-                    <p class="text-xs text-slate-400">Click any category card below to filter the personnel table</p>
+                    <label class="block text-xs text-slate-400 mb-1">Select Personnel *</label>
+                    <select id="leavePersonSelect" required class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm"></select>
                 </div>
-                <button onclick="filterByCategory('ALL')" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-slate-200">Show All</button>
-            </div>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                <div onclick="filterByCategory('0-10')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-emerald-500/40 p-4 rounded-lg text-center transition">
-                    <span class="text-xs font-semibold text-emerald-400 uppercase">0 - 10 Days</span>
-                    <h4 id="cat-0-10" class="text-2xl font-bold text-white mt-1">0</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-amber-400 mb-1">Leave Start Date *</label>
+                        <input type="date" id="calcLeaveStart" required onchange="calculateLeaveDates()" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-amber-400 mb-1">Number of Leave Days *</label>
+                        <input type="number" id="calcLeaveDays" required min="1" onchange="calculateLeaveDates()" placeholder="e.g. 14" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    </div>
                 </div>
-                <div onclick="filterByCategory('11-20')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-teal-500/40 p-4 rounded-lg text-center transition">
-                    <span class="text-xs font-semibold text-teal-400 uppercase">11 - 20 Days</span>
-                    <h4 id="cat-11-20" class="text-2xl font-bold text-white mt-1">0</h4>
+
+                <!-- Auto Calculated Preview -->
+                <div class="bg-slate-900 border border-slate-700 rounded-lg p-4 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Traveling to Home (Day Before Start):</span>
+                        <span id="previewTravelHome" class="font-bold text-sky-400">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Last Leave Day:</span>
+                        <span id="previewLastLeaveDay" class="font-semibold text-slate-200">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Traveling to Ship (Day After Leave Ends):</span>
+                        <span id="previewTravelShip" class="font-bold text-amber-400">-</span>
+                    </div>
                 </div>
-                <div onclick="filterByCategory('21-30')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-amber-500/40 p-4 rounded-lg text-center transition">
-                    <span class="text-xs font-semibold text-amber-400 uppercase">21 - 30 Days</span>
-                    <h4 id="cat-21-30" class="text-2xl font-bold text-white mt-1">0</h4>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-slate-700">
+                    <button type="button" onclick="closeAddLeaveModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded text-sm">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded text-sm">Confirm & Save Leave</button>
                 </div>
-                <div onclick="filterByCategory('31-40')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-orange-500/40 p-4 rounded-lg text-center transition">
-                    <span class="text-xs font-semibold text-orange-400 uppercase">30+ (31-40 Days)</span>
-                    <h4 id="cat-31-40" class="text-2xl font-bold text-white mt-1">0</h4>
-                </div>
-                <div onclick="filterByCategory('40+')" class="cursor-pointer bg-slate-800/80 hover:bg-slate-700 border border-rose-500/40 p-4 rounded-lg text-center transition">
-                    <span class="text-xs font-semibold text-rose-400 uppercase">40+ Days</span>
-                    <h4 id="cat-40+" class="text-2xl font-bold text-white mt-1">0</h4>
-                </div>
-            </div>
+            </form>
         </div>
+    </div>
 
-        <!-- Personnel Master Table -->
-        <div class="navy-card rounded-xl shadow overflow-hidden">
-            <div class="p-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-3">
-                <h2 class="text-lg font-bold text-white">Personnel Nominal Roll <span id="activeFilterBadge" class="ml-2 text-xs bg-blue-600 px-2 py-0.5 rounded-full">ALL</span></h2>
-                <div class="flex gap-2">
-                    <select id="statusFilter" onchange="renderDashboard()" class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white">
-                        <option value="ALL">All Statuses</option>
-                        <option value="On Board">On Board</option>
-                        <option value="On Leave">On Leave</option>
-                        <option value="Temp Attached">Temp Attached</option>
-                    </select>
-                    <input type="text" id="searchInput" onkeyup="renderDashboard()" placeholder="Search Name / Official No..." class="bg-slate-800 border border-slate-600 text-sm rounded-lg px-3 py-1.5 text-white w-48 sm:w-64">
-                </div>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-900/80 text-slate-400 text-xs uppercase border-b border-slate-700">
-                            <th class="p-3">Official No</th>
-                            <th class="p-3">Rank & Name</th>
-                            <th class="p-3">Status</th>
-                            <th class="p-3">Leave / Attach Dates</th>
-                            <th class="p-3">Traveling In Date</th>
-                            <th class="p-3">Last Returned Date</th>
-                            <th class="p-3">Days Since Leave</th>
-                            <th class="p-3 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="personnelTableBody" class="divide-y divide-slate-800 text-sm">
-                        <tr><td colspan="8" class="p-6 text-center text-slate-400">Connecting to Firebase Database...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
-
-    <!-- Add / Edit Modal -->
-    <div id="personModal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50">
+    <!-- Add / Edit Personnel Modal -->
+    <div id="personModal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50 no-print">
         <div class="navy-card w-full max-w-lg rounded-xl shadow-2xl overflow-hidden">
             <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
                 <h3 id="modalTitle" class="text-lg font-bold text-white">Add Personnel Record</h3>
@@ -200,14 +291,23 @@
                     </select>
                 </div>
 
-                <!-- Dynamic Fields based on Status -->
-                <div id="leaveFields" class="hidden grid grid-cols-2 gap-4 bg-slate-900/60 p-3 rounded border border-slate-700">
-                    <div>
-                        <label class="block text-xs text-amber-400 mb-1">Leave Start Date</label>
-                        <input type="date" id="leaveStartDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                <div id="leaveFields" class="hidden space-y-3 bg-slate-900/60 p-3 rounded border border-slate-700">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-xs text-sky-400 mb-1">Travel to Home</label>
+                            <input type="date" id="travelHomeDate" class="w-full bg-slate-800 border border-slate-600 rounded p-1.5 text-white text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-amber-400 mb-1">Leave Start</label>
+                            <input type="date" id="leaveStartDate" class="w-full bg-slate-800 border border-slate-600 rounded p-1.5 text-white text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-amber-400 mb-1">Leave Days</label>
+                            <input type="number" id="leaveDaysInput" min="1" class="w-full bg-slate-800 border border-slate-600 rounded p-1.5 text-white text-xs">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-xs text-amber-400 mb-1">Traveling In Date (Return)</label>
+                        <label class="block text-xs text-amber-400 mb-1">Traveling to Ship Date (Return)</label>
                         <input type="date" id="travelingDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
                     </div>
                 </div>
@@ -226,7 +326,6 @@
                 <div id="onBoardFields" class="bg-slate-900/60 p-3 rounded border border-slate-700">
                     <label class="block text-xs text-emerald-400 mb-1">Last Returned from Leave Date (Reported On Board)</label>
                     <input type="date" id="lastReturnedDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
-                    <p class="text-[11px] text-slate-400 mt-1">Used to calculate 0-10, 11-20, 21-30, 30+, 40+ days on board.</p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-3 border-t border-slate-700">
@@ -241,8 +340,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        // TODO: ඔයාගේ Firebase Project Config එක පහත ස්ථානයට Paste කරන්න
+        // TODO: ඔයාගේ Firebase Project Config එක මෙතැනට Paste කරන්න
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -252,40 +352,131 @@
             appId: "YOUR_APP_ID"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
         const personnelCol = collection(db, "hardline_personnel");
 
         let personnelData = [];
         let currentDayCategoryFilter = 'ALL';
+        let unsubscribeSnapshot = null;
 
-        // Set default reference date to Today
         const refDateInput = document.getElementById('referenceDate');
         refDateInput.valueAsDate = new Date();
         refDateInput.addEventListener('change', () => renderDashboard());
 
-        // Real-time listener from Firestore
-        onSnapshot(personnelCol, (snapshot) => {
-            personnelData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            renderDashboard();
-        }, (error) => {
-            console.error("Firebase Error:", error);
-            document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Firebase Config සම්බන්ධ කර නොමැත. කරුණාකර index.html හි firebaseConfig ඇතුළත් කරන්න.</td></tr>`;
+        // Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appContainer').classList.remove('hidden');
+                startRealtimeSync();
+            } else {
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
+                document.getElementById('appContainer').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
         });
 
-        // Calculate Days Difference
-        function getDaysDifference(startDateStr, endDateStr) {
-            if (!startDateStr || !endDateStr) return null;
-            const start = new Date(startDateStr);
-            const end = new Date(endDateStr);
-            start.setHours(0,0,0,0);
-            end.setHours(0,0,0,0);
-            const diffTime = end - start;
-            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        // Login Form Submit
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            const errEl = document.getElementById('loginError');
+            errEl.classList.add('hidden');
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                errEl.innerText = "Invalid email or password.";
+                errEl.classList.remove('hidden');
+            }
+        });
+
+        window.logoutUser = async function() {
+            await signOut(auth);
         }
 
-        // Render Dashboard & Table
+        function startRealtimeSync() {
+            unsubscribeSnapshot = onSnapshot(personnelCol, (snapshot) => {
+                personnelData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderDashboard();
+            }, (error) => {
+                console.error("Firestore Error:", error);
+                document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Database error. Check Firebase Config & Firestore Rules.</td></tr>`;
+            });
+        }
+
+        // Date Helper (YYYY-MM-DD)
+        function addDaysToDateStr(dateStr, daysToAdd) {
+            if (!dateStr || isNaN(daysToAdd)) return '';
+            const parts = dateStr.split('-');
+            const d = new Date(parts[0], parts[1] - 1, parts[2]);
+            d.setDate(d.getDate() + Number(daysToAdd));
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function getDaysDifference(startDateStr, endDateStr) {
+            if (!startDateStr || !endDateStr) return null;
+            const sParts = startDateStr.split('-');
+            const eParts = endDateStr.split('-');
+            const start = new Date(sParts[0], sParts[1] - 1, sParts[2]);
+            const end = new Date(eParts[0], eParts[1] - 1, eParts[2]);
+            return Math.floor((end - start) / (1000 * 60 * 60 * 24));
+        }
+
+        // Add Leave Modal & Auto-Calculation
+        window.openAddLeaveModal = function() {
+            const select = document.getElementById('leavePersonSelect');
+            select.innerHTML = personnelData.map(p => `<option value="${p.id}">${p.officialNo} - ${p.rank} ${p.fullName} (${p.status})</option>`).join('');
+            document.getElementById('leaveForm').reset();
+            document.getElementById('previewTravelHome').innerText = '-';
+            document.getElementById('previewLastLeaveDay').innerText = '-';
+            document.getElementById('previewTravelShip').innerText = '-';
+            document.getElementById('leaveModal').classList.remove('hidden');
+        }
+
+        window.closeAddLeaveModal = function() {
+            document.getElementById('leaveModal').classList.add('hidden');
+        }
+
+        window.calculateLeaveDates = function() {
+            const startStr = document.getElementById('calcLeaveStart').value;
+            const days = parseInt(document.getElementById('calcLeaveDays').value, 10);
+            if (!startStr || !days || days < 1) return;
+
+            const travelHome = addDaysToDateStr(startStr, -1);
+            const lastLeaveDay = addDaysToDateStr(startStr, days - 1);
+            const travelShip = addDaysToDateStr(startStr, days);
+
+            document.getElementById('previewTravelHome').innerText = travelHome;
+            document.getElementById('previewLastLeaveDay').innerText = lastLeaveDay;
+            document.getElementById('previewTravelShip').innerText = travelShip;
+        }
+
+        document.getElementById('leaveForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const personId = document.getElementById('leavePersonSelect').value;
+            const startStr = document.getElementById('calcLeaveStart').value;
+            const days = parseInt(document.getElementById('calcLeaveDays').value, 10);
+
+            const travelHome = addDaysToDateStr(startStr, -1);
+            const travelShip = addDaysToDateStr(startStr, days);
+
+            await updateDoc(doc(db, "hardline_personnel", personId), {
+                status: "On Leave",
+                travelHomeDate: travelHome,
+                leaveStartDate: startStr,
+                leaveDays: days,
+                travelingDate: travelShip
+            });
+            closeAddLeaveModal();
+        });
+
+        // Render Dashboard
         window.renderDashboard = function() {
             const refDate = refDateInput.value;
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
@@ -296,24 +487,22 @@
             let onLeaveCount = 0;
             let tempAttachCount = 0;
             let travelingTodayList = [];
-
             let cats = { '0-10': 0, '11-20': 0, '21-30': 0, '31-40': 0, '40+': 0 };
 
             const tbody = document.getElementById('personnelTableBody');
             tbody.innerHTML = '';
 
             personnelData.forEach(p => {
-                // Count Statuses
                 if (p.status === 'On Board') onBoardCount++;
                 if (p.status === 'On Leave') onLeaveCount++;
                 if (p.status === 'Temp Attached') tempAttachCount++;
 
-                // Check Traveling Today (Leave end traveling date == Reference Date)
+                // Traveling to Ship Today (when leave finishes and return travel date == referenceDate)
                 if (p.status === 'On Leave' && p.travelingDate === refDate) {
                     travelingTodayList.push(p);
                 }
 
-                // Calculate Days Since Last Leave (For On Board personnel)
+                // Days Since Last Leave (On Board)
                 let daysSinceLeave = null;
                 let dayCategory = null;
                 if (p.status === 'On Board' && p.lastReturnedDate) {
@@ -325,33 +514,33 @@
                     else if (daysSinceLeave > 40) { cats['40+']++; dayCategory = '40+'; }
                 }
 
-                // Apply Filters for Table
                 if (statusFilter !== 'ALL' && p.status !== statusFilter) return;
                 if (currentDayCategoryFilter !== 'ALL' && dayCategory !== currentDayCategoryFilter) return;
                 if (searchQuery && !p.fullName.toLowerCase().includes(searchQuery) && !p.officialNo.toLowerCase().includes(searchQuery)) return;
 
-                // Status Badge Styling
                 let badgeClass = 'bg-emerald-900/60 text-emerald-300 border border-emerald-700';
                 if (p.status === 'On Leave') badgeClass = 'bg-rose-900/60 text-rose-300 border border-rose-700';
                 if (p.status === 'Temp Attached') badgeClass = 'bg-purple-900/60 text-purple-300 border border-purple-700';
 
-                // Date Info Column
-                let periodInfo = '-';
-                if (p.status === 'On Leave') periodInfo = `Out: ${p.leaveStartDate || '-'}`;
-                if (p.status === 'Temp Attached') periodInfo = `${p.attachedBase || 'Attached'} (${p.attachDate || '-'})`;
+                let leavePeriodStr = '-';
+                if (p.status === 'On Leave') {
+                    leavePeriodStr = `${p.leaveStartDate || '-'} (${p.leaveDays || '?'}d)`;
+                } else if (p.status === 'Temp Attached') {
+                    leavePeriodStr = `${p.attachedBase || 'Attached'} (${p.attachDate || '-'})`;
+                }
 
                 const row = `
                     <tr class="hover:bg-slate-800/50 transition">
                         <td class="p-3 font-mono text-xs text-slate-300">${p.officialNo}</td>
                         <td class="p-3 font-semibold text-white">${p.rank} ${p.fullName}</td>
                         <td class="p-3"><span class="px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">${p.status}</span></td>
-                        <td class="p-3 text-slate-300 text-xs">${periodInfo}</td>
+                        <td class="p-3 text-sky-400 text-xs">${p.status === 'On Leave' ? (p.travelHomeDate || '-') : '-'}</td>
+                        <td class="p-3 text-slate-300 text-xs">${leavePeriodStr}</td>
                         <td class="p-3 text-amber-400 text-xs font-medium">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
-                        <td class="p-3 text-slate-300 text-xs">${p.lastReturnedDate || '-'}</td>
                         <td class="p-3 font-bold ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
                             ${daysSinceLeave !== null && daysSinceLeave >= 0 ? daysSinceLeave + ' Days' : '-'}
                         </td>
-                        <td class="p-3 text-right space-x-2">
+                        <td class="p-3 text-right space-x-2 no-print">
                             <button onclick="editPerson('${p.id}')" class="text-blue-400 hover:text-blue-300" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button onclick="deletePerson('${p.id}')" class="text-rose-400 hover:text-rose-300" title="Delete"><i class="fa-solid fa-trash"></i></button>
                         </td>
@@ -364,7 +553,6 @@
                 tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">No matching records found.</td></tr>`;
             }
 
-            // Update KPI Cards
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statOnBoard').innerText = onBoardCount;
             document.getElementById('statOnLeave').innerText = onLeaveCount;
@@ -373,14 +561,12 @@
             document.getElementById('statTempAttach').innerText = tempAttachCount;
             document.getElementById('statTravelingToday').innerText = travelingTodayList.length;
 
-            // Update Category Counts
             document.getElementById('cat-0-10').innerText = cats['0-10'];
             document.getElementById('cat-11-20').innerText = cats['11-20'];
             document.getElementById('cat-21-30').innerText = cats['21-30'];
             document.getElementById('cat-31-40').innerText = cats['31-40'];
             document.getElementById('cat-40+').innerText = cats['40+'];
 
-            // Render Today's Traveling Banner
             const alertSection = document.getElementById('travelAlertSection');
             const travelContainer = document.getElementById('travelingList');
             if (travelingTodayList.length > 0) {
@@ -391,7 +577,7 @@
                             <p class="font-bold text-white text-sm">${p.rank} ${p.fullName}</p>
                             <p class="text-xs text-slate-400">${p.officialNo}</p>
                         </div>
-                        <button onclick="markReturned('${p.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold">
+                        <button onclick="markReturned('${p.id}')" class="no-print bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold">
                             Mark On Board
                         </button>
                     </div>
@@ -401,7 +587,25 @@
             }
         }
 
-        // Category Filter Click
+        // Export to CSV (Excel Compatible)
+        window.exportToCSV = function() {
+            const headers = ["Official No", "Rank", "Name", "Status", "Travel to Home", "Leave Start", "Leave Days", "Travel to Ship", "Last Returned", "Attached Base"];
+            const rows = personnelData.map(p => [
+                p.officialNo, p.rank, p.fullName, p.status,
+                p.travelHomeDate || '', p.leaveStartDate || '', p.leaveDays || '',
+                p.travelingDate || '', p.lastReturnedDate || '', p.attachedBase || ''
+            ]);
+            const csvContent = "data:text/csv;charset=utf-8,"
+                + [headers, ...rows].map(e => e.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `HARD-LINE_Report_${refDateInput.value}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         window.filterByCategory = function(cat) {
             currentDayCategoryFilter = cat;
             document.getElementById('activeFilterBadge').innerText = cat === 'ALL' ? 'ALL' : `Days: ${cat}`;
@@ -409,18 +613,18 @@
             renderDashboard();
         }
 
-        // Quick Action: Mark Traveling Sailor as Returned On Board
         window.markReturned = async function(id) {
             const refDate = refDateInput.value;
             await updateDoc(doc(db, "hardline_personnel", id), {
                 status: "On Board",
                 lastReturnedDate: refDate,
+                travelHomeDate: "",
                 leaveStartDate: "",
+                leaveDays: "",
                 travelingDate: ""
             });
         }
 
-        // Modal Controls
         window.openModal = function() {
             document.getElementById('personForm').reset();
             document.getElementById('docId').value = '';
@@ -440,7 +644,6 @@
             document.getElementById('onBoardFields').classList.toggle('hidden', status !== 'On Board');
         }
 
-        // Save / Update Record
         document.getElementById('personForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const docId = document.getElementById('docId').value;
@@ -449,7 +652,9 @@
                 rank: document.getElementById('rank').value.trim(),
                 fullName: document.getElementById('fullName').value.trim(),
                 status: document.getElementById('status').value,
+                travelHomeDate: document.getElementById('travelHomeDate').value,
                 leaveStartDate: document.getElementById('leaveStartDate').value,
+                leaveDays: document.getElementById('leaveDaysInput').value,
                 travelingDate: document.getElementById('travelingDate').value,
                 attachedBase: document.getElementById('attachedBase').value.trim(),
                 attachDate: document.getElementById('attachDate').value,
@@ -464,7 +669,6 @@
             closeModal();
         });
 
-        // Edit Person
         window.editPerson = function(id) {
             const p = personnelData.find(item => item.id === id);
             if (!p) return;
@@ -473,18 +677,18 @@
             document.getElementById('rank').value = p.rank;
             document.getElementById('fullName').value = p.fullName;
             document.getElementById('status').value = p.status;
+            document.getElementById('travelHomeDate').value = p.travelHomeDate || '';
             document.getElementById('leaveStartDate').value = p.leaveStartDate || '';
+            document.getElementById('leaveDaysInput').value = p.leaveDays || '';
             document.getElementById('travelingDate').value = p.travelingDate || '';
             document.getElementById('attachedBase').value = p.attachedBase || '';
             document.getElementById('attachDate').value = p.attachDate || '';
             document.getElementById('lastReturnedDate').value = p.lastReturnedDate || '';
-            
             document.getElementById('modalTitle').innerText = 'Edit Personnel Record';
             toggleFormFields();
             document.getElementById('personModal').classList.remove('hidden');
         }
 
-        // Delete Person
         window.deletePerson = async function(id) {
             if (confirm("Are you sure you want to delete this record?")) {
                 await deleteDoc(doc(db, "hardline_personnel", id));
