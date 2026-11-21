@@ -270,9 +270,35 @@
                 <input type="hidden" id="docId">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Official Number *</label>
-                        <input type="text" id="officialNo" required placeholder="e.g. NRX 4499" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
-                    </div>
+    <label class="block text-xs text-slate-400 mb-1">Rank / Rate *</label>
+    <select id="rank" required class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+        <option value="" disabled selected>Select Rank / Rate</option>
+        <optgroup label="Officers (Ranks)">
+            <option value="Adm">Admiral (Adm)</option>
+            <option value="VAdm">Vice Admiral (VAdm)</option>
+            <option value="RAdm">Rear Admiral (RAdm)</option>
+            <option value="Cmde">Commodore (Cmde)</option>
+            <option value="Capt">Captain (Capt)</option>
+            <option value="Cdr">Commander (Cdr)</option>
+            <option value="LCdr">Lieutenant Commander (LCdr)</option>
+            <option value="Lt">Lieutenant (Lt)</option>
+            <option value="SLt">Sub Lieutenant (SLt)</option>
+            <option value="ASLt">Acting Sub Lieutenant (ASLt)</option>
+            <option value="Mid">Midshipman (Mid)</option>
+            <option value="OC">Officer Cadet (OC)</option>
+        </optgroup>
+        <optgroup label="Sailors (Rates)">
+            <option value="MCPO">Master Chief Petty Officer (MCPO)</option>
+            <option value="FCPO">Fleet Chief Petty Officer (FCPO)</option>
+            <option value="CPO">Chief Petty Officer (CPO)</option>
+            <option value="PO">Petty Officer (PO)</option>
+            <option value="LS">Leading Seaman (LS)</option>
+            <option value="AB">Able Seaman (AB)</option>
+            <option value="OS">Ordinary Seaman (OS)</option>
+            <option value="Rct">Recruit (Rct)</option>
+        </optgroup>
+    </select>
+</div>
                     <div>
                         <label class="block text-xs text-slate-400 mb-1">Rank *</label>
                         <input type="text" id="rank" required placeholder="e.g. Lt / PO / AB" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
