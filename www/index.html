@@ -196,7 +196,7 @@
                                 <th class="p-3">Official No</th>
                                 <th class="p-3">Rank / Rate & Name</th>
                                 <th class="p-3">Status</th>
-                                <th class="p-3">Travel to Home</th>
+                                <th class="p-3">Reported / Leave End</th>
                                 <th class="p-3">Leave Period</th>
                                 <th class="p-3">Travel to Ship</th>
                                 <th class="p-3">Days Since Leave</th>
@@ -242,7 +242,7 @@
                         <span id="previewTravelHome" class="font-bold text-sky-400">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Last Leave Day:</span>
+                        <span class="text-slate-400">Last Leave Day (Leave End):</span>
                         <span id="previewLastLeaveDay" class="font-semibold text-slate-200">-</span>
                     </div>
                     <div class="flex justify-between">
@@ -382,6 +382,39 @@
         const auth = getAuth(app);
         const personnelCol = collection(db, "hardline_personnel");
 
+        // Sri Lanka Navy Seniority Order (Officers first, then Sailors)
+        const RANK_SENIORITY = [
+            "ADM", "VADM", "RADM", "CMDE", "CAPT", "CDR", "LCDR", "LT", "SLT", "ASLT", "MID", "OC",
+            "MCPO", "FCPO", "CPO", "PO", "LS", "AB", "OS", "RCT"
+        ];
+
+        function getNumericOfficialNo(offNo) {
+            if (!offNo) return Number.MAX_SAFE_INTEGER;
+            const digits = String(offNo).replace(/\D/g, '');
+            return digits ? parseInt(digits, 10) : Number.MAX_SAFE_INTEGER;
+        }
+
+        function sortPersonnelList(list) {
+            return [...list].sort((a, b) => {
+                // 1. Rank / Rate Seniority
+                const rankA = (a.rank || '').toUpperCase();
+                const rankB = (b.rank || '').toUpperCase();
+                const idxA = RANK_SENIORITY.indexOf(rankA);
+                const idxB = RANK_SENIORITY.indexOf(rankB);
+                const orderA = idxA === -1 ? 999 : idxA;
+                const orderB = idxB === -1 ? 999 : idxB;
+                if (orderA !== orderB) return orderA - orderB;
+
+                // 2. Official Number (Numeric part only)
+                const numA = getNumericOfficialNo(a.officialNo);
+                const numB = getNumericOfficialNo(b.officialNo);
+                if (numA !== numB) return numA - numB;
+
+                // 3. Name Alphabetical
+                return (a.fullName || '').toUpperCase().localeCompare((b.fullName || '').toUpperCase());
+            });
+        }
+
         let personnelData = [];
         let currentDayCategoryFilter = 'ALL';
         let unsubscribeSnapshot = null;
@@ -424,7 +457,8 @@
 
         function startRealtimeSync() {
             unsubscribeSnapshot = onSnapshot(personnelCol, (snapshot) => {
-                personnelData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                const rawData = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                personnelData = sortPersonnelList(rawData);
                 renderDashboard();
             }, (error) => {
                 console.error("Firestore Error:", error);
@@ -453,10 +487,20 @@
             return Math.floor((end - start) / (1000 * 60 * 60 * 24));
         }
 
+        function getLeaveEndDate(p) {
+            if (p.leaveStartDate && p.leaveDays) {
+                return addDaysToDateStr(p.leaveStartDate, parseInt(p.leaveDays, 10) - 1);
+            }
+            if (p.travelingDate) {
+                return addDaysToDateStr(p.travelingDate, -1);
+            }
+            return '-';
+        }
+
         // Add Leave Modal & Auto-Calculation
         window.openAddLeaveModal = function() {
             const select = document.getElementById('leavePersonSelect');
-            select.innerHTML = personnelData.map(p => `<option value="${p.id}">${(p.officialNo || '').toUpperCase()} - ${(p.rank || '').toUpperCase()} ${(p.fullName || '').toUpperCase()} (${p.status})</option>`).join('');
+            select.innerHTML = personnelData.map(p => `<option value="${p.id}">${(p.rank || '').toUpperCase()} | ${(p.officialNo || '').toUpperCase()} - ${(p.fullName || '').toUpperCase()} (${p.status})</option>`).join('');
             document.getElementById('leaveForm').reset();
             document.getElementById('previewTravelHome').innerText = '-';
             document.getElementById('previewLastLeaveDay').innerText = '-';
@@ -546,17 +590,27 @@
 
                 if (statusFilter !== 'ALL' && p.status !== statusFilter) return;
                 if (currentDayCategoryFilter !== 'ALL' && dayCategory !== currentDayCategoryFilter) return;
-                if (searchQuery && !fullName.includes(searchQuery) && !offNo.includes(searchQuery)) return;
+                if (searchQuery && !fullName.includes(searchQuery) && !offNo.includes(searchQuery) && !rank.includes(searchQuery)) return;
 
                 let badgeClass = 'bg-emerald-900/60 text-emerald-300 border border-emerald-700';
                 if (p.status === 'On Leave') badgeClass = 'bg-rose-900/60 text-rose-300 border border-rose-700';
                 if (p.status === 'Temp Attached') badgeClass = 'bg-purple-900/60 text-purple-300 border border-purple-700';
 
+                // Reported / Leave End / Attach Date Column
+                let reportedOrEndHtml = '<span class="text-slate-500">-</span>';
+                if (p.status === 'On Board') {
+                    reportedOrEndHtml = `<span class="text-emerald-400">${p.lastReturnedDate || '-'}</span>`;
+                } else if (p.status === 'On Leave') {
+                    reportedOrEndHtml = `<span class="text-rose-400 font-medium">${getLeaveEndDate(p)}</span>`;
+                } else if (p.status === 'Temp Attached') {
+                    reportedOrEndHtml = `<span class="text-purple-400">${p.attachDate || '-'}</span>`;
+                }
+
                 let leavePeriodStr = '-';
                 if (p.status === 'On Leave') {
                     leavePeriodStr = `${p.leaveStartDate || '-'} (${p.leaveDays || '?'}D)`;
                 } else if (p.status === 'Temp Attached') {
-                    leavePeriodStr = `${attachedBase || 'ATTACHED'} (${p.attachDate || '-'})`;
+                    leavePeriodStr = `${attachedBase || 'ATTACHED'}`;
                 }
 
                 const row = `
@@ -564,7 +618,7 @@
                         <td class="p-3 font-mono text-xs text-slate-300">${offNo}</td>
                         <td class="p-3 font-semibold text-white">${rank} ${fullName}</td>
                         <td class="p-3"><span class="px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">${p.status}</span></td>
-                        <td class="p-3 text-sky-400 text-xs">${p.status === 'On Leave' ? (p.travelHomeDate || '-') : '-'}</td>
+                        <td class="p-3 text-xs">${reportedOrEndHtml}</td>
                         <td class="p-3 text-slate-300 text-xs">${leavePeriodStr}</td>
                         <td class="p-3 text-amber-400 text-xs font-medium">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
                         <td class="p-3 font-bold ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
@@ -617,21 +671,27 @@
             }
         }
 
-        // Export to CSV (Excel Compatible - All Uppercase)
+        // Export to CSV (Sorted & Uppercase)
         window.exportToCSV = function() {
-            const headers = ["OFFICIAL NO", "RANK / RATE", "NAME", "STATUS", "TRAVEL TO HOME", "LEAVE START", "LEAVE DAYS", "TRAVEL TO SHIP", "LAST RETURNED", "ATTACHED BASE"];
-            const rows = personnelData.map(p => [
-                (p.officialNo || '').toUpperCase(),
-                (p.rank || '').toUpperCase(),
-                (p.fullName || '').toUpperCase(),
-                (p.status || '').toUpperCase(),
-                p.travelHomeDate || '',
-                p.leaveStartDate || '',
-                p.leaveDays || '',
-                p.travelingDate || '',
-                p.lastReturnedDate || '',
-                (p.attachedBase || '').toUpperCase()
-            ]);
+            const headers = ["OFFICIAL NO", "RANK / RATE", "NAME", "STATUS", "REPORTED / LEAVE END / ATTACH DATE", "LEAVE START", "LEAVE DAYS", "TRAVEL TO SHIP", "ATTACHED BASE"];
+            const rows = personnelData.map(p => {
+                let dateCol = '';
+                if (p.status === 'On Board') dateCol = p.lastReturnedDate || '';
+                else if (p.status === 'On Leave') dateCol = getLeaveEndDate(p);
+                else if (p.status === 'Temp Attached') dateCol = p.attachDate || '';
+
+                return [
+                    (p.officialNo || '').toUpperCase(),
+                    (p.rank || '').toUpperCase(),
+                    (p.fullName || '').toUpperCase(),
+                    (p.status || '').toUpperCase(),
+                    dateCol,
+                    p.leaveStartDate || '',
+                    p.leaveDays || '',
+                    p.travelingDate || '',
+                    (p.attachedBase || '').toUpperCase()
+                ];
+            });
             const csvContent = "data:text/csv;charset=utf-8,"
                 + [headers, ...rows].map(e => e.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
             const encodedUri = encodeURI(csvContent);
