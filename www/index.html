@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLNS RANARISI HARD-LINE </title>
+    <title>SLNS RANARISI HARD-LINE | Naval Personnel & Leave Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -24,25 +24,20 @@
         <div class="navy-card w-full max-w-md p-8 rounded-2xl shadow-2xl border border-blue-900">
             <div class="text-center mb-6">
                 <i class="fa-solid fa-anchor text-4xl text-amber-400 mb-2"></i>
-                <h1 class="text-xl sm:text-2xl font-bold tracking-wider text-white leading-tight">
-                SLNS RANARISI<br>
-                <span class="text-amber-400">HARD-LINE</span>
-                </h1>
+                <h1 class="text-2xl font-bold tracking-wider text-white">SLNS RANARISI<br><span class="text-amber-400">HARD-LINE</span></h1>
                 <p class="text-xs text-blue-300 mt-1">Authorized Personnel Login</p>
             </div>
             <form id="loginForm" class="space-y-4">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Email Address</label>
-                    <input type="email" id="loginEmail" required placeholder="abcd@gmail.com" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white text-sm">
+                    <input type="email" id="loginEmail" required placeholder="officer@navy.lk" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white text-sm">
                 </div>
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Password</label>
                     <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2.5 text-white text-sm">
                 </div>
                 <p id="loginError" class="text-xs text-rose-400 hidden"></p>
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-lg transition">
-                    Sign In
-                </button>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-lg transition">Sign In</button>
             </form>
         </div>
     </div>
@@ -56,7 +51,10 @@
                 <div class="flex items-center space-x-3">
                     <i class="fa-solid fa-anchor text-3xl text-amber-400"></i>
                     <div>
-                        <h1 class="text-2xl font-bold tracking-wider text-white">SLNS RANARISI HARD-LINE</h1>
+                        <h1 class="text-xl sm:text-2xl font-bold tracking-wider text-white leading-tight">
+                            SLNS RANARISI<br>
+                            <span class="text-amber-400">HARD-LINE</span>
+                        </h1>
                         <p class="text-xs text-blue-300">Ship's Complement, Leave & Movement Management</p>
                     </div>
                 </div>
@@ -87,11 +85,20 @@
         <!-- Main Content -->
         <main class="flex-grow max-w-7xl w-full mx-auto p-4 space-y-6">
 
-            <!-- Alert Banner: Today's Traveling In (Returning to Ship after Leave) -->
+            <!-- Alert Banner 1: Reporting Today (Leave End Date) -->
+            <div id="reportingAlertSection" class="hidden bg-emerald-950/60 border-l-4 border-emerald-500 p-4 rounded-r-lg shadow-md">
+                <div class="flex items-center gap-3 mb-2">
+                    <i class="fa-solid fa-ship text-emerald-400 text-xl animate-pulse"></i>
+                    <h2 class="text-lg font-bold text-emerald-300">Reporting Today (Leave End Date)</h2>
+                </div>
+                <div id="reportingList" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2"></div>
+            </div>
+
+            <!-- Alert Banner 2: Traveling to Ship Today -->
             <div id="travelAlertSection" class="hidden bg-amber-950/60 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-md">
                 <div class="flex items-center gap-3 mb-2">
-                    <i class="fa-solid fa-ship text-amber-400 text-xl animate-pulse"></i>
-                    <h2 class="text-lg font-bold text-amber-300">Traveling to Ship Today (Leave Completed)</h2>
+                    <i class="fa-solid fa-route text-amber-400 text-xl animate-pulse"></i>
+                    <h2 class="text-lg font-bold text-amber-300">Traveling to Ship Today</h2>
                 </div>
                 <div id="travelingList" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2"></div>
             </div>
@@ -128,7 +135,7 @@
                         </div>
                         <div class="p-3 bg-purple-900/50 rounded-lg text-purple-400"><i class="fa-solid fa-building-shield text-xl"></i></div>
                     </div>
-                    <p class="text-xs text-slate-400 mt-3">Attached to other bases/ships</p>
+                    <p class="text-xs text-slate-400 mt-3">On duty at other bases/ships</p>
                 </div>
 
                 <div class="navy-card p-5 rounded-xl shadow">
@@ -139,15 +146,15 @@
                         </div>
                         <div class="p-3 bg-amber-900/50 rounded-lg text-amber-400"><i class="fa-solid fa-route text-xl"></i></div>
                     </div>
-                    <p class="text-xs text-slate-400 mt-3">Returning on selected date</p>
+                    <p class="text-xs text-slate-400 mt-3">Reporting Today: <span id="statReportingToday" class="text-emerald-400 font-bold">0</span></p>
                 </div>
             </div>
 
-            <!-- Days Since Last Leave Breakdown (On Board Personnel) -->
+            <!-- Days Since Last Leave Breakdown -->
             <div class="navy-card p-5 rounded-xl shadow">
                 <div class="flex justify-between items-center mb-4">
                     <div>
-                        <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i>Days Since Last Leave (On Board Personnel)</h2>
+                        <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i>Days Since Last Leave (On Board & Temp Attached)</h2>
                         <p class="text-xs text-slate-400">Click any category card below to filter the personnel table</p>
                     </div>
                     <button onclick="filterByCategory('ALL')" class="no-print text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded text-slate-200">Show All</button>
@@ -200,7 +207,7 @@
                                 <th class="p-3 whitespace-nowrap">Rank / Rate & Name</th>
                                 <th class="p-3 whitespace-nowrap">Status</th>
                                 <th class="p-3 whitespace-nowrap">Reported / Leave End</th>
-                                <th class="p-3 whitespace-nowrap">Leave Period</th>
+                                <th class="p-3 whitespace-nowrap">Leave / Attach Info</th>
                                 <th class="p-3 whitespace-nowrap">Travel to Ship</th>
                                 <th class="p-3 whitespace-nowrap">Days Since Leave</th>
                                 <th class="p-3 text-right whitespace-nowrap no-print">Actions</th>
@@ -219,7 +226,7 @@
     <div id="leaveModal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50 no-print">
         <div class="navy-card w-full max-w-lg rounded-xl shadow-2xl overflow-hidden">
             <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-suitcase-rolling text-rose-400 mr-2"></i>Add Leave & Calculate Traveling Dates</h3>
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-suitcase-rolling text-rose-400 mr-2"></i>Add Leave & Calculate Dates</h3>
                 <button onclick="closeAddLeaveModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <form id="leaveForm" class="p-6 space-y-4">
@@ -234,22 +241,22 @@
                     </div>
                     <div>
                         <label class="block text-xs text-amber-400 mb-1">Number of Leave Days *</label>
-                        <input type="number" id="calcLeaveDays" required min="1" onchange="calculateLeaveDates()" placeholder="e.g. 14" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                        <input type="number" id="calcLeaveDays" required min="1" onchange="calculateLeaveDates()" placeholder="e.g. 5" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
                     </div>
                 </div>
 
                 <!-- Auto Calculated Preview -->
                 <div class="bg-slate-900 border border-slate-700 rounded-lg p-4 space-y-2 text-sm">
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Traveling to Home (Day Before Start):</span>
+                        <span class="text-slate-400">Travel to Home (Start - 1):</span>
                         <span id="previewTravelHome" class="font-bold text-sky-400">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Last Leave Day (Leave End):</span>
-                        <span id="previewLastLeaveDay" class="font-semibold text-slate-200">-</span>
+                        <span class="text-slate-400">Leave End / Reporting Date:</span>
+                        <span id="previewLastLeaveDay" class="font-bold text-emerald-400">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Traveling to Ship (Day After Leave Ends):</span>
+                        <span class="text-slate-400">Travel to Ship (Auto On Board After):</span>
                         <span id="previewTravelShip" class="font-bold text-amber-400">-</span>
                     </div>
                 </div>
@@ -292,7 +299,7 @@
                                 <option value="SLT">SUB LIEUTENANT (SLT)</option>
                                 <option value="ASLT">ACTING SUB LIEUTENANT (ASLT)</option>
                                 <option value="MID">MIDSHIPMAN (MID)</option>
-                                <option value="OCDT">OFFICER CADET (OCDT)</option>
+                                <option value="OC">OFFICER CADET (OC)</option>
                             </optgroup>
                             <optgroup label="SAILORS (RATES)">
                                 <option value="MCPO">MASTER CHIEF PETTY OFFICER (MCPO)</option>
@@ -301,8 +308,8 @@
                                 <option value="PO">PETTY OFFICER (PO)</option>
                                 <option value="LS">LEADING SEAMAN (LS)</option>
                                 <option value="AB">ABLE SEAMAN (AB)</option>
-                                <option value="OD">ORDINARY SEAMAN (OD)</option>
-                                <option value="REC">RECRUIT (REC)</option>
+                                <option value="OS">ORDINARY SEAMAN (OS)</option>
+                                <option value="RCT">RECRUIT (RCT)</option>
                             </optgroup>
                         </select>
                     </div>
@@ -336,7 +343,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs text-amber-400 mb-1">Traveling to Ship Date (Return)</label>
+                        <label class="block text-xs text-amber-400 mb-1">Travel to Ship Date</label>
                         <input type="date" id="travelingDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
                     </div>
                 </div>
@@ -353,8 +360,9 @@
                 </div>
 
                 <div id="onBoardFields" class="bg-slate-900/60 p-3 rounded border border-slate-700">
-                    <label class="block text-xs text-emerald-400 mb-1">Last Returned from Leave Date (Reported On Board)</label>
+                    <label class="block text-xs text-emerald-400 mb-1">Last Leave End / Reported Date</label>
                     <input type="date" id="lastReturnedDate" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white text-sm">
+                    <p class="text-[11px] text-slate-400 mt-1">Used to count days since last leave for both On Board & Temp Attached personnel.</p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-3 border-t border-slate-700">
@@ -385,10 +393,9 @@
         const auth = getAuth(app);
         const personnelCol = collection(db, "hardline_personnel");
 
-        // Sri Lanka Navy Seniority Order (Officers first, then Sailors)
         const RANK_SENIORITY = [
-            "ADM", "VADM", "RADM", "CMDE", "CAPT", "CDR", "LCDR", "LT", "SLT", "ASLT", "MID", "OCDT",
-            "MCPO", "FCPO", "CPO", "PO", "LS", "AB", "OD", "REC"
+            "ADM", "VADM", "RADM", "CMDE", "CAPT", "CDR", "LCDR", "LT", "SLT", "ASLT", "MID", "OC",
+            "MCPO", "FCPO", "CPO", "PO", "LS", "AB", "OS", "RCT"
         ];
 
         function getNumericOfficialNo(offNo) {
@@ -399,21 +406,16 @@
 
         function sortPersonnelList(list) {
             return [...list].sort((a, b) => {
-                // 1. Rank / Rate Seniority
-                const rankA = (a.rank || '').toUpperCase();
-                const rankB = (b.rank || '').toUpperCase();
-                const idxA = RANK_SENIORITY.indexOf(rankA);
-                const idxB = RANK_SENIORITY.indexOf(rankB);
+                const idxA = RANK_SENIORITY.indexOf((a.rank || '').toUpperCase());
+                const idxB = RANK_SENIORITY.indexOf((b.rank || '').toUpperCase());
                 const orderA = idxA === -1 ? 999 : idxA;
                 const orderB = idxB === -1 ? 999 : idxB;
                 if (orderA !== orderB) return orderA - orderB;
 
-                // 2. Official Number (Numeric part only)
                 const numA = getNumericOfficialNo(a.officialNo);
                 const numB = getNumericOfficialNo(b.officialNo);
                 if (numA !== numB) return numA - numB;
 
-                // 3. Name Alphabetical
                 return (a.fullName || '').toUpperCase().localeCompare((b.fullName || '').toUpperCase());
             });
         }
@@ -426,7 +428,6 @@
         refDateInput.valueAsDate = new Date();
         refDateInput.addEventListener('change', () => renderDashboard());
 
-        // Auth State Listener
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('loginScreen').classList.add('hidden');
@@ -439,7 +440,6 @@
             }
         });
 
-        // Login Form Submit
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value.trim();
@@ -454,9 +454,7 @@
             }
         });
 
-        window.logoutUser = async function() {
-            await signOut(auth);
-        }
+        window.logoutUser = async function() { await signOut(auth); }
 
         function startRealtimeSync() {
             unsubscribeSnapshot = onSnapshot(personnelCol, (snapshot) => {
@@ -465,42 +463,45 @@
                 renderDashboard();
             }, (error) => {
                 console.error("Firestore Error:", error);
-                document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Database error. Check Firestore Rules in Firebase Console.</td></tr>`;
+                document.getElementById('personnelTableBody').innerHTML = `<tr><td colspan="8" class="p-6 text-center text-rose-400">Database error. Check Firestore Rules.</td></tr>`;
             });
         }
 
-        // Date Helper (YYYY-MM-DD)
         function addDaysToDateStr(dateStr, daysToAdd) {
             if (!dateStr || isNaN(daysToAdd)) return '';
             const parts = dateStr.split('-');
             const d = new Date(parts[0], parts[1] - 1, parts[2]);
             d.setDate(d.getDate() + Number(daysToAdd));
-            const yyyy = d.getFullYear();
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd}`;
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
 
         function getDaysDifference(startDateStr, endDateStr) {
             if (!startDateStr || !endDateStr) return null;
-            const sParts = startDateStr.split('-');
-            const eParts = endDateStr.split('-');
-            const start = new Date(sParts[0], sParts[1] - 1, sParts[2]);
-            const end = new Date(eParts[0], eParts[1] - 1, eParts[2]);
-            return Math.floor((end - start) / (1000 * 60 * 60 * 24));
+            const s = startDateStr.split('-');
+            const e = endDateStr.split('-');
+            return Math.floor((new Date(e[0], e[1] - 1, e[2]) - new Date(s[0], s[1] - 1, s[2])) / (1000 * 60 * 60 * 24));
         }
 
         function getLeaveEndDate(p) {
-            if (p.leaveStartDate && p.leaveDays) {
-                return addDaysToDateStr(p.leaveStartDate, parseInt(p.leaveDays, 10) - 1);
-            }
-            if (p.travelingDate) {
-                return addDaysToDateStr(p.travelingDate, -1);
-            }
-            return '-';
+            if (p.leaveStartDate && p.leaveDays) return addDaysToDateStr(p.leaveStartDate, parseInt(p.leaveDays, 10) - 1);
+            if (p.travelingDate) return addDaysToDateStr(p.travelingDate, -1);
+            return '';
         }
 
-        // Add Leave Modal & Auto-Calculation
+        // Auto On Board after Travel to Ship date (e.g., after Nov 15 -> Nov 16 onwards), counting from Leave End (Nov 14)
+        function getEffectiveState(p, refDate) {
+            let effStatus = p.status;
+            let effLastReturned = p.lastReturnedDate || '';
+            const leaveEnd = getLeaveEndDate(p);
+            const travelShip = p.travelingDate || '';
+
+            if (p.status === 'On Leave' && travelShip && refDate > travelShip) {
+                effStatus = 'On Board';
+                effLastReturned = leaveEnd || p.lastReturnedDate || '';
+            }
+            return { effStatus, effLastReturned, leaveEnd, travelShip };
+        }
+
         window.openAddLeaveModal = function() {
             const select = document.getElementById('leavePersonSelect');
             select.innerHTML = personnelData.map(p => `<option value="${p.id}">${(p.rank || '').toUpperCase()} | ${(p.officialNo || '').toUpperCase()} - ${(p.fullName || '').toUpperCase()} (${p.status})</option>`).join('');
@@ -511,22 +512,16 @@
             document.getElementById('leaveModal').classList.remove('hidden');
         }
 
-        window.closeAddLeaveModal = function() {
-            document.getElementById('leaveModal').classList.add('hidden');
-        }
+        window.closeAddLeaveModal = function() { document.getElementById('leaveModal').classList.add('hidden'); }
 
         window.calculateLeaveDates = function() {
             const startStr = document.getElementById('calcLeaveStart').value;
             const days = parseInt(document.getElementById('calcLeaveDays').value, 10);
             if (!startStr || !days || days < 1) return;
 
-            const travelHome = addDaysToDateStr(startStr, -1);
-            const lastLeaveDay = addDaysToDateStr(startStr, days - 1);
-            const travelShip = addDaysToDateStr(startStr, days);
-
-            document.getElementById('previewTravelHome').innerText = travelHome;
-            document.getElementById('previewLastLeaveDay').innerText = lastLeaveDay;
-            document.getElementById('previewTravelShip').innerText = travelShip;
+            document.getElementById('previewTravelHome').innerText = addDaysToDateStr(startStr, -1);
+            document.getElementById('previewLastLeaveDay').innerText = addDaysToDateStr(startStr, days - 1);
+            document.getElementById('previewTravelShip').innerText = addDaysToDateStr(startStr, days);
         }
 
         document.getElementById('leaveForm').addEventListener('submit', async (e) => {
@@ -535,20 +530,16 @@
             const startStr = document.getElementById('calcLeaveStart').value;
             const days = parseInt(document.getElementById('calcLeaveDays').value, 10);
 
-            const travelHome = addDaysToDateStr(startStr, -1);
-            const travelShip = addDaysToDateStr(startStr, days);
-
             await updateDoc(doc(db, "hardline_personnel", personId), {
                 status: "On Leave",
-                travelHomeDate: travelHome,
+                travelHomeDate: addDaysToDateStr(startStr, -1),
                 leaveStartDate: startStr,
                 leaveDays: days,
-                travelingDate: travelShip
+                travelingDate: addDaysToDateStr(startStr, days)
             });
             closeAddLeaveModal();
         });
 
-        // Render Dashboard
         window.renderDashboard = function() {
             const refDate = refDateInput.value;
             const searchQuery = document.getElementById('searchInput').value.toUpperCase();
@@ -559,6 +550,7 @@
             let onLeaveCount = 0;
             let tempAttachCount = 0;
             let travelingTodayList = [];
+            let reportingTodayList = [];
             let cats = { '0-10': 0, '11-20': 0, '21-30': 0, '31-40': 0, '40+': 0 };
 
             const tbody = document.getElementById('personnelTableBody');
@@ -570,20 +562,26 @@
                 const fullName = (p.fullName || '').toUpperCase();
                 const attachedBase = (p.attachedBase || '').toUpperCase();
 
-                if (p.status === 'On Board') onBoardCount++;
-                if (p.status === 'On Leave') onLeaveCount++;
-                if (p.status === 'Temp Attached') tempAttachCount++;
+                const { effStatus, effLastReturned, leaveEnd, travelShip } = getEffectiveState(p, refDate);
 
-                // Traveling to Ship Today
-                if (p.status === 'On Leave' && p.travelingDate === refDate) {
-                    travelingTodayList.push({ ...p, officialNo: offNo, rank, fullName });
+                if (effStatus === 'On Board') onBoardCount++;
+                if (effStatus === 'On Leave') onLeaveCount++;
+                if (effStatus === 'Temp Attached') tempAttachCount++;
+
+                // Reporting Today = Leave End Date (e.g. Nov 14)
+                if (effStatus === 'On Leave' && leaveEnd === refDate) {
+                    reportingTodayList.push({ ...p, officialNo: offNo, rank, fullName, leaveEnd });
+                }
+                // Traveling to Ship Today (e.g. Nov 15)
+                if (effStatus === 'On Leave' && travelShip === refDate) {
+                    travelingTodayList.push({ ...p, officialNo: offNo, rank, fullName, leaveEnd });
                 }
 
-                // Days Since Last Leave (On Board)
+                // Days Since Last Leave (On Board & Temp Attached)
                 let daysSinceLeave = null;
                 let dayCategory = null;
-                if (p.status === 'On Board' && p.lastReturnedDate) {
-                    daysSinceLeave = getDaysDifference(p.lastReturnedDate, refDate);
+                if ((effStatus === 'On Board' || effStatus === 'Temp Attached') && effLastReturned) {
+                    daysSinceLeave = getDaysDifference(effLastReturned, refDate);
                     if (daysSinceLeave >= 0 && daysSinceLeave <= 10) { cats['0-10']++; dayCategory = '0-10'; }
                     else if (daysSinceLeave >= 11 && daysSinceLeave <= 20) { cats['11-20']++; dayCategory = '11-20'; }
                     else if (daysSinceLeave >= 21 && daysSinceLeave <= 30) { cats['21-30']++; dayCategory = '21-30'; }
@@ -591,39 +589,36 @@
                     else if (daysSinceLeave > 40) { cats['40+']++; dayCategory = '40+'; }
                 }
 
-                if (statusFilter !== 'ALL' && p.status !== statusFilter) return;
+                if (statusFilter !== 'ALL' && effStatus !== statusFilter) return;
                 if (currentDayCategoryFilter !== 'ALL' && dayCategory !== currentDayCategoryFilter) return;
                 if (searchQuery && !fullName.includes(searchQuery) && !offNo.includes(searchQuery) && !rank.includes(searchQuery)) return;
 
                 let badgeClass = 'bg-emerald-900/60 text-emerald-300 border border-emerald-700';
-                if (p.status === 'On Leave') badgeClass = 'bg-rose-900/60 text-rose-300 border border-rose-700';
-                if (p.status === 'Temp Attached') badgeClass = 'bg-purple-900/60 text-purple-300 border border-purple-700';
+                if (effStatus === 'On Leave') badgeClass = 'bg-rose-900/60 text-rose-300 border border-rose-700';
+                if (effStatus === 'Temp Attached') badgeClass = 'bg-purple-900/60 text-purple-300 border border-purple-700';
 
-                // Reported / Leave End / Attach Date Column
                 let reportedOrEndHtml = '<span class="text-slate-500">-</span>';
-                if (p.status === 'On Board') {
-                    reportedOrEndHtml = `<span class="text-emerald-400">${p.lastReturnedDate || '-'}</span>`;
-                } else if (p.status === 'On Leave') {
-                    reportedOrEndHtml = `<span class="text-rose-400 font-medium">${getLeaveEndDate(p)}</span>`;
-                } else if (p.status === 'Temp Attached') {
-                    reportedOrEndHtml = `<span class="text-purple-400">${p.attachDate || '-'}</span>`;
+                if (effStatus === 'On Board' || effStatus === 'Temp Attached') {
+                    reportedOrEndHtml = `<span class="text-emerald-400">${effLastReturned || '-'}</span>`;
+                } else if (effStatus === 'On Leave') {
+                    reportedOrEndHtml = `<span class="text-rose-400 font-medium">${leaveEnd || '-'}</span>`;
                 }
 
-                let leavePeriodStr = '-';
-                if (p.status === 'On Leave') {
-                    leavePeriodStr = `${p.leaveStartDate || '-'} (${p.leaveDays || '?'}D)`;
-                } else if (p.status === 'Temp Attached') {
-                    leavePeriodStr = `${attachedBase || 'ATTACHED'}`;
+                let leaveOrAttachInfoHtml = '<span class="text-slate-500">-</span>';
+                if (effStatus === 'On Leave') {
+                    leaveOrAttachInfoHtml = `<span class="text-slate-300">${p.leaveStartDate || '-'} (${p.leaveDays || '?'}D)</span>`;
+                } else if (effStatus === 'Temp Attached') {
+                    leaveOrAttachInfoHtml = `<span class="text-purple-300 font-medium">${attachedBase || 'ATTACHED'}</span> <span class="text-slate-400">(${p.attachDate || '-'})</span>`;
                 }
 
-                const row = `
+                tbody.innerHTML += `
                     <tr class="hover:bg-slate-800/50 transition">
                         <td class="p-3 font-mono text-xs text-slate-300 whitespace-nowrap">${offNo}</td>
                         <td class="p-3 font-semibold text-white whitespace-nowrap">${rank} ${fullName}</td>
-                        <td class="p-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap inline-block ${badgeClass}">${p.status}</span></td>
+                        <td class="p-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap inline-block ${badgeClass}">${effStatus}</span></td>
                         <td class="p-3 text-xs whitespace-nowrap">${reportedOrEndHtml}</td>
-                        <td class="p-3 text-slate-300 text-xs whitespace-nowrap">${leavePeriodStr}</td>
-                        <td class="p-3 text-amber-400 text-xs font-medium whitespace-nowrap">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
+                        <td class="p-3 text-xs whitespace-nowrap">${leaveOrAttachInfoHtml}</td>
+                        <td class="p-3 text-amber-400 text-xs font-medium whitespace-nowrap">${effStatus === 'On Leave' ? (travelShip || '-') : '-'}</td>
                         <td class="p-3 font-bold whitespace-nowrap ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
                             ${daysSinceLeave !== null && daysSinceLeave >= 0 ? daysSinceLeave + ' DAYS' : '-'}
                         </td>
@@ -633,7 +628,6 @@
                         </td>
                     </tr>
                 `;
-                tbody.innerHTML += row;
             });
 
             if (tbody.innerHTML === '') {
@@ -643,10 +637,10 @@
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statOnBoard').innerText = onBoardCount;
             document.getElementById('statOnLeave').innerText = onLeaveCount;
-            const leavePct = total > 0 ? ((onLeaveCount / total) * 100).toFixed(1) : 0;
-            document.getElementById('statLeavePct').innerText = `${leavePct}%`;
+            document.getElementById('statLeavePct').innerText = `${total > 0 ? ((onLeaveCount / total) * 100).toFixed(1) : 0}%`;
             document.getElementById('statTempAttach').innerText = tempAttachCount;
             document.getElementById('statTravelingToday').innerText = travelingTodayList.length;
+            document.getElementById('statReportingToday').innerText = reportingTodayList.length;
 
             document.getElementById('cat-0-10').innerText = cats['0-10'];
             document.getElementById('cat-11-20').innerText = cats['11-20'];
@@ -654,6 +648,27 @@
             document.getElementById('cat-31-40').innerText = cats['31-40'];
             document.getElementById('cat-40+').innerText = cats['40+'];
 
+            // Banner 1: Reporting Today
+            const repSection = document.getElementById('reportingAlertSection');
+            const repContainer = document.getElementById('reportingList');
+            if (reportingTodayList.length > 0) {
+                repSection.classList.remove('hidden');
+                repContainer.innerHTML = reportingTodayList.map(p => `
+                    <div class="bg-slate-900 border border-emerald-500/40 p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-white text-sm">${p.rank} ${p.fullName}</p>
+                            <p class="text-xs text-slate-400">${p.officialNo}</p>
+                        </div>
+                        <button onclick="markReturned('${p.id}', '${p.leaveEnd}')" class="no-print bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold whitespace-nowrap">
+                            Mark On Board
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                repSection.classList.add('hidden');
+            }
+
+            // Banner 2: Traveling to Ship Today
             const alertSection = document.getElementById('travelAlertSection');
             const travelContainer = document.getElementById('travelingList');
             if (travelingTodayList.length > 0) {
@@ -664,7 +679,7 @@
                             <p class="font-bold text-white text-sm">${p.rank} ${p.fullName}</p>
                             <p class="text-xs text-slate-400">${p.officialNo}</p>
                         </div>
-                        <button onclick="markReturned('${p.id}')" class="no-print bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold whitespace-nowrap">
+                        <button onclick="markReturned('${p.id}', '${p.leaveEnd}')" class="no-print bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold whitespace-nowrap">
                             Mark On Board
                         </button>
                     </div>
@@ -674,33 +689,27 @@
             }
         }
 
-        // Export to CSV (Sorted & Uppercase)
         window.exportToCSV = function() {
-            const headers = ["OFFICIAL NO", "RANK / RATE", "NAME", "STATUS", "REPORTED / LEAVE END / ATTACH DATE", "LEAVE START", "LEAVE DAYS", "TRAVEL TO SHIP", "ATTACHED BASE"];
+            const refDate = refDateInput.value;
+            const headers = ["OFFICIAL NO", "RANK / RATE", "NAME", "STATUS", "REPORTED / LEAVE END", "LEAVE START", "LEAVE DAYS", "TRAVEL TO SHIP", "ATTACHED BASE", "ATTACH DATE", "DAYS SINCE LEAVE"];
             const rows = personnelData.map(p => {
-                let dateCol = '';
-                if (p.status === 'On Board') dateCol = p.lastReturnedDate || '';
-                else if (p.status === 'On Leave') dateCol = getLeaveEndDate(p);
-                else if (p.status === 'Temp Attached') dateCol = p.attachDate || '';
-
+                const { effStatus, effLastReturned, leaveEnd, travelShip } = getEffectiveState(p, refDate);
+                let dateCol = (effStatus === 'On Board' || effStatus === 'Temp Attached') ? effLastReturned : leaveEnd;
+                let daysCol = '';
+                if ((effStatus === 'On Board' || effStatus === 'Temp Attached') && effLastReturned) {
+                    const d = getDaysDifference(effLastReturned, refDate);
+                    if (d !== null && d >= 0) daysCol = d;
+                }
                 return [
-                    (p.officialNo || '').toUpperCase(),
-                    (p.rank || '').toUpperCase(),
-                    (p.fullName || '').toUpperCase(),
-                    (p.status || '').toUpperCase(),
-                    dateCol,
-                    p.leaveStartDate || '',
-                    p.leaveDays || '',
-                    p.travelingDate || '',
-                    (p.attachedBase || '').toUpperCase()
+                    (p.officialNo || '').toUpperCase(), (p.rank || '').toUpperCase(), (p.fullName || '').toUpperCase(),
+                    effStatus.toUpperCase(), dateCol, p.leaveStartDate || '', p.leaveDays || '',
+                    effStatus === 'On Leave' ? travelShip : '', (p.attachedBase || '').toUpperCase(), p.attachDate || '', daysCol
                 ];
             });
-            const csvContent = "data:text/csv;charset=utf-8,"
-                + [headers, ...rows].map(e => e.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
-            const encodedUri = encodeURI(csvContent);
+            const csvContent = "data:text/csv;charset=utf-8," + [headers, ...rows].map(e => e.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `HARD-LINE_Report_${refDateInput.value}.csv`);
+            link.setAttribute("href", encodeURI(csvContent));
+            link.setAttribute("download", `HARD-LINE_Report_${refDate}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -709,15 +718,16 @@
         window.filterByCategory = function(cat) {
             currentDayCategoryFilter = cat;
             document.getElementById('activeFilterBadge').innerText = cat === 'ALL' ? 'ALL' : `DAYS: ${cat}`;
-            if (cat !== 'ALL') document.getElementById('statusFilter').value = 'On Board';
+            if (cat !== 'ALL') document.getElementById('statusFilter').value = 'ALL';
             renderDashboard();
         }
 
-        window.markReturned = async function(id) {
-            const refDate = refDateInput.value;
+        // Marks On Board and sets Last Returned Date to Leave End Date (e.g. Nov 14)
+        window.markReturned = async function(id, leaveEndDate) {
+            const returnDate = leaveEndDate || refDateInput.value;
             await updateDoc(doc(db, "hardline_personnel", id), {
                 status: "On Board",
-                lastReturnedDate: refDate,
+                lastReturnedDate: returnDate,
                 travelHomeDate: "",
                 leaveStartDate: "",
                 leaveDays: "",
@@ -733,15 +743,13 @@
             document.getElementById('personModal').classList.remove('hidden');
         }
 
-        window.closeModal = function() {
-            document.getElementById('personModal').classList.add('hidden');
-        }
+        window.closeModal = function() { document.getElementById('personModal').classList.add('hidden'); }
 
         window.toggleFormFields = function() {
             const status = document.getElementById('status').value;
             document.getElementById('leaveFields').classList.toggle('hidden', status !== 'On Leave');
             document.getElementById('attachFields').classList.toggle('hidden', status !== 'Temp Attached');
-            document.getElementById('onBoardFields').classList.toggle('hidden', status !== 'On Board');
+            document.getElementById('onBoardFields').classList.toggle('hidden', status === 'On Leave');
         }
 
         document.getElementById('personForm').addEventListener('submit', async (e) => {
@@ -761,11 +769,8 @@
                 lastReturnedDate: document.getElementById('lastReturnedDate').value
             };
 
-            if (docId) {
-                await updateDoc(doc(db, "hardline_personnel", docId), data);
-            } else {
-                await addDoc(personnelCol, data);
-            }
+            if (docId) await updateDoc(doc(db, "hardline_personnel", docId), data);
+            else await addDoc(personnelCol, data);
             closeModal();
         });
 
