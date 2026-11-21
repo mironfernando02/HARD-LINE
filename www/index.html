@@ -289,7 +289,7 @@
                                 <option value="SLT">SUB LIEUTENANT (SLT)</option>
                                 <option value="ASLT">ACTING SUB LIEUTENANT (ASLT)</option>
                                 <option value="MID">MIDSHIPMAN (MID)</option>
-                                <option value="OC">OFFICER CADET (OC)</option>
+                                <option value="OCDT">OFFICER CADET (OCDT)</option>
                             </optgroup>
                             <optgroup label="SAILORS (RATES)">
                                 <option value="MCPO">MASTER CHIEF PETTY OFFICER (MCPO)</option>
@@ -298,8 +298,8 @@
                                 <option value="PO">PETTY OFFICER (PO)</option>
                                 <option value="LS">LEADING SEAMAN (LS)</option>
                                 <option value="AB">ABLE SEAMAN (AB)</option>
-                                <option value="OS">ORDINARY SEAMAN (OS)</option>
-                                <option value="RCT">RECRUIT (RCT)</option>
+                                <option value="OD">ORDINARY SEAMAN (OD)</option>
+                                <option value="REC">RECRUIT (REC)</option>
                             </optgroup>
                         </select>
                     </div>
@@ -384,8 +384,8 @@
 
         // Sri Lanka Navy Seniority Order (Officers first, then Sailors)
         const RANK_SENIORITY = [
-            "ADM", "VADM", "RADM", "CMDE", "CAPT", "CDR", "LCDR", "LT", "SLT", "ASLT", "MID", "OC",
-            "MCPO", "FCPO", "CPO", "PO", "LS", "AB", "OS", "RCT"
+            "ADM", "VADM", "RADM", "CMDE", "CAPT", "CDR", "LCDR", "LT", "SLT", "ASLT", "MID", "OCDT",
+            "MCPO", "FCPO", "CPO", "PO", "LS", "AB", "OD", "REC"
         ];
 
         function getNumericOfficialNo(offNo) {
