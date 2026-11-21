@@ -193,14 +193,14 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-900/80 text-slate-400 text-xs uppercase border-b border-slate-700">
-                                <th class="p-3">Official No</th>
-                                <th class="p-3">Rank / Rate & Name</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3">Reported / Leave End</th>
-                                <th class="p-3">Leave Period</th>
-                                <th class="p-3">Travel to Ship</th>
-                                <th class="p-3">Days Since Leave</th>
-                                <th class="p-3 text-right no-print">Actions</th>
+                                <th class="p-3 whitespace-nowrap">Official No</th>
+                                <th class="p-3 whitespace-nowrap">Rank / Rate & Name</th>
+                                <th class="p-3 whitespace-nowrap">Status</th>
+                                <th class="p-3 whitespace-nowrap">Reported / Leave End</th>
+                                <th class="p-3 whitespace-nowrap">Leave Period</th>
+                                <th class="p-3 whitespace-nowrap">Travel to Ship</th>
+                                <th class="p-3 whitespace-nowrap">Days Since Leave</th>
+                                <th class="p-3 text-right whitespace-nowrap no-print">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="personnelTableBody" class="divide-y divide-slate-800 text-sm">
@@ -615,16 +615,16 @@
 
                 const row = `
                     <tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 font-mono text-xs text-slate-300">${offNo}</td>
-                        <td class="p-3 font-semibold text-white">${rank} ${fullName}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">${p.status}</span></td>
-                        <td class="p-3 text-xs">${reportedOrEndHtml}</td>
-                        <td class="p-3 text-slate-300 text-xs">${leavePeriodStr}</td>
-                        <td class="p-3 text-amber-400 text-xs font-medium">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
-                        <td class="p-3 font-bold ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
+                        <td class="p-3 font-mono text-xs text-slate-300 whitespace-nowrap">${offNo}</td>
+                        <td class="p-3 font-semibold text-white whitespace-nowrap">${rank} ${fullName}</td>
+                        <td class="p-3 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap inline-block ${badgeClass}">${p.status}</span></td>
+                        <td class="p-3 text-xs whitespace-nowrap">${reportedOrEndHtml}</td>
+                        <td class="p-3 text-slate-300 text-xs whitespace-nowrap">${leavePeriodStr}</td>
+                        <td class="p-3 text-amber-400 text-xs font-medium whitespace-nowrap">${p.status === 'On Leave' ? (p.travelingDate || '-') : '-'}</td>
+                        <td class="p-3 font-bold whitespace-nowrap ${daysSinceLeave > 30 ? 'text-rose-400' : 'text-emerald-400'}">
                             ${daysSinceLeave !== null && daysSinceLeave >= 0 ? daysSinceLeave + ' DAYS' : '-'}
                         </td>
-                        <td class="p-3 text-right space-x-2 no-print">
+                        <td class="p-3 text-right space-x-2 whitespace-nowrap no-print">
                             <button onclick="editPerson('${p.id}')" class="text-blue-400 hover:text-blue-300" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button onclick="deletePerson('${p.id}')" class="text-rose-400 hover:text-rose-300" title="Delete"><i class="fa-solid fa-trash"></i></button>
                         </td>
@@ -661,7 +661,7 @@
                             <p class="font-bold text-white text-sm">${p.rank} ${p.fullName}</p>
                             <p class="text-xs text-slate-400">${p.officialNo}</p>
                         </div>
-                        <button onclick="markReturned('${p.id}')" class="no-print bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold">
+                        <button onclick="markReturned('${p.id}')" class="no-print bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded font-semibold whitespace-nowrap">
                             Mark On Board
                         </button>
                     </div>
